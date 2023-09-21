@@ -4,20 +4,14 @@
 import PackageDescription
 
 let package = Package(
-    name: "Timer",
+    name: "MijickTimer",
+    platforms: [
+        .iOS(.v15)
+    ],
     products: [
-        // Products define the executables and libraries a package produces, making them visible to other packages.
-        .library(
-            name: "Timer",
-            targets: ["Timer"]),
+        .library(name: "MijickTimer", targets: ["MijickTimer"]),
     ],
     targets: [
-        // Targets are the basic building blocks of a package, defining a module or a test suite.
-        // Targets can depend on other targets in this package and products from dependencies.
-        .target(
-            name: "Timer"),
-        .testTarget(
-            name: "TimerTests",
-            dependencies: ["Timer"]),
+        .target(name: "MijickTimer", dependencies: [], path: "Sources")
     ]
 )
