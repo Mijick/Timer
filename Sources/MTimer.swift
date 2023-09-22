@@ -14,7 +14,7 @@ import SwiftUI
 public class MTimer {
     private var internalTimer: Timer!
 
-    private var running: Bool = true
+    private var running: Bool = false
     private var backgroundDate: Date? = nil
     private var runningTime: TimeInterval = 0
     private var timeInterval: TimeInterval = 0
@@ -26,6 +26,10 @@ public class MTimer {
 // MARK: - Timer Controls
 extension MTimer {
     public static func start(timeInterval: TimeInterval, _ completion: @escaping (TimeInterval) -> ()) { DispatchQueue.main.async {
+        guard !shared.running else { return }
+
+
+
         appStateBinding()
 
         shared.running = true
@@ -46,15 +50,9 @@ extension MTimer {
         NotificationCenter.default.removeObserver(self, name: UIApplication.didEnterBackgroundNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIApplication.willEnterForegroundNotification, object: nil)
     }
-    public static func pause() {
-        shared.internalTimer.invalidate()
-        shared.running = false
-
-        NotificationCenter.default.removeObserver(self, name: UIApplication.didEnterBackgroundNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: UIApplication.willEnterForegroundNotification, object: nil)
-    }
     public static func reset() {
-
+        shared.runningTime = 0
+        shared.completion(shared.runningTime)
     }
 }
 
@@ -92,17 +90,3 @@ extension MTimer {
     }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-enum TimerStatus { case working, paused }
