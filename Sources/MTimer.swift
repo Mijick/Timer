@@ -17,16 +17,19 @@ public class MTimer {
     private var status: TimerStatus = .paused
     private var startDate: Date? = nil
     private var runningTime: TimeInterval = 0
+    private var timeInterval: TimeInterval = 0
 
     private static let shared: MTimer = .init()
 }
 
 // MARK: - Timer Controls
 extension MTimer {
-    public static func start(_ ac: @escaping () -> ()) { DispatchQueue.main.async {
+    public static func start(timeInterval: TimeInterval, _ completion: @escaping (TimeInterval) -> ()) { DispatchQueue.main.async {
         shared.startDate = .init()
-        shared.internalTimer = .scheduledTimer(withTimeInterval: 0.2, repeats: true, block: { a in
-            ac()
+        shared.timeInterval = timeInterval
+        shared.internalTimer = .scheduledTimer(withTimeInterval: timeInterval, repeats: true, block: { a in
+            shared.runningTime += timeInterval
+            completion(shared.runningTime)
         })
         RunLoop.current.add(shared.internalTimer, forMode: .common)
     }}
@@ -43,10 +46,16 @@ extension MTimer {
 }
 
 extension MTimer {
+    
+}
+
+extension MTimer {
 
 }
 
+extension MTimer {
 
+}
 
 
 
