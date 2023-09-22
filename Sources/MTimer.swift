@@ -19,6 +19,7 @@ public class MTimer {
     private var runningTime: TimeInterval = 0
     private var timeInterval: TimeInterval = 0
     private var completion: (TimeInterval) -> () = { _ in }
+    private var onStatusChange: (String) -> () = { _ in }
 
     private static let shared: MTimer = .init()
 }
@@ -30,6 +31,7 @@ extension MTimer {
 
 
 
+        shared.onStatusChange("Start")
         appStateBinding()
 
         shared.running = true
@@ -46,6 +48,8 @@ extension MTimer {
         shared.internalTimer.invalidate()
         shared.running = false
 
+        shared.onStatusChange("Stop")
+
 
         NotificationCenter.default.removeObserver(self, name: UIApplication.didEnterBackgroundNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIApplication.willEnterForegroundNotification, object: nil)
@@ -57,7 +61,9 @@ extension MTimer {
 }
 
 extension MTimer {
-    
+    public static func onStatusChange(_ action: @escaping (String) -> ()) {
+        shared.onStatusChange = action
+    }
 }
 
 extension MTimer {
