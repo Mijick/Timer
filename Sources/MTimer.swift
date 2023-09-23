@@ -32,7 +32,7 @@ extension MTimer {
 
 
         shared.onStatusChange("Start")
-        appStateBinding()
+        //appStateBinding()
 
         shared.running = true
         shared.completion = completion
@@ -67,32 +67,57 @@ extension MTimer {
 }
 
 extension MTimer {
-    @objc fileprivate static func didEnterBackgroundNotification() {
-        shared.internalTimer.invalidate()
-        shared.backgroundDate = .init()
+    @objc fileprivate func didEnterBackgroundNotification() {
+        internalTimer.invalidate()
+        backgroundDate = .init()
     }
 
-    @objc fileprivate static func willEnterForegroundNotification() {
-        if shared.running {
-            shared.runningTime += Date().timeIntervalSince(shared.backgroundDate!)
+    @objc fileprivate func willEnterForegroundNotification() {
+        if running {
+            runningTime += Date().timeIntervalSince(backgroundDate!)
         }
-        shared.completion(shared.runningTime)
+        completion(runningTime)
 
-        shared.internalTimer = .scheduledTimer(withTimeInterval: shared.timeInterval, repeats: true, block: { a in
-            shared.runningTime += shared.timeInterval
-            shared.completion(shared.runningTime)
+        internalTimer = .scheduledTimer(withTimeInterval: timeInterval, repeats: true, block: { [self] a in
+            runningTime += timeInterval
+            completion(runningTime)
         })
 
 
-        shared.backgroundDate = nil
+        backgroundDate = nil
     }
 }
 
 extension MTimer {
-    fileprivate static func appStateBinding() {
+    fileprivate func appStateBinding() {
 
         NotificationCenter.default.addObserver(self, selector: #selector(didEnterBackgroundNotification), name: UIApplication.didEnterBackgroundNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(willEnterForegroundNotification), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
 }
 
+
+
+
+
+extension MTimer {
+    public func start(from: TimeInterval = .infinity, to: TimeInterval = .infinity) { DispatchQueue.main.async { [self] in
+        onStatusChange("Start")
+        appStateBinding()
+
+        running = true
+
+        internalTimer = .scheduledTimer(withTimeInterval: timeInterval, repeats: true, block: { [self] a in
+            runningTime += timeInterval
+            completion(runningTime)
+        })
+        RunLoop.current.add(internalTimer, forMode: .common)
+    }}
+    public static func abc(every seconds: TimeInterval, _ completion: @escaping (TimeInterval) -> ()) -> MTimer {
+
+
+        shared.completion = completion
+        shared.timeInterval = seconds
+        return shared
+    }
+}
