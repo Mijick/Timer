@@ -15,6 +15,7 @@ public class MTimer {
     private var internalTimer: Timer!
 
     private var running: Bool = false
+    private var increasing: Bool = true
     private var backgroundDate: Date? = nil
     private var runningTime: TimeInterval = 0
     private var timeInterval: TimeInterval = 0
@@ -74,12 +75,12 @@ extension MTimer {
 
     @objc fileprivate func willEnterForegroundNotification() {
         if running {
-            runningTime += Date().timeIntervalSince(backgroundDate!)
+            runningTime += Date().timeIntervalSince(backgroundDate!) * increasing.toNumber()
         }
         completion(runningTime)
 
         internalTimer = .scheduledTimer(withTimeInterval: timeInterval, repeats: true, block: { [self] a in
-            runningTime += timeInterval
+            runningTime += timeInterval * increasing.toNumber()
             completion(runningTime)
         })
 
@@ -107,8 +108,16 @@ extension MTimer {
 
         running = true
 
+        runningTime = from
+
+        increasing = to > from
+
+
         internalTimer = .scheduledTimer(withTimeInterval: timeInterval, repeats: true, block: { [self] a in
-            runningTime += timeInterval
+
+            // jeśli powyżej to to weź zatrzymaj
+
+            runningTime += timeInterval * increasing.toNumber()
             completion(runningTime)
         })
         RunLoop.current.add(internalTimer, forMode: .common)
@@ -120,4 +129,10 @@ extension MTimer {
         shared.timeInterval = seconds
         return shared
     }
+}
+
+
+
+extension Bool {
+    func toNumber() -> Double { self ? 1 : -1 }
 }
