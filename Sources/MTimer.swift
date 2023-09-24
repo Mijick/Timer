@@ -24,8 +24,7 @@ public class MTimer {
     private var backgroundDate: Date? = nil
 
     // Configuration
-    private var fromTime: TimeInterval = 0
-    private var toTime: TimeInterval = 0
+    private var initialTime: (start: TimeInterval, end: TimeInterval) = (0, 1)
     private var timeInterval: TimeInterval = 0
     private var completion: TimeIntervalCompletion!
     private var onStatusChange: StatusCompletion = { _ in }
@@ -42,7 +41,7 @@ extension MTimer {
         shared.stopTimer()
     }
     public static func reset() {
-        shared.runningTime = shared.fromTime
+        shared.runningTime = shared.initialTime.start
         shared.completion(shared.runningTime)
     }
 }
@@ -63,10 +62,10 @@ extension MTimer {
         guard from != to else { throw Error.startTimeCannotBeTheSameAsEndTime }
 
 
+        initialTime = (from, to)
 
-        fromTime = from
+
         runningTime = from
-        toTime = to
 
 
         startTimer()
@@ -100,9 +99,9 @@ private extension MTimer {
             let newTime = runningTime + timeInterval * timerType.rawValue
 
 
-            let test = (newTime - toTime) * timerType.rawValue
+            let test = (newTime - initialTime.end) * timerType.rawValue
             if test >= 0 {
-                completion(toTime)
+                completion(initialTime.end)
                 stopTimer()
                 return
             }
@@ -149,9 +148,9 @@ private extension MTimer {
         if status == .running {
             let newTime = max(0, runningTime + Date().timeIntervalSince(backgroundDate!) * timerType.rawValue)
 
-            let test = (newTime - toTime) * timerType.rawValue
+            let test = (newTime - initialTime.end) * timerType.rawValue
             if test >= 0 {
-                completion(toTime)
+                completion(initialTime.end)
                 stopTimer()
                 return
             }
@@ -171,7 +170,7 @@ private extension MTimer {
 
 
 private extension MTimer {
-    var timerType: TimerType { fromTime > toTime ? .decreasing : .increasing }
+    var timerType: TimerType { initialTime.start > initialTime.end ? .decreasing : .increasing }
 }
 
 
