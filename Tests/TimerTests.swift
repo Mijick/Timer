@@ -3,10 +3,32 @@ import XCTest
 
 final class TimerTests: XCTestCase {
     func testTimerStarts() {
+        let expectation = expectation(description: "")
 
+        MTimer.abc(every: 1) { _ in
+            expectation.fulfill()
+        }
+        .start()
+
+        waitForExpectations(timeout: 1.2)
     }
     func testTimerIsCancellable() {
+        var currentTime: TimeInterval = 0
 
+        MTimer.abc(every: 0.2) {
+            currentTime = $0
+        }
+        .start(from: 0, to: .infinity)
+
+        wait(for: 1)
+
+
+        MTimer.stop()
+        let current = currentTime
+
+        wait(for: 1)
+
+        XCTAssertEqual(current, currentTime)
     }
     func testTimerIsResetable() {
 
@@ -44,24 +66,22 @@ final class TimerTests: XCTestCase {
 
     // + formatowanie Time Interval
 
+}
 
 
 
 
-    func testExample() throws {
-        let expectation = expectation(description: "a")
+extension XCTestCase {
 
+    func wait(for duration: TimeInterval) {
+        let waitExpectation = expectation(description: "Waiting")
 
-
-        MTimer.abc(every: 1) { timeInterval in
-            expectation.fulfill()
+        let when = DispatchTime.now() + duration
+        DispatchQueue.main.asyncAfter(deadline: when) {
+            waitExpectation.fulfill()
         }
-        .start(from: 3, to: 10)
 
-        
-        waitForExpectations(timeout: 1.2)
-
-
-
+        // We use a buffer here to avoid flakiness with Timer on CI
+        waitForExpectations(timeout: duration + 0.5)
     }
 }
