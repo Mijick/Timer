@@ -58,8 +58,21 @@ final class TimerTests: XCTestCase {
 
         XCTAssertTrue(statuses.values.filter { !$0 }.isEmpty)
     }
-    func testTimerStopsAutomatically() {
+    func testTimerStopsAutomatically_WhenGoesForward() {
+        MTimer
+            .abc(every: 0.2) { self.currentTime = $0 }
+            .start(from: 0, to: 2)
+        wait(for: 3)
 
+        XCTAssertEqual(currentTime, 2)
+    }
+    func testTimerStopsAutomatically_WhenGoesBackward() {
+        MTimer
+            .abc(every: 0.2) { self.currentTime = $0 }
+            .start(from: 3, to: 1)
+        wait(for: 3)
+
+        XCTAssertEqual(currentTime, 1)
     }
     func testCannotInitialiseTimerWithWrongValues() {
 
