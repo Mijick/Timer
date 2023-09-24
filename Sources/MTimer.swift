@@ -15,18 +15,20 @@ fileprivate typealias TimeIntervalCompletion = (TimeInterval) -> ()
 fileprivate typealias StatusCompletion = (MTimer.Status) -> ()
 
 public class MTimer {
-    private var internalTimer: Timer!
+    private static let shared: MTimer = .init()
 
+    // Current State
+    private var internalTimer: Timer!
     private var status: Status = .stopped
-    private var backgroundDate: Date? = nil
     private var runningTime: TimeInterval = 0
+    private var backgroundDate: Date? = nil
+
+    // Configuration
     private var fromTime: TimeInterval = 0
     private var toTime: TimeInterval = 0
     private var timeInterval: TimeInterval = 0
     private var completion: TimeIntervalCompletion!
     private var onStatusChange: StatusCompletion = { _ in }
-    
-    private static let shared: MTimer = .init()
 }
 
 // MARK: - Timer Controls
