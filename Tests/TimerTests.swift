@@ -45,7 +45,18 @@ final class TimerTests: XCTestCase {
         XCTAssertEqual(startTime, currentRunningTime)
     }
     func testTimerPublishesStatuses() {
+        var statuses: [MTimer.Status: Bool] = [.running: false, .stopped: false]
 
+        MTimer
+            .abc(every: 0.1) { _ in }
+            .onStatusChange { statuses[$0] = true }
+            .start()
+        wait(for: 0.4)
+
+        MTimer.stop()
+        wait(for: 0.4)
+
+        XCTAssertTrue(statuses.values.filter { !$0 }.isEmpty)
     }
     func testTimerStopsAutomatically() {
 
