@@ -12,6 +12,7 @@ let package = Package(
         .library(name: "MijickTimer", targets: ["MijickTimer"]),
     ],
     targets: [
-        .target(name: "MijickTimer", dependencies: [], path: "Sources")
+        .target(name: "MijickTimer", dependencies: [], path: "Sources"),
+        .testTarget(name: "MijickTimerTests", dependencies: ["MijickTimer"], path: "Tests")
     ]
 )
