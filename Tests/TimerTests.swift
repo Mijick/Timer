@@ -90,6 +90,12 @@ extension TimerTests {
 
         XCTAssertEqual(currentTime, 2.75)
     }
+    func testTimerStopsAutomatically_WhenGoesBackward_DoesNotExceedZero() {
+        try! defaultTimer.start(from: 0.25, to: 0)
+        wait(for: 1.2)
+
+        XCTAssertEqual(currentTime, 0)
+    }
     func testTimerCanHaveMultipleInstances() {
         XCTAssert(false)
     }
