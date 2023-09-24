@@ -34,12 +34,12 @@ extension TimerTests {
 
         MTimer.stop()
 
-        var currentRunningTime = MTimer.getRunningTime()
+        var currentRunningTime = currentTime
         XCTAssertNotEqual(currentRunningTime, startTime)
 
         MTimer.reset()
 
-        currentRunningTime = MTimer.getRunningTime()
+        currentRunningTime = currentTime
         XCTAssertEqual(startTime, currentRunningTime)
     }
     func testTimerCanBeResumed() {

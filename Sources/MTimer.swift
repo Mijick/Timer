@@ -177,17 +177,6 @@ extension Bool {
 
 
 
-// MARK: - For Testing
-extension MTimer {
-    static func getRunningTime() -> TimeInterval { shared.runningTime }
-
-
-    
-}
-
-
-
-
 extension MTimer { public enum Status {
     case running, stopped
 }}
