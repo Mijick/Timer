@@ -21,7 +21,7 @@ public class MTimer {
     private var fromTime: TimeInterval = 0
     private var toTime: TimeInterval = 0
     private var timeInterval: TimeInterval = 0
-    private var completion: (TimeInterval) -> () = { _ in }
+    private var completion: ((TimeInterval) -> ())!
     private var onStatusChange: (Status) -> () = { _ in }
 
     private static let shared: MTimer = .init()
@@ -29,7 +29,9 @@ public class MTimer {
 
 // MARK: - Timer Controls
 extension MTimer {
-    public static func start() {
+    public static func resume() throws {
+        guard shared.completion != nil else { throw Error.cannotResumeNotInitialisedTimer }
+
         shared.startTimer()
     }
     public static func stop() {
@@ -182,4 +184,10 @@ extension MTimer {
 
 extension MTimer { public enum Status {
     case running, stopped
+}}
+
+
+
+extension MTimer { public enum Error: Swift.Error {
+    case cannotResumeNotInitialisedTimer
 }}

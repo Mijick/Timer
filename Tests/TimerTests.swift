@@ -74,8 +74,14 @@ final class TimerTests: XCTestCase {
 
         XCTAssertEqual(currentTime, 1)
     }
-    func testCannotInitialiseTimerWithWrongValues() {
-
+    func testCannotInitialiseTimer_StartTimeEqualsEndTime() {
+        
+    }
+    func testCannotInitialiseTimer_LaunchTimerWithoutInitialisation() {
+        XCTAssertThrowsError(try MTimer.resume()) { error in
+            let error = error as! MTimer.Error
+            XCTAssertEqual(error, .cannotResumeNotInitialisedTimer)
+        }
     }
     func testTimerCanRunBackwards() {
 
