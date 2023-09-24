@@ -15,7 +15,6 @@ public class MTimer {
     private var internalTimer: Timer!
 
     private var status: Status = .stopped
-    private var increasing: Bool = true
     private var backgroundDate: Date? = nil
     private var runningTime: TimeInterval = 0
     private var fromTime: TimeInterval = 0
@@ -64,8 +63,6 @@ extension MTimer {
         runningTime = from
         toTime = to
 
-        increasing = to > from
-
 
         startTimer()
     }
@@ -100,10 +97,10 @@ private extension MTimer {
 
         DispatchQueue.main.async { [self] in
         internalTimer = .scheduledTimer(withTimeInterval: timeInterval, repeats: true, block: { [self] a in
-            let newTime = runningTime + timeInterval * increasing.toNumber()
+            let newTime = runningTime + timeInterval * timerType.rawValue
 
 
-            let test = (newTime - toTime) * increasing.toNumber()
+            let test = (newTime - toTime) * timerType.rawValue
             if test >= 0 {
                 completion(toTime)
                 stopTimer()
@@ -147,9 +144,9 @@ private extension MTimer {
     }
     @objc func willEnterForegroundNotification() {
         if status == .running {
-            let newTime = max(0, runningTime + Date().timeIntervalSince(backgroundDate!) * increasing.toNumber())
+            let newTime = max(0, runningTime + Date().timeIntervalSince(backgroundDate!) * timerType.rawValue)
 
-            let test = (newTime - toTime) * increasing.toNumber()
+            let test = (newTime - toTime) * timerType.rawValue
             if test >= 0 {
                 completion(toTime)
                 stopTimer()
@@ -170,15 +167,23 @@ private extension MTimer {
 
 
 
-extension Bool {
-    func toNumber() -> Double { self ? 1 : -1 }
+private extension MTimer {
+    var timerType: TimerType { fromTime > toTime ? .decreasing : .increasing }
 }
+
+
 
 
 
 
 extension MTimer { public enum Status {
     case running, stopped
+}}
+
+
+
+extension MTimer { enum TimerType: Double {
+    case increasing = 1, decreasing = -1
 }}
 
 
