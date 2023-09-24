@@ -11,6 +11,9 @@
 
 import SwiftUI
 
+fileprivate typealias TimeIntervalCompletion = (TimeInterval) -> ()
+fileprivate typealias StatusCompletion = (MTimer.Status) -> ()
+
 public class MTimer {
     private var internalTimer: Timer!
 
@@ -20,9 +23,9 @@ public class MTimer {
     private var fromTime: TimeInterval = 0
     private var toTime: TimeInterval = 0
     private var timeInterval: TimeInterval = 0
-    private var completion: ((TimeInterval) -> ())!
-    private var onStatusChange: (Status) -> () = { _ in }
-
+    private var completion: TimeIntervalCompletion!
+    private var onStatusChange: StatusCompletion = { _ in }
+    
     private static let shared: MTimer = .init()
 }
 
@@ -180,7 +183,7 @@ extension MTimer { public enum Status {
 
 
 
-extension MTimer { enum TimerType: Double {
+private extension MTimer { enum TimerType: Double {
     case increasing = 1, decreasing = -1
 }}
 
