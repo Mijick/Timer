@@ -3,19 +3,27 @@ import XCTest
 
 final class TimerTests: XCTestCase {
     var currentTime: TimeInterval = 0
+    var timer: MTimer!
+
+
+    
+    override func setUp() {
+        super.setUp()
+        self.timer = .abc(every: 0.2) { self.currentTime = $0 }
+    }
 
 
     func testTimerStarts() {
         let expectation = expectation(description: "")
 
-        MTimer
+        try! MTimer
             .abc(every: 1) { _ in expectation.fulfill() }
             .start()
 
         waitForExpectations(timeout: 1.2)
     }
     func testTimerIsCancellable() {
-        MTimer
+        try! MTimer
             .abc(every: 0.2) { self.currentTime = $0 }
             .start()
         wait(for: 1)
@@ -29,7 +37,7 @@ final class TimerTests: XCTestCase {
     func testTimerIsResetable() {
         let startTime: TimeInterval = 3
 
-        MTimer
+        try! MTimer
             .abc(every: 0.2) { self.currentTime = $0 }
             .start(from: startTime)
         wait(for: 1)
@@ -47,7 +55,7 @@ final class TimerTests: XCTestCase {
     func testTimerPublishesStatuses() {
         var statuses: [MTimer.Status: Bool] = [.running: false, .stopped: false]
 
-        MTimer
+        try! MTimer
             .abc(every: 0.1) { _ in }
             .onStatusChange { statuses[$0] = true }
             .start()
@@ -59,7 +67,7 @@ final class TimerTests: XCTestCase {
         XCTAssertTrue(statuses.values.filter { !$0 }.isEmpty)
     }
     func testTimerStopsAutomatically_WhenGoesForward() {
-        MTimer
+        try! MTimer
             .abc(every: 0.2) { self.currentTime = $0 }
             .start(from: 0, to: 2)
         wait(for: 3)
@@ -67,21 +75,14 @@ final class TimerTests: XCTestCase {
         XCTAssertEqual(currentTime, 2)
     }
     func testTimerStopsAutomatically_WhenGoesBackward() {
-        MTimer
+        try! MTimer
             .abc(every: 0.2) { self.currentTime = $0 }
             .start(from: 3, to: 1)
         wait(for: 3)
 
         XCTAssertEqual(currentTime, 1)
     }
-    func testDoesNotStart_StartTimeEqualsEndTime() {
-        MTimer
-            .abc(every: 0.2) { self.currentTime = $0 }
-            .start(from: 0, to: 0)
-        wait(for: 1)
 
-        XCTAssertEqual(currentTime, 0)
-    }
     func testCannotInitialiseTimer_LaunchTimerWithoutInitialisation() {
         XCTAssertThrowsError(try MTimer.resume()) { error in
             let error = error as! MTimer.Error
@@ -89,7 +90,7 @@ final class TimerTests: XCTestCase {
         }
     }
     func testTimerCanRunBackwards() {
-        MTimer
+        try! MTimer
             .abc(every: 0.2) { self.currentTime = $0 }
             .start(from: 3, to: 1)
         wait(for: 1)
@@ -97,7 +98,7 @@ final class TimerTests: XCTestCase {
         XCTAssertLessThan(currentTime, 3)
     }
     func testTimerCanBeResumed() {
-        MTimer
+        try! MTimer
             .abc(every: 0.2) { self.currentTime = $0 }
             .start()
         wait(for: 1)
@@ -132,8 +133,26 @@ final class TimerTests: XCTestCase {
 }
 
 
+// MARK: - Initialisation With Wrong Values
 extension TimerTests {
-
+    func testTimerDoesNotStart_StartTimeEqualsEndTime() {
+        XCTAssertThrowsError(try timer.start(from: 0, to: 0)) { error in
+            let error = error as! MTimer.Error
+            XCTAssertEqual(error, .startTimeCannotBeTheSameAsEndTime)
+        }
+    }
+    func testTimerDoesNotStart_StartIntervalIsLessThanZero() {
+        XCTAssertThrowsError(try timer.start(from: -10, to: 5)) { error in
+            let error = error as! MTimer.Error
+            XCTAssertEqual(error, .timeCannotBeLessThanZero)
+        }
+    }
+    func testTimerDoesNotStart_EndIntervalIsLessThanZero() {
+        XCTAssertThrowsError(try timer.start(from: 10, to: -15)) { error in
+            let error = error as! MTimer.Error
+            XCTAssertEqual(error, .timeCannotBeLessThanZero)
+        }
+    }
 }
 
 

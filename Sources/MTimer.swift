@@ -52,8 +52,11 @@ extension MTimer {
 
 
 extension MTimer {
-    public func start(from: TimeInterval = 0, to: TimeInterval = .infinity) {
-        guard from != to else { return }
+    public func start(from: TimeInterval = 0, to: TimeInterval = .infinity) throws {
+        guard from >= 0,
+              to >= 0
+        else { throw Error.timeCannotBeLessThanZero }
+        guard from != to else { throw Error.startTimeCannotBeTheSameAsEndTime }
 
 
 
@@ -192,5 +195,6 @@ extension MTimer { public enum Status {
 
 
 extension MTimer { public enum Error: Swift.Error {
+    case startTimeCannotBeTheSameAsEndTime, timeCannotBeLessThanZero
     case cannotResumeNotInitialisedTimer
 }}
