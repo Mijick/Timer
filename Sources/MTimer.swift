@@ -14,7 +14,7 @@ import SwiftUI
 public class MTimer {
     private var internalTimer: Timer!
 
-    private var running: Bool = false
+    private var status: Status = .stopped
     private var increasing: Bool = true
     private var backgroundDate: Date? = nil
     private var runningTime: TimeInterval = 0
@@ -22,7 +22,7 @@ public class MTimer {
     private var toTime: TimeInterval = 0
     private var timeInterval: TimeInterval = 0
     private var completion: (TimeInterval) -> () = { _ in }
-    private var onStatusChange: (String) -> () = { _ in }
+    private var onStatusChange: (Status) -> () = { _ in }
 
     private static let shared: MTimer = .init()
 }
@@ -68,7 +68,7 @@ extension MTimer {
         shared.timeInterval = seconds
         return shared
     }
-    public func onStatusChange(_ action: @escaping (String) -> ()) -> MTimer {
+    public func onStatusChange(_ action: @escaping (Status) -> ()) -> MTimer {
         onStatusChange = action
 
         return self
@@ -76,16 +76,17 @@ extension MTimer {
 }
 private extension MTimer {
     func startTimer() { 
-        guard !running else { return }
+        guard status == .stopped else { return }
 
+
+        status = .running
 
         DispatchQueue.main.async {
-            self.onStatusChange("Start")
+            self.onStatusChange(.running)
         }
 
         addObservers()
 
-        running = true
 
 
 
@@ -108,9 +109,11 @@ private extension MTimer {
     }}
     func stopTimer() {
         internalTimer.invalidate()
-        running = false
+        status = .stopped
 
-        onStatusChange("Stop")
+        DispatchQueue.main.async {
+            self.onStatusChange(.stopped)
+        }
 
 
         removeObservers()
@@ -135,7 +138,7 @@ private extension MTimer {
         backgroundDate = .init()
     }
     @objc func willEnterForegroundNotification() {
-        if running {
+        if status == .running {
             let newTime = max(0, runningTime + Date().timeIntervalSince(backgroundDate!) * increasing.toNumber())
 
             let test = (newTime - toTime) * increasing.toNumber()
@@ -173,3 +176,10 @@ extension MTimer {
 
     
 }
+
+
+
+
+extension MTimer { public enum Status {
+    case running, stopped
+}}
