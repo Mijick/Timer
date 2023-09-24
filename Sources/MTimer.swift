@@ -11,41 +11,28 @@
 
 import SwiftUI
 
-fileprivate typealias TimeIntervalCompletion = (TimeInterval) -> ()
-fileprivate typealias StatusCompletion = (MTimer.Status) -> ()
-
 public class MTimer {
-    private static let shared: MTimer = .init()
+    static let shared: MTimer = .init()
 
     // Current State
-    private var internalTimer: Timer!
-    private var status: Status = .stopped
-    private var runningTime: TimeInterval = 0
-    private var backgroundDate: Date? = nil
+    var internalTimer: Timer!
+    var status: Status = .stopped
+    var runningTime: TimeInterval = 0
+    var backgroundDate: Date? = nil
 
     // Configuration
-    private var initialTime: (start: TimeInterval, end: TimeInterval) = (0, 1)
-    private var timeInterval: TimeInterval = 0
-    private var completion: TimeIntervalCompletion!
-    private var onStatusChange: StatusCompletion?
+    var initialTime: (start: TimeInterval, end: TimeInterval) = (0, 1)
+    var timeInterval: TimeInterval = 0
+    var completion: ((TimeInterval) -> ())!
+    var onStatusChange: ((MTimer.Status) -> ())?
 }
 
-// MARK: - Creating Timer
-extension MTimer {
-    public static func publish(every time: TimeInterval, _ completion: @escaping (_ currentTime: TimeInterval) -> ()) -> MTimer {
-        shared.timeInterval = time
-        shared.completion = completion
-        return shared
-    }
-}
 
-// MARK: - Status Updates
-extension MTimer {
-    public func onStatusChange(_ action: @escaping (_ newStatus: Status) -> ()) -> MTimer {
-        onStatusChange = action
-        return self
-    }
-}
+
+
+
+
+
 private extension MTimer {
     func updateStatus(to newStatus: Status) {
         status = newStatus
