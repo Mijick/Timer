@@ -18,6 +18,7 @@ public class MTimer {
     private var increasing: Bool = true
     private var backgroundDate: Date? = nil
     private var runningTime: TimeInterval = 0
+    private var maxTime: TimeInterval = 0
     private var timeInterval: TimeInterval = 0
     private var completion: (TimeInterval) -> () = { _ in }
     private var onStatusChange: (String) -> () = { _ in }
@@ -27,33 +28,8 @@ public class MTimer {
 
 // MARK: - Timer Controls
 extension MTimer {
-    public static func start(timeInterval: TimeInterval, _ completion: @escaping (TimeInterval) -> ()) { DispatchQueue.main.async {
-        guard !shared.running else { return }
-
-
-
-        shared.onStatusChange("Start")
-        //appStateBinding()
-
-        shared.running = true
-        shared.completion = completion
-
-        shared.timeInterval = timeInterval
-        shared.internalTimer = .scheduledTimer(withTimeInterval: timeInterval, repeats: true, block: { a in
-            shared.runningTime += timeInterval
-            completion(shared.runningTime)
-        })
-        RunLoop.current.add(shared.internalTimer, forMode: .common)
-    }}
     public static func stop() {
-        shared.internalTimer.invalidate()
-        shared.running = false
-
-        shared.onStatusChange("Stop")
-
-
-        NotificationCenter.default.removeObserver(self, name: UIApplication.didEnterBackgroundNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: UIApplication.willEnterForegroundNotification, object: nil)
+        shared.stopTimer()
     }
     public static func reset() {
         shared.runningTime = 0
@@ -75,14 +51,21 @@ extension MTimer {
 
     @objc fileprivate func willEnterForegroundNotification() {
         if running {
-            runningTime += Date().timeIntervalSince(backgroundDate!) * increasing.toNumber()
+            let newTime = max(0, runningTime + Date().timeIntervalSince(backgroundDate!) * increasing.toNumber())
+
+            let test = (newTime - maxTime) * increasing.toNumber()
+            if test >= 0 {
+                completion(maxTime)
+                stopTimer()
+                return
+            }
+
+
+            runningTime = newTime
         }
         completion(runningTime)
 
-        internalTimer = .scheduledTimer(withTimeInterval: timeInterval, repeats: true, block: { [self] a in
-            runningTime += timeInterval * increasing.toNumber()
-            completion(runningTime)
-        })
+        startTimer()
 
 
         backgroundDate = nil
@@ -109,18 +92,12 @@ extension MTimer {
         running = true
 
         runningTime = from
+        maxTime = to
 
         increasing = to > from
 
 
-        internalTimer = .scheduledTimer(withTimeInterval: timeInterval, repeats: true, block: { [self] a in
-
-            // jeśli powyżej to to weź zatrzymaj
-
-            runningTime += timeInterval * increasing.toNumber()
-            completion(runningTime)
-        })
-        RunLoop.current.add(internalTimer, forMode: .common)
+        startTimer()
     }}
     public static func abc(every seconds: TimeInterval, _ completion: @escaping (TimeInterval) -> ()) -> MTimer {
 
@@ -128,6 +105,35 @@ extension MTimer {
         shared.completion = completion
         shared.timeInterval = seconds
         return shared
+    }
+}
+private extension MTimer {
+    func startTimer() {
+        internalTimer = .scheduledTimer(withTimeInterval: timeInterval, repeats: true, block: { [self] a in
+            let newTime = runningTime + timeInterval * increasing.toNumber()
+
+
+            let test = (newTime - maxTime) * increasing.toNumber()
+            if test >= 0 {
+                completion(maxTime)
+                stopTimer()
+                return
+            }
+
+            runningTime = newTime
+            completion(runningTime)
+        })
+        RunLoop.current.add(internalTimer, forMode: .common)
+    }
+    func stopTimer() {
+        internalTimer.invalidate()
+        running = false
+
+        onStatusChange("Stop")
+
+
+        NotificationCenter.default.removeObserver(self, name: UIApplication.didEnterBackgroundNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIApplication.willEnterForegroundNotification, object: nil)
     }
 }
 
