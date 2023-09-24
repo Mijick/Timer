@@ -42,9 +42,7 @@ extension MTimer {
 }
 
 extension MTimer {
-    public static func onStatusChange(_ action: @escaping (String) -> ()) {
-        shared.onStatusChange = action
-    }
+
 }
 
 
@@ -69,6 +67,11 @@ extension MTimer {
         shared.completion = completion
         shared.timeInterval = seconds
         return shared
+    }
+    public func onStatusChange(_ action: @escaping (String) -> ()) -> MTimer {
+        onStatusChange = action
+
+        return self
     }
 }
 private extension MTimer {
