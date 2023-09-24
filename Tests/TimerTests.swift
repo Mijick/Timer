@@ -91,7 +91,7 @@ extension TimerTests {
         XCTAssertEqual(currentTime, 2.75)
     }
     func testTimerCanHaveMultipleInstances() {
-
+        XCTAssert(false)
     }
 }
 
