@@ -16,11 +16,11 @@ final class TimerTests: XCTestCase {
     }
     func testTimerIsCancellable() {
         try! timer.start()
-        wait(for: 0.4)
+        wait(for: 0.3)
 
         MTimer.stop()
         let timeAfterStop = currentTime
-        wait(for: 0.4)
+        wait(for: 0.3)
 
         XCTAssertEqual(timeAfterStop, currentTime)
     }
@@ -46,26 +46,25 @@ final class TimerTests: XCTestCase {
         try! timer
             .onStatusChange { statuses[$0] = true }
             .start()
-        wait(for: 0.2)
+        wait(for: 0.3)
 
         MTimer.stop()
-        wait(for: 0.2)
+        wait(for: 0.3)
 
         XCTAssertTrue(statuses.values.filter { !$0 }.isEmpty)
     }
     func testTimerStopsAutomatically_WhenGoesForward() {
-        try! timer.start(from: 0, to: 2)
-        wait(for: 3)
-
-        XCTAssertEqual(currentTime, 2)
-    }
-    func testTimerStopsAutomatically_WhenGoesBackward() {
-        try! timer.start(from: 3, to: 1)
-        wait(for: 3)
+        try! timer.start(from: 0, to: 1)
+        wait(for: 1.4)
 
         XCTAssertEqual(currentTime, 1)
     }
+    func testTimerStopsAutomatically_WhenGoesBackward() {
+        try! timer.start(from: 3, to: 2)
+        wait(for: 1.4)
 
+        XCTAssertEqual(currentTime, 2)
+    }
     func testCannotInitialiseTimer_LaunchTimerWithoutInitialisation() {
         XCTAssertThrowsError(try MTimer.resume()) { error in
             let error = error as! MTimer.Error
@@ -74,20 +73,20 @@ final class TimerTests: XCTestCase {
     }
     func testTimerCanRunBackwards() {
         try! timer.start(from: 3, to: 1)
-        wait(for: 1)
+        wait(for: 0.4)
 
         XCTAssertLessThan(currentTime, 3)
     }
     func testTimerCanBeResumed() {
         try! timer.start()
-        wait(for: 1)
+        wait(for: 0.4)
 
         MTimer.stop()
         let timeAfterStop = currentTime
         wait(for: 0.4)
 
         try! MTimer.resume()
-        wait(for: 1)
+        wait(for: 0.4)
 
         XCTAssertNotEqual(timeAfterStop, currentTime)
     }
