@@ -89,7 +89,12 @@ final class TimerTests: XCTestCase {
         }
     }
     func testTimerCanRunBackwards() {
+        MTimer
+            .abc(every: 0.2) { self.currentTime = $0 }
+            .start(from: 3, to: 1)
+        wait(for: 1)
 
+        XCTAssertLessThan(currentTime, 3)
     }
     func testTimerCanBeResumed() {
 
