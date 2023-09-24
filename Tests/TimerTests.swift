@@ -5,30 +5,25 @@ final class TimerTests: XCTestCase {
     func testTimerStarts() {
         let expectation = expectation(description: "")
 
-        MTimer.abc(every: 1) { _ in
-            expectation.fulfill()
-        }
-        .start()
+        MTimer
+            .abc(every: 1) { _ in expectation.fulfill() }
+            .start()
 
         waitForExpectations(timeout: 1.2)
     }
     func testTimerIsCancellable() {
         var currentTime: TimeInterval = 0
 
-        MTimer.abc(every: 0.2) {
-            currentTime = $0
-        }
-        .start(from: 0, to: .infinity)
-
+        MTimer
+            .abc(every: 0.2) { currentTime = $0 }
+            .start()
         wait(for: 1)
-
 
         MTimer.stop()
-        let current = currentTime
-
+        let timeAfterStop = currentTime
         wait(for: 1)
 
-        XCTAssertEqual(current, currentTime)
+        XCTAssertEqual(timeAfterStop, currentTime)
     }
     func testTimerIsResetable() {
 
