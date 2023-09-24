@@ -162,3 +162,14 @@ private extension MTimer {
 extension Bool {
     func toNumber() -> Double { self ? 1 : -1 }
 }
+
+
+
+
+// MARK: - For Testing
+extension MTimer {
+    static func getRunningTime() -> TimeInterval { shared.runningTime }
+
+
+    
+}

@@ -2,6 +2,9 @@ import XCTest
 @testable import MijickTimer
 
 final class TimerTests: XCTestCase {
+    var currentTime: TimeInterval = 0
+
+
     func testTimerStarts() {
         let expectation = expectation(description: "")
 
@@ -12,10 +15,8 @@ final class TimerTests: XCTestCase {
         waitForExpectations(timeout: 1.2)
     }
     func testTimerIsCancellable() {
-        var currentTime: TimeInterval = 0
-
         MTimer
-            .abc(every: 0.2) { currentTime = $0 }
+            .abc(every: 0.2) { self.currentTime = $0 }
             .start()
         wait(for: 1)
 
@@ -26,7 +27,22 @@ final class TimerTests: XCTestCase {
         XCTAssertEqual(timeAfterStop, currentTime)
     }
     func testTimerIsResetable() {
+        var startTime: TimeInterval = 3
 
+        MTimer
+            .abc(every: 0.2) { self.currentTime = $0 }
+            .start(from: startTime)
+        wait(for: 1)
+
+        MTimer.stop()
+
+        var currentRunningTime = MTimer.getRunningTime()
+        XCTAssertNotEqual(currentRunningTime, startTime)
+
+        MTimer.reset()
+
+        currentRunningTime = MTimer.getRunningTime()
+        XCTAssertEqual(startTime, currentRunningTime)
     }
     func testTimerPublishesStatuses() {
 
@@ -60,6 +76,11 @@ final class TimerTests: XCTestCase {
 
 
     // + formatowanie Time Interval
+
+}
+
+
+extension TimerTests {
 
 }
 
