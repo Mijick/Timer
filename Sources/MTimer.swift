@@ -18,7 +18,8 @@ public class MTimer {
     private var increasing: Bool = true
     private var backgroundDate: Date? = nil
     private var runningTime: TimeInterval = 0
-    private var maxTime: TimeInterval = 0
+    private var fromTime: TimeInterval = 0
+    private var toTime: TimeInterval = 0
     private var timeInterval: TimeInterval = 0
     private var completion: (TimeInterval) -> () = { _ in }
     private var onStatusChange: (String) -> () = { _ in }
@@ -28,11 +29,14 @@ public class MTimer {
 
 // MARK: - Timer Controls
 extension MTimer {
+    public static func start() {
+        shared.startTimer()
+    }
     public static func stop() {
         shared.stopTimer()
     }
     public static func reset() {
-        shared.runningTime = 0
+        shared.runningTime = shared.fromTime
         shared.completion(shared.runningTime)
     }
 }
@@ -53,9 +57,9 @@ extension MTimer {
         if running {
             let newTime = max(0, runningTime + Date().timeIntervalSince(backgroundDate!) * increasing.toNumber())
 
-            let test = (newTime - maxTime) * increasing.toNumber()
+            let test = (newTime - toTime) * increasing.toNumber()
             if test >= 0 {
-                completion(maxTime)
+                completion(toTime)
                 stopTimer()
                 return
             }
@@ -85,20 +89,17 @@ extension MTimer {
 
 
 extension MTimer {
-    public func start(from: TimeInterval = .infinity, to: TimeInterval = .infinity) { DispatchQueue.main.async { [self] in
-        onStatusChange("Start")
-        appStateBinding()
+    public func start(from: TimeInterval = 0, to: TimeInterval = .infinity) {
 
-        running = true
-
+        fromTime = from
         runningTime = from
-        maxTime = to
+        toTime = to
 
         increasing = to > from
 
 
         startTimer()
-    }}
+    }
     public static func abc(every seconds: TimeInterval, _ completion: @escaping (TimeInterval) -> ()) -> MTimer {
 
 
@@ -108,14 +109,28 @@ extension MTimer {
     }
 }
 private extension MTimer {
-    func startTimer() {
+    func startTimer() { 
+        guard !running else { return }
+
+
+        DispatchQueue.main.async {
+            self.onStatusChange("Start")
+        }
+
+        appStateBinding()
+
+        running = true
+
+
+
+        DispatchQueue.main.async { [self] in
         internalTimer = .scheduledTimer(withTimeInterval: timeInterval, repeats: true, block: { [self] a in
             let newTime = runningTime + timeInterval * increasing.toNumber()
 
 
-            let test = (newTime - maxTime) * increasing.toNumber()
+            let test = (newTime - toTime) * increasing.toNumber()
             if test >= 0 {
-                completion(maxTime)
+                completion(toTime)
                 stopTimer()
                 return
             }
@@ -124,7 +139,7 @@ private extension MTimer {
             completion(runningTime)
         })
         RunLoop.current.add(internalTimer, forMode: .common)
-    }
+    }}
     func stopTimer() {
         internalTimer.invalidate()
         running = false
