@@ -107,12 +107,6 @@ final class TimerTests: XCTestCase {
     func testTimerCanHaveMultipleInstances() {
 
     }
-    func testTimerCountsTimeWhenAppReturnsFromBackground() {
-        XCUIDevice.shared.press(XCUIDevice.Button.home)
-
-        let myApp = XCUIApplication()
-        myApp.activate() // bring to foreground
-    }
 
 
 
