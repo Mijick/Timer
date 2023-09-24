@@ -17,20 +17,20 @@ extension TimerTests {
         waitForExpectations(timeout: 0.4)
     }
     func testTimerIsCancellable() {
-        try! timer.start()
-        wait(for: waitingTime)
+        try! defaultTimer.start()
+        wait(for: defaultWaitingTime)
 
         MTimer.stop()
         let timeAfterStop = currentTime
-        wait(for: waitingTime)
+        wait(for: defaultWaitingTime)
 
         XCTAssertEqual(timeAfterStop, currentTime)
     }
     func testTimerIsResetable() {
         let startTime: TimeInterval = 3
 
-        try! timer.start(from: startTime)
-        wait(for: waitingTime)
+        try! defaultTimer.start(from: startTime)
+        wait(for: defaultWaitingTime)
 
         MTimer.stop()
 
@@ -43,15 +43,15 @@ extension TimerTests {
         XCTAssertEqual(startTime, currentRunningTime)
     }
     func testTimerCanBeResumed() {
-        try! timer.start()
-        wait(for: waitingTime)
+        try! defaultTimer.start()
+        wait(for: defaultWaitingTime)
 
         MTimer.stop()
         let timeAfterStop = currentTime
-        wait(for: waitingTime)
+        wait(for: defaultWaitingTime)
 
         try! MTimer.resume()
-        wait(for: waitingTime)
+        wait(for: defaultWaitingTime)
 
         XCTAssertNotEqual(timeAfterStop, currentTime)
     }
@@ -60,32 +60,32 @@ extension TimerTests {
 // MARK: - Additional Basics
 extension TimerTests {
     func testTimerCanRunBackwards() {
-        try! timer.start(from: 3, to: 1)
-        wait(for: waitingTime)
+        try! defaultTimer.start(from: 3, to: 1)
+        wait(for: defaultWaitingTime)
 
         XCTAssertLessThan(currentTime, 3)
     }
     func testTimerPublishesStatuses() {
         var statuses: [MTimer.Status: Bool] = [.running: false, .stopped: false]
 
-        try! timer
+        try! defaultTimer
             .onStatusChange { statuses[$0] = true }
             .start()
-        wait(for: waitingTime)
+        wait(for: defaultWaitingTime)
 
         MTimer.stop()
-        wait(for: waitingTime)
+        wait(for: defaultWaitingTime)
 
         XCTAssertTrue(statuses.values.filter { !$0 }.isEmpty)
     }
     func testTimerStopsAutomatically_WhenGoesForward() {
-        try! timer.start(from: 0, to: 0.25)
+        try! defaultTimer.start(from: 0, to: 0.25)
         wait(for: 0.8)
 
         XCTAssertEqual(currentTime, 0.25)
     }
     func testTimerStopsAutomatically_WhenGoesBackward() {
-        try! timer.start(from: 3, to: 2.75)
+        try! defaultTimer.start(from: 3, to: 2.75)
         wait(for: 0.8)
 
         XCTAssertEqual(currentTime, 2.75)
@@ -104,19 +104,19 @@ extension TimerTests {
 // MARK: - Errors
 extension TimerTests {
     func testTimerDoesNotStart_StartTimeEqualsEndTime() {
-        XCTAssertThrowsError(try timer.start(from: 0, to: 0)) { error in
+        XCTAssertThrowsError(try defaultTimer.start(from: 0, to: 0)) { error in
             let error = error as! MTimer.Error
             XCTAssertEqual(error, .startTimeCannotBeTheSameAsEndTime)
         }
     }
     func testTimerDoesNotStart_StartIntervalIsLessThanZero() {
-        XCTAssertThrowsError(try timer.start(from: -10, to: 5)) { error in
+        XCTAssertThrowsError(try defaultTimer.start(from: -10, to: 5)) { error in
             let error = error as! MTimer.Error
             XCTAssertEqual(error, .timeCannotBeLessThanZero)
         }
     }
     func testTimerDoesNotStart_EndIntervalIsLessThanZero() {
-        XCTAssertThrowsError(try timer.start(from: 10, to: -15)) { error in
+        XCTAssertThrowsError(try defaultTimer.start(from: 10, to: -15)) { error in
             let error = error as! MTimer.Error
             XCTAssertEqual(error, .timeCannotBeLessThanZero)
         }
@@ -130,9 +130,6 @@ extension TimerTests {
 }
 
 
-
-
-
 // MARK: - Helpers
 private extension TimerTests {
     func wait(for duration: TimeInterval) {
@@ -144,10 +141,8 @@ private extension TimerTests {
 
         waitForExpectations(timeout: duration + 0.5)
     }
-
-
-    var waitingTime: TimeInterval { 0.15 }
-
-
-    var timer: MTimer { .abc(every: 0.05) { self.currentTime = $0 } }
+}
+private extension TimerTests {
+    var defaultWaitingTime: TimeInterval { 0.15 }
+    var defaultTimer: MTimer { .abc(every: 0.05) { self.currentTime = $0 } }
 }
