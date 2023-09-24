@@ -53,6 +53,9 @@ extension MTimer {
 
 extension MTimer {
     public func start(from: TimeInterval = 0, to: TimeInterval = .infinity) {
+        guard from != to else { return }
+
+
 
         fromTime = from
         runningTime = from

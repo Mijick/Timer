@@ -27,7 +27,7 @@ final class TimerTests: XCTestCase {
         XCTAssertEqual(timeAfterStop, currentTime)
     }
     func testTimerIsResetable() {
-        var startTime: TimeInterval = 3
+        let startTime: TimeInterval = 3
 
         MTimer
             .abc(every: 0.2) { self.currentTime = $0 }
@@ -74,8 +74,13 @@ final class TimerTests: XCTestCase {
 
         XCTAssertEqual(currentTime, 1)
     }
-    func testCannotInitialiseTimer_StartTimeEqualsEndTime() {
-        
+    func testDoesNotStart_StartTimeEqualsEndTime() {
+        MTimer
+            .abc(every: 0.2) { self.currentTime = $0 }
+            .start(from: 0, to: 0)
+        wait(for: 1)
+
+        XCTAssertEqual(currentTime, 0)
     }
     func testCannotInitialiseTimer_LaunchTimerWithoutInitialisation() {
         XCTAssertThrowsError(try MTimer.resume()) { error in
