@@ -47,43 +47,6 @@ extension MTimer {
     }
 }
 
-extension MTimer {
-    @objc fileprivate func didEnterBackgroundNotification() {
-        internalTimer.invalidate()
-        backgroundDate = .init()
-    }
-
-    @objc fileprivate func willEnterForegroundNotification() {
-        if running {
-            let newTime = max(0, runningTime + Date().timeIntervalSince(backgroundDate!) * increasing.toNumber())
-
-            let test = (newTime - toTime) * increasing.toNumber()
-            if test >= 0 {
-                completion(toTime)
-                stopTimer()
-                return
-            }
-
-
-            runningTime = newTime
-        }
-        completion(runningTime)
-
-        startTimer()
-
-
-        backgroundDate = nil
-    }
-}
-
-extension MTimer {
-    fileprivate func appStateBinding() {
-
-        NotificationCenter.default.addObserver(self, selector: #selector(didEnterBackgroundNotification), name: UIApplication.didEnterBackgroundNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(willEnterForegroundNotification), name: UIApplication.willEnterForegroundNotification, object: nil)
-    }
-}
-
 
 
 
@@ -117,7 +80,7 @@ private extension MTimer {
             self.onStatusChange("Start")
         }
 
-        appStateBinding()
+        addObservers()
 
         running = true
 
@@ -147,8 +110,47 @@ private extension MTimer {
         onStatusChange("Stop")
 
 
+        removeObservers()
+    }
+}
+
+
+// MARK: - Notification Center
+private extension MTimer {
+    func addObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(didEnterBackgroundNotification), name: UIApplication.didEnterBackgroundNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(willEnterForegroundNotification), name: UIApplication.willEnterForegroundNotification, object: nil)
+    }
+    func removeObservers() {
         NotificationCenter.default.removeObserver(self, name: UIApplication.didEnterBackgroundNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIApplication.willEnterForegroundNotification, object: nil)
+    }
+}
+private extension MTimer {
+    @objc func didEnterBackgroundNotification() {
+        internalTimer.invalidate()
+        backgroundDate = .init()
+    }
+    @objc func willEnterForegroundNotification() {
+        if running {
+            let newTime = max(0, runningTime + Date().timeIntervalSince(backgroundDate!) * increasing.toNumber())
+
+            let test = (newTime - toTime) * increasing.toNumber()
+            if test >= 0 {
+                completion(toTime)
+                stopTimer()
+                return
+            }
+
+
+            runningTime = newTime
+        }
+        completion(runningTime)
+
+        startTimer()
+
+
+        backgroundDate = nil
     }
 }
 
