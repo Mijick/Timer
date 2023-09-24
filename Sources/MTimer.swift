@@ -83,12 +83,7 @@ private extension MTimer {
     func startTimer() { 
         guard status == .stopped else { return }
 
-
-        status = .running
-
-        DispatchQueue.main.async {
-            self.onStatusChange(.running)
-        }
+        updateStatus(to: .running)
 
         addObservers()
 
@@ -114,14 +109,17 @@ private extension MTimer {
     }}
     func stopTimer() {
         internalTimer.invalidate()
-        status = .stopped
-
-        DispatchQueue.main.async {
-            self.onStatusChange(.stopped)
-        }
+        updateStatus(to: .stopped)
 
 
         removeObservers()
+    }
+}
+
+private extension MTimer {
+    func updateStatus(to newStatus: Status) {
+        status = newStatus
+        DispatchQueue.main.async { [self] in onStatusChange(newStatus) }
     }
 }
 
