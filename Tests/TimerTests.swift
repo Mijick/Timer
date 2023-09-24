@@ -97,7 +97,19 @@ final class TimerTests: XCTestCase {
         XCTAssertLessThan(currentTime, 3)
     }
     func testTimerCanBeResumed() {
+        MTimer
+            .abc(every: 0.2) { self.currentTime = $0 }
+            .start()
+        wait(for: 1)
 
+        MTimer.stop()
+        let timeAfterStop = currentTime
+        wait(for: 0.4)
+
+        try! MTimer.resume()
+        wait(for: 1)
+
+        XCTAssertNotEqual(timeAfterStop, currentTime)
     }
     func testTimerCanStartFromNonZeroValue() {
 
