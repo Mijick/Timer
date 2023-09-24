@@ -27,7 +27,7 @@ public class MTimer {
     private var initialTime: (start: TimeInterval, end: TimeInterval) = (0, 1)
     private var timeInterval: TimeInterval = 0
     private var completion: TimeIntervalCompletion!
-    private var onStatusChange: StatusCompletion = { _ in }
+    private var onStatusChange: StatusCompletion?
 }
 
 // MARK: - Creating Timer
@@ -36,6 +36,20 @@ extension MTimer {
         shared.timeInterval = time
         shared.completion = completion
         return shared
+    }
+}
+
+// MARK: - Status Updates
+extension MTimer {
+    public func onStatusChange(_ action: @escaping (_ newStatus: Status) -> ()) -> MTimer {
+        onStatusChange = action
+        return self
+    }
+}
+private extension MTimer {
+    func updateStatus(to newStatus: Status) {
+        status = newStatus
+        DispatchQueue.main.async { [self] in onStatusChange?(newStatus) }
     }
 }
 
@@ -76,11 +90,7 @@ extension MTimer {
         startTimer()
     }
     
-    public func onStatusChange(_ action: @escaping (Status) -> ()) -> MTimer {
-        onStatusChange = action
 
-        return self
-    }
 }
 private extension MTimer {
     func startTimer() { 
@@ -119,12 +129,7 @@ private extension MTimer {
     }
 }
 
-private extension MTimer {
-    func updateStatus(to newStatus: Status) {
-        status = newStatus
-        DispatchQueue.main.async { [self] in onStatusChange(newStatus) }
-    }
-}
+
 
 
 // MARK: - Notification Center
