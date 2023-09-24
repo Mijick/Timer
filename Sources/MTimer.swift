@@ -30,6 +30,17 @@ public class MTimer {
     private var onStatusChange: StatusCompletion = { _ in }
 }
 
+// MARK: - Creating Timer
+extension MTimer {
+    public static func publish(every time: TimeInterval, _ completion: @escaping (_ currentTime: TimeInterval) -> ()) -> MTimer {
+        shared.timeInterval = time
+        shared.completion = completion
+        return shared
+    }
+}
+
+
+
 // MARK: - Timer Controls
 extension MTimer {
     public static func resume() throws {
@@ -45,12 +56,6 @@ extension MTimer {
         shared.completion(shared.runningTime)
     }
 }
-
-extension MTimer {
-
-}
-
-
 
 
 
@@ -70,13 +75,7 @@ extension MTimer {
 
         startTimer()
     }
-    public static func abc(every seconds: TimeInterval, _ completion: @escaping (TimeInterval) -> ()) -> MTimer {
-
-
-        shared.completion = completion
-        shared.timeInterval = seconds
-        return shared
-    }
+    
     public func onStatusChange(_ action: @escaping (Status) -> ()) -> MTimer {
         onStatusChange = action
 
