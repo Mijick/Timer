@@ -81,7 +81,7 @@ extension MTimer {
 }
 private extension MTimer {
     func startTimer() { 
-        guard status == .stopped else { return }
+        guard status == .stopped || backgroundDate != nil else { return }
 
         updateStatus(to: .running)
 
@@ -122,12 +122,10 @@ private extension MTimer {
 // MARK: - Notification Center
 private extension MTimer {
     func addObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(didEnterBackgroundNotification), name: UIApplication.didEnterBackgroundNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(willEnterForegroundNotification), name: UIApplication.willEnterForegroundNotification, object: nil)
+        NotificationCenter.addAppStateNotifications(self, onDidEnterBackground: #selector(didEnterBackgroundNotification), onWillEnterForeground: #selector(willEnterForegroundNotification))
     }
     func removeObservers() {
-        NotificationCenter.default.removeObserver(self, name: UIApplication.didEnterBackgroundNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: UIApplication.willEnterForegroundNotification, object: nil)
+        NotificationCenter.removeAppStateChangedNotifications(self)
     }
 }
 private extension MTimer {
@@ -157,6 +155,13 @@ private extension MTimer {
         backgroundDate = nil
     }
 }
+
+
+
+
+
+
+
 
 
 
