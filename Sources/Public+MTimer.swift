@@ -32,6 +32,11 @@ extension MTimer {
     public static func stop() {
         shared.stopTimer()
     }
+    public static func reset() {
+        shared.stopTimer()
+        shared.resetRunningTime()
+        shared.resetPublishers()
+    }
 }
 
 

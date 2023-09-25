@@ -65,12 +65,15 @@ extension MTimer {
 
 // MARK: - Resetting Timer
 extension MTimer {
-
+    func resetRunningTime() { runningTime = initialTime.start }
+    func resetPublishers() {
+        publishTimerStatusChange()
+        publishRunningTimeChange()
+    }
 }
 
 
-
-
+// MARK: - Handling Timer
 private extension MTimer {
     func handleTimer(start: Bool) { if !start || canTimerBeStarted {
         isTimerRunning = start
@@ -93,8 +96,7 @@ private extension MTimer {
     }}
 }
 
-
-
+// MARK: - Handling Time Change
 private extension MTimer {
     func handleTimeChange(_ timeChange: Any? = nil) {
         runningTime = calculateNewRunningTime(timeChange as? TimeInterval ?? publisherTime)
@@ -110,15 +112,12 @@ private extension MTimer {
     func stopTimerIfNecessary() { if !canTimerBeStarted {
         stopTimer()
     }}
-    func publishRunningTimeChange() {
+    func publishRunningTimeChange() { DispatchQueue.main.async { [self] in
         onRunningTimeChange(runningTime)
-    }
+    }}
 }
 
-
-
-
-// MARK: - Notification Center
+// MARK: - Handling Background Mode
 private extension MTimer {
     func addObservers() {
         NotificationCenter.addAppStateNotifications(self, onDidEnterBackground: #selector(didEnterBackgroundNotification), onWillEnterForeground: #selector(willEnterForegroundNotification))
@@ -127,6 +126,9 @@ private extension MTimer {
         NotificationCenter.removeAppStateChangedNotifications(self)
     }
 }
+
+
+
 private extension MTimer {
     @objc func didEnterBackgroundNotification() {
         internalTimer?.invalidate()
@@ -163,18 +165,4 @@ private extension MTimer {
 private extension MTimer {
     var canTimerBeStarted: Bool { runningTime != initialTime.end }
     var timeIncrementMultiplier: Double { initialTime.start > initialTime.end ? -1 : 1 }
-}
-
-
-
-
-
-// MARK: - Timer Controls
-extension MTimer {
-
-
-    public static func reset() {
-        shared.runningTime = shared.initialTime.start
-        shared.onRunningTimeChange(shared.runningTime)
-    }
 }
