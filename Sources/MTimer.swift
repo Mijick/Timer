@@ -22,7 +22,7 @@ public class MTimer {
 
     // Configuration
     var initialTime: (start: TimeInterval, end: TimeInterval) = (0, 1)
-    var timeInterval: TimeInterval = 0
+    var publisherTime: TimeInterval = 0
     var completion: ((TimeInterval) -> ())!
     var onStatusChange: ((MTimer.Status) -> ())?
 }
@@ -91,8 +91,8 @@ private extension MTimer {
 
 
         DispatchQueue.main.async { [self] in
-        internalTimer = .scheduledTimer(withTimeInterval: timeInterval, repeats: true, block: { [self] a in
-            let newTime = runningTime + timeInterval * timerType.rawValue
+        internalTimer = .scheduledTimer(withTimeInterval: publisherTime, repeats: true, block: { [self] a in
+            let newTime = runningTime + publisherTime * timerType.rawValue
 
 
             let test = (newTime - initialTime.end) * timerType.rawValue
@@ -147,6 +147,9 @@ private extension MTimer {
 
             runningTime = newTime
         }
+
+
+        // czy tutaj też musi być running?
         completion(runningTime)
 
         startTimer()

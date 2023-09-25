@@ -14,7 +14,7 @@ import Foundation
 // MARK: - Creating Timer
 extension MTimer {
     public static func publish(every time: TimeInterval, _ completion: @escaping (_ currentTime: TimeInterval) -> ()) -> MTimer {
-        shared.timeInterval = time
+        shared.publisherTime = time
         shared.completion = completion
         return shared
     }
