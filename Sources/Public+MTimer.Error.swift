@@ -14,4 +14,5 @@ import Foundation
 extension MTimer { public enum Error: Swift.Error {
     case startTimeCannotBeTheSameAsEndTime, timeCannotBeLessThanZero
     case cannotResumeNotInitialisedTimer
+    case timerIsAlreadyRunning
 }}

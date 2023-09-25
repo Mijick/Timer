@@ -27,37 +27,6 @@ public final class MTimer {
 }
 
 
-
-
-
-
-
-private extension MTimer {
-    func publishTimerStatusChange() { DispatchQueue.main.async { [self] in
-        onTimerActivityChange?(isTimerRunning)
-    }}
-}
-
-
-
-// MARK: - Timer Controls
-extension MTimer {
-    public static func resume() throws {
-        guard shared.onRunningTimeChange != nil else { throw Error.cannotResumeNotInitialisedTimer }
-
-        shared.startTimer()
-    }
-    public static func stop() {
-        shared.stopTimer()
-    }
-    public static func reset() {
-        shared.runningTime = shared.initialTime.start
-        shared.onRunningTimeChange(shared.runningTime)
-    }
-}
-
-
-
 // MARK: - Initialising Timer
 extension MTimer {
     static func assignInitialPublisherValues(_ publisherTime: TimeInterval, _ onRunningTimeChange: @escaping (TimeInterval) -> ()) {
@@ -71,6 +40,8 @@ extension MTimer {
     func checkRequirementsForStartingTimer(_ startTime: TimeInterval, _ endTime: TimeInterval) throws {
         if startTime < 0 || endTime < 0 { throw Error.timeCannotBeLessThanZero }
         if startTime == endTime { throw Error.startTimeCannotBeTheSameAsEndTime }
+
+        if isTimerRunning { throw Error.timerIsAlreadyRunning }
     }
     func assignInitialStartValues(_ startTime: TimeInterval, _ endTime: TimeInterval) {
         initialTime = (startTime, endTime)
@@ -83,10 +54,6 @@ extension MTimer {
 
 extension MTimer {
     func startTimer() {
-        guard !isTimerRunning || backgroundTransitionDate != nil else { return }
-
-
-
         addObservers()
 
 
@@ -167,7 +134,11 @@ private extension MTimer {
 
 
 
-
+private extension MTimer {
+    func publishTimerStatusChange() { DispatchQueue.main.async { [self] in
+        onTimerActivityChange?(isTimerRunning)
+    }}
+}
 
 
 
@@ -175,4 +146,24 @@ private extension MTimer {
 private extension MTimer {
     var timeIncrementMultiplier: Double { initialTime.start > initialTime.end ? -1 : 1 }
     var isTimerRunning: Bool { internalTimer?.isValid ?? false }
+}
+
+
+
+
+
+// MARK: - Timer Controls
+extension MTimer {
+    public static func resume() throws {
+        guard shared.onRunningTimeChange != nil else { throw Error.cannotResumeNotInitialisedTimer }
+
+        shared.startTimer()
+    }
+    public static func stop() {
+        shared.stopTimer()
+    }
+    public static func reset() {
+        shared.runningTime = shared.initialTime.start
+        shared.onRunningTimeChange(shared.runningTime)
+    }
 }
