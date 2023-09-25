@@ -58,6 +58,16 @@ extension MTimer {
     }
 }
 
+// MARK: - Stopping Timer
+extension MTimer {
+    func stopTimer() { handleTimer(start: false) }
+}
+
+// MARK: - Resetting Timer
+extension MTimer {
+    
+}
+
 
 
 
@@ -160,9 +170,7 @@ private extension MTimer {
 // MARK: - Timer Controls
 extension MTimer {
 
-    public static func stop() {
-        shared.handleTimer(start: false)
-    }
+
     public static func reset() {
         shared.runningTime = shared.initialTime.start
         shared.onRunningTimeChange(shared.runningTime)

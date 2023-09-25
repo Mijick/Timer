@@ -29,6 +29,9 @@ extension MTimer {
         try shared.checkRequirementsForResumingTimer()
         shared.startTimer()
     }
+    public static func stop() {
+        shared.stopTimer()
+    }
 }
 
 
