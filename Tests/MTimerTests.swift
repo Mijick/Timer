@@ -128,6 +128,12 @@ extension MTimerTests {
 
 // MARK: - Errors
 extension MTimerTests {
+    func testTimerCannotBeInitialised_PublishTimeIsTooLess() {
+        XCTAssertThrowsError(try MTimer.publish(every: 0.0001, { _ in })) { error in
+            let error = error as! MTimer.Error
+            XCTAssertEqual(error, .publisherTimeCannotBeLessThanOneMillisecond)
+        }
+    }
     func testTimerDoesNotStart_StartTimeEqualsEndTime() {
         XCTAssertThrowsError(try defaultTimer.start(from: 0, to: 0)) { error in
             let error = error as! MTimer.Error
@@ -177,5 +183,5 @@ private extension MTimerTests {
 }
 private extension MTimerTests {
     var defaultWaitingTime: TimeInterval { 0.15 }
-    var defaultTimer: MTimer { .publish(every: 0.05) { self.currentTime = $0.toTimeInterval() } }
+    var defaultTimer: MTimer { try! .publish(every: 0.05) { self.currentTime = $0.toTimeInterval() } }
 }

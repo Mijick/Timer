@@ -30,6 +30,9 @@ public final class MTimer {
 
 // MARK: - Initialising Timer
 extension MTimer {
+    static func checkRequirementsForInitialisingTimer(_ publisherTime: TimeInterval) throws {
+        if publisherTime < 0.001 { throw Error.publisherTimeCannotBeLessThanOneMillisecond }
+    }
     static func assignInitialPublisherValues(_ publisherTime: TimeInterval, _ onRunningTimeChange: @escaping (MTime) -> ()) {
         shared.publisherTime = publisherTime
         shared.onRunningTimeChange = onRunningTimeChange

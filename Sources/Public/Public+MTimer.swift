@@ -13,7 +13,8 @@ import Foundation
 
 // MARK: - Creating Timer
 extension MTimer {
-    public static func publish(every time: TimeInterval, _ completion: @escaping (_ currentTime: MTime) -> ()) -> MTimer {
+    public static func publish(every time: TimeInterval, _ completion: @escaping (_ currentTime: MTime) -> ()) throws -> MTimer {
+        try checkRequirementsForInitialisingTimer(time)
         assignInitialPublisherValues(time, completion)
         return shared
     }
