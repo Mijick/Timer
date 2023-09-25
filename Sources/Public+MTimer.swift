@@ -19,6 +19,7 @@ extension MTimer {
     }
 }
 
+// MARK: - Basic Control
 extension MTimer {
     public func start(from startTime: TimeInterval = 0, to endTime: TimeInterval = .infinity) throws {
         try checkRequirementsForStartingTimer(startTime, endTime)
@@ -39,7 +40,7 @@ extension MTimer {
     }
 }
 
-
+// MARK: - Publishing Timer Activity Status
 extension MTimer {
     public func onTimerActivityChange(_ action: @escaping (_ isRunning: Bool) -> ()) -> MTimer {
         onTimerActivityChange = action
