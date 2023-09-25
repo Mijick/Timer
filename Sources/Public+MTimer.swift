@@ -15,7 +15,7 @@ import Foundation
 extension MTimer {
     public static func publish(every time: TimeInterval, _ completion: @escaping (_ currentTime: TimeInterval) -> ()) -> MTimer {
         shared.publisherTime = time
-        shared.completion = completion
+        shared.onRunningTimeChange = completion
         return shared
     }
 }

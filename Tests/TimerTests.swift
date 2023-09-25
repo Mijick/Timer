@@ -78,6 +78,20 @@ extension TimerTests {
 
         XCTAssertTrue(statuses.values.filter { !$0 }.isEmpty)
     }
+    func testTimerIncreasesTimeCorrectly_WhenGoesForward() {
+        try! defaultTimer.start(from: 0, to: 10)
+        wait(for: 0.8)
+
+        XCTAssertGreaterThan(currentTime, 0)
+        XCTAssertLessThan(currentTime, 10)
+    }
+    func testTimerIncreasesTimeCorrectly_WhenGoesBackward() {
+        try! defaultTimer.start(from: 10, to: 0)
+        wait(for: 0.8)
+
+        XCTAssertGreaterThan(currentTime, 0)
+        XCTAssertLessThan(currentTime, 10)
+    }
     func testTimerStopsAutomatically_WhenGoesForward() {
         try! defaultTimer.start(from: 0, to: 0.25)
         wait(for: 0.8)

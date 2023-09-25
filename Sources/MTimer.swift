@@ -17,12 +17,12 @@ public class MTimer {
     // Current State
     var internalTimer: Timer?
     var runningTime: TimeInterval = 0
-    var backgroundDate: Date? = nil
+    var backgroundTransitionDate: Date? = nil
 
     // Configuration
     var initialTime: (start: TimeInterval, end: TimeInterval) = (0, 1)
     var publisherTime: TimeInterval = 0
-    var completion: ((TimeInterval) -> ())!
+    var onRunningTimeChange: ((TimeInterval) -> ())!
     var onTimerActivityChange: ((Bool) -> ())?
 }
 
@@ -38,7 +38,7 @@ private extension MTimer {
     }
 
 
-    var isTimerRunning: Bool { internalTimer?.isValid ?? false }
+
 }
 
 
@@ -46,7 +46,7 @@ private extension MTimer {
 // MARK: - Timer Controls
 extension MTimer {
     public static func resume() throws {
-        guard shared.completion != nil else { throw Error.cannotResumeNotInitialisedTimer }
+        guard shared.onRunningTimeChange != nil else { throw Error.cannotResumeNotInitialisedTimer }
 
         shared.startTimer()
     }
@@ -55,7 +55,7 @@ extension MTimer {
     }
     public static func reset() {
         shared.runningTime = shared.initialTime.start
-        shared.completion(shared.runningTime)
+        shared.onRunningTimeChange(shared.runningTime)
     }
 }
 
@@ -82,7 +82,7 @@ extension MTimer {
 }
 private extension MTimer {
     func startTimer() {
-        guard !isTimerRunning || backgroundDate != nil else { return }
+        guard !isTimerRunning || backgroundTransitionDate != nil else { return }
 
 
 
@@ -107,18 +107,18 @@ private extension MTimer {
 }
 private extension MTimer {
     func aaaa(_ t: Timer) {
-        let newTime = runningTime + publisherTime * timerType.rawValue
+        let newTime = runningTime + publisherTime * timeIncrementMultiplier
 
 
-        let test = (newTime - initialTime.end) * timerType.rawValue
+        let test = (newTime - initialTime.end) * timeIncrementMultiplier
         if test >= 0 {
-            completion(initialTime.end)
+            onRunningTimeChange(initialTime.end)
             stopTimer()
             return
         }
 
         runningTime = newTime
-        completion(runningTime)
+        onRunningTimeChange(runningTime)
     }
 }
 
@@ -136,15 +136,15 @@ private extension MTimer {
 private extension MTimer {
     @objc func didEnterBackgroundNotification() {
         internalTimer?.invalidate()
-        backgroundDate = .init()
+        backgroundTransitionDate = .init()
     }
     @objc func willEnterForegroundNotification() {
         if isTimerRunning {
-            let newTime = max(0, runningTime + Date().timeIntervalSince(backgroundDate!) * timerType.rawValue)
+            let newTime = max(0, runningTime + Date().timeIntervalSince(backgroundTransitionDate!) * timeIncrementMultiplier)
 
-            let test = (newTime - initialTime.end) * timerType.rawValue
+            let test = (newTime - initialTime.end) * timeIncrementMultiplier
             if test >= 0 {
-                completion(initialTime.end)
+                onRunningTimeChange(initialTime.end)
                 stopTimer()
                 return
             }
@@ -155,12 +155,12 @@ private extension MTimer {
 
 
         // czy tutaj też musi być running?
-        completion(runningTime)
+        onRunningTimeChange(runningTime)
 
         startTimer()
 
 
-        backgroundDate = nil
+        backgroundTransitionDate = nil
     }
 }
 
@@ -174,13 +174,6 @@ private extension MTimer {
 
 
 private extension MTimer {
-    var timerType: TimerType { initialTime.start > initialTime.end ? .decreasing : .increasing }
+    var timeIncrementMultiplier: Double { initialTime.start > initialTime.end ? -1 : 1 }
+    var isTimerRunning: Bool { internalTimer?.isValid ?? false }
 }
-
-
-
-
-
-private extension MTimer { enum TimerType: Double {
-    case increasing = 1, decreasing = -1
-}}
