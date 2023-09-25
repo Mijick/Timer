@@ -23,6 +23,7 @@ public final class MTimer {
     // Configuration
     var initialTime: (start: TimeInterval, end: TimeInterval) = (0, 1)
     var publisherTime: TimeInterval = 0
+    var publisherTimeTolerance: TimeInterval = 0.4
     var onRunningTimeChange: ((MTime) -> ())!
     var onTimerActivityChange: ((Bool) -> ())?
 }
@@ -33,8 +34,9 @@ extension MTimer {
     static func checkRequirementsForInitialisingTimer(_ publisherTime: TimeInterval) throws {
         if publisherTime < 0.001 { throw Error.publisherTimeCannotBeLessThanOneMillisecond }
     }
-    static func assignInitialPublisherValues(_ publisherTime: TimeInterval, _ onRunningTimeChange: @escaping (MTime) -> ()) {
+    static func assignInitialPublisherValues(_ publisherTime: TimeInterval, _ publisherTimeTolerance: TimeInterval, _ onRunningTimeChange: @escaping (MTime) -> ()) {
         shared.publisherTime = publisherTime
+        shared.publisherTimeTolerance = publisherTimeTolerance
         shared.onRunningTimeChange = onRunningTimeChange
     }
 }
@@ -83,7 +85,7 @@ private extension MTimer {
 }
 private extension MTimer {
     func updateInternalTimer(_ start: Bool) { DispatchQueue.main.async { [self] in switch start {
-        case true: internalTimer = .scheduledTimer(withTimeInterval: publisherTime, repeats: true, block: handleTimeChange)
+        case true: internalTimer = .scheduledTimer(withTimeInterval: publisherTime, repeats: true, block: handleTimeChange); internalTimer?.tolerance = publisherTimeTolerance
         case false: internalTimer?.invalidate()
     }}}
     func updateObservers(_ start: Bool) { switch start {
@@ -144,7 +146,7 @@ private extension MTimer {
 }
 
 // MARK: - Publishers
-extension MTimer {
+private extension MTimer {
     func publishTimerStatus() {
         publishTimerStatusChange()
         publishRunningTimeChange()
