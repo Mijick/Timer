@@ -1,14 +1,25 @@
+//
+//  MTimerTests.swift of Timer
+//
+//  Created by Tomasz Kurylik
+//    - Twitter: https://twitter.com/tkurylik
+//    - Mail: tomasz.kurylik@mijick.com
+//    - GitHub: https://github.com/FulcrumOne
+//
+//  Copyright ©2023 Mijick. Licensed under MIT License.
+
+
 import XCTest
 @testable import MijickTimer
 
-final class TimerTests: XCTestCase {
+final class MTimerTests: XCTestCase {
     var currentTime: TimeInterval = 0
 
     override func setUp() async throws { MTimer.stop() }
 }
 
 // MARK: - Basics
-extension TimerTests {
+extension MTimerTests {
     func testTimerStarts() {
         let expectation = expectation(description: "")
 
@@ -60,7 +71,7 @@ extension TimerTests {
 }
 
 // MARK: - Additional Basics
-extension TimerTests {
+extension MTimerTests {
     func testTimerCanRunBackwards() {
         try! defaultTimer.start(from: 3, to: 1)
         wait(for: defaultWaitingTime)
@@ -119,12 +130,12 @@ extension TimerTests {
 
 
 // MARK: - Text Formatting
-extension TimerTests {
+extension MTimerTests {
 
 }
 
 // MARK: - Errors
-extension TimerTests {
+extension MTimerTests {
     func testTimerDoesNotStart_StartTimeEqualsEndTime() {
         XCTAssertThrowsError(try defaultTimer.start(from: 0, to: 0)) { error in
             let error = error as! MTimer.Error
@@ -161,7 +172,7 @@ extension TimerTests {
 
 
 // MARK: - Helpers
-private extension TimerTests {
+private extension MTimerTests {
     func wait(for duration: TimeInterval) {
         let waitExpectation = expectation(description: "Waiting")
 
@@ -172,7 +183,7 @@ private extension TimerTests {
         waitForExpectations(timeout: duration + 0.5)
     }
 }
-private extension TimerTests {
+private extension MTimerTests {
     var defaultWaitingTime: TimeInterval { 0.15 }
     var defaultTimer: MTimer { .publish(every: 0.05) { self.currentTime = $0 } }
 }
