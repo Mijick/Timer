@@ -13,9 +13,9 @@ import Foundation
 
 // MARK: - Creating Timer
 extension MTimer {
-    public static func publish(every time: TimeInterval, _ completion: @escaping (_ currentTime: MTime) -> ()) throws -> MTimer {
+    public static func publish(every time: TimeInterval, tolerance: TimeInterval = 0.4, _ completion: @escaping (_ currentTime: MTime) -> ()) throws -> MTimer {
         try checkRequirementsForInitialisingTimer(time)
-        assignInitialPublisherValues(time, completion)
+        assignInitialPublisherValues(time, tolerance, completion)
         return shared
     }
 }
@@ -35,9 +35,8 @@ extension MTimer {
         shared.stopTimer()
     }
     public static func reset() {
-        shared.stopTimer()
         shared.resetRunningTime()
-        shared.publishTimerStatus()
+        shared.stopTimer()
     }
 }
 
