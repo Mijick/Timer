@@ -96,10 +96,8 @@ private extension MTimer {
     }}
     func stopTimer() {
         internalTimer.invalidate()
-        updateStatus(to: .stopped)
-
-
         removeObservers()
+        updateStatus(to: .stopped)
     }
 }
 private extension MTimer {
@@ -187,11 +185,4 @@ extension MTimer { public enum Status {
 
 private extension MTimer { enum TimerType: Double {
     case increasing = 1, decreasing = -1
-}}
-
-
-
-extension MTimer { public enum Error: Swift.Error {
-    case startTimeCannotBeTheSameAsEndTime, timeCannotBeLessThanZero
-    case cannotResumeNotInitialisedTimer
 }}
