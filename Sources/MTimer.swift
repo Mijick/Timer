@@ -51,6 +51,13 @@ extension MTimer {
     func startTimer() { handleTimer(start: true) }
 }
 
+// MARK: - Resuming Timer
+extension MTimer {
+    func checkRequirementsForResumingTimer() throws {
+        if onRunningTimeChange == nil { throw Error.cannotResumeNotInitialisedTimer }
+    }
+}
+
 
 
 
@@ -152,11 +159,7 @@ private extension MTimer {
 
 // MARK: - Timer Controls
 extension MTimer {
-    public static func resume() throws {
-        guard shared.onRunningTimeChange != nil else { throw Error.cannotResumeNotInitialisedTimer }
 
-        shared.handleTimer(start: true)
-    }
     public static func stop() {
         shared.handleTimer(start: false)
     }

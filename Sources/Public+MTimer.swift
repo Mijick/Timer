@@ -25,6 +25,10 @@ extension MTimer {
         assignInitialStartValues(startTime, endTime)
         startTimer()
     }
+    public static func resume() throws {
+        try shared.checkRequirementsForResumingTimer()
+        shared.startTimer()
+    }
 }
 
 
