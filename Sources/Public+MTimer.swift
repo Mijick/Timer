@@ -23,8 +23,8 @@ extension MTimer {
 
 
 extension MTimer {
-    public func onStatusChange(_ action: @escaping (_ newStatus: Status) -> ()) -> MTimer {
-        onStatusChange = action
+    public func onTimerActivityChange(_ action: @escaping (_ isRunning: Bool) -> ()) -> MTimer {
+        onTimerActivityChange = action
         return self
     }
 }

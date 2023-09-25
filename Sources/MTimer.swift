@@ -15,8 +15,7 @@ public class MTimer {
     static let shared: MTimer = .init()
 
     // Current State
-    var internalTimer: Timer!
-    var status: Status = .stopped
+    var internalTimer: Timer?
     var runningTime: TimeInterval = 0
     var backgroundDate: Date? = nil
 
@@ -24,7 +23,7 @@ public class MTimer {
     var initialTime: (start: TimeInterval, end: TimeInterval) = (0, 1)
     var publisherTime: TimeInterval = 0
     var completion: ((TimeInterval) -> ())!
-    var onStatusChange: ((MTimer.Status) -> ())?
+    var onTimerActivityChange: ((Bool) -> ())?
 }
 
 
@@ -34,10 +33,12 @@ public class MTimer {
 
 
 private extension MTimer {
-    func updateStatus(to newStatus: Status) {
-        status = newStatus
-        DispatchQueue.main.async { [self] in onStatusChange?(newStatus) }
+    func publishTimerStatusChange() {
+        DispatchQueue.main.async { [self] in onTimerActivityChange?(isTimerRunning) }
     }
+
+
+    var isTimerRunning: Bool { internalTimer?.isValid ?? false }
 }
 
 
@@ -80,10 +81,10 @@ extension MTimer {
 
 }
 private extension MTimer {
-    func startTimer() { 
-        guard status == .stopped || backgroundDate != nil else { return }
+    func startTimer() {
+        guard !isTimerRunning || backgroundDate != nil else { return }
 
-        updateStatus(to: .running)
+
 
         addObservers()
 
@@ -91,13 +92,17 @@ private extension MTimer {
 
 
         DispatchQueue.main.async { [self] in
-        internalTimer = .scheduledTimer(withTimeInterval: publisherTime, repeats: true, block: aaaa)
-        //RunLoop.current.add(internalTimer, forMode: .common)
-    }}
+            internalTimer = .scheduledTimer(withTimeInterval: publisherTime, repeats: true, block: aaaa)
+
+            //RunLoop.current.add(internalTimer, forMode: .common)
+        }
+
+        publishTimerStatusChange()
+    }
     func stopTimer() {
-        internalTimer.invalidate()
+        internalTimer?.invalidate()
         removeObservers()
-        updateStatus(to: .stopped)
+        publishTimerStatusChange()
     }
 }
 private extension MTimer {
@@ -130,11 +135,11 @@ private extension MTimer {
 }
 private extension MTimer {
     @objc func didEnterBackgroundNotification() {
-        internalTimer.invalidate()
+        internalTimer?.invalidate()
         backgroundDate = .init()
     }
     @objc func willEnterForegroundNotification() {
-        if status == .running {
+        if isTimerRunning {
             let newTime = max(0, runningTime + Date().timeIntervalSince(backgroundDate!) * timerType.rawValue)
 
             let test = (newTime - initialTime.end) * timerType.rawValue
@@ -173,13 +178,6 @@ private extension MTimer {
 }
 
 
-
-
-
-
-extension MTimer { public enum Status {
-    case running, stopped
-}}
 
 
 
