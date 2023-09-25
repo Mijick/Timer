@@ -11,32 +11,61 @@
 
 import Foundation
 
-// MARK: - Creating Timer
+// MARK: - Creating New Instance Of Timer
+extension MTimer {
+    public static func createNewInstance() -> MTimer { .init() }
+}
+
+// MARK: - Initialising Timer
 extension MTimer {
     public static func publish(every time: TimeInterval, tolerance: TimeInterval = 0.4, _ completion: @escaping (_ currentTime: MTime) -> ()) throws -> MTimer {
+        try shared.publish(every: time, tolerance: tolerance, completion)
+    }
+    public func publish(every time: TimeInterval, tolerance: TimeInterval = 0.4, _ completion: @escaping (_ currentTime: MTime) -> ()) throws -> MTimer {
         try checkRequirementsForInitialisingTimer(time)
         assignInitialPublisherValues(time, tolerance, completion)
-        return shared
+        return self
     }
 }
 
-// MARK: - Basic Control
+// MARK: - Starting Timer
 extension MTimer {
     public func start(from startTime: TimeInterval = 0, to endTime: TimeInterval = .infinity) throws {
         try checkRequirementsForStartingTimer(startTime, endTime)
         assignInitialStartValues(startTime, endTime)
         startTimer()
     }
-    public static func resume() throws {
-        try shared.checkRequirementsForResumingTimer()
-        shared.startTimer()
-    }
+}
+
+// MARK: - Stopping Timer
+extension MTimer {
     public static func stop() {
-        shared.stopTimer()
+        shared.stop()
     }
+    public func stop() {
+        stopTimer()
+    }
+}
+
+// MARK: - Resuming Timer
+extension MTimer {
+    public static func resume() throws {
+        try shared.resume()
+    }
+    public func resume() throws {
+        try checkRequirementsForResumingTimer()
+        startTimer()
+    }
+}
+
+// MARK: - Resetting Timer
+extension MTimer {
     public static func reset() {
-        shared.resetRunningTime()
-        shared.stopTimer()
+        shared.reset()
+    }
+    public func reset() {
+        resetRunningTime()
+        stopTimer()
     }
 }
 
