@@ -91,21 +91,8 @@ private extension MTimer {
 
 
         DispatchQueue.main.async { [self] in
-        internalTimer = .scheduledTimer(withTimeInterval: publisherTime, repeats: true, block: { [self] a in
-            let newTime = runningTime + publisherTime * timerType.rawValue
-
-
-            let test = (newTime - initialTime.end) * timerType.rawValue
-            if test >= 0 {
-                completion(initialTime.end)
-                stopTimer()
-                return
-            }
-
-            runningTime = newTime
-            completion(runningTime)
-        })
-        RunLoop.current.add(internalTimer, forMode: .common)
+        internalTimer = .scheduledTimer(withTimeInterval: publisherTime, repeats: true, block: aaaa)
+        //RunLoop.current.add(internalTimer, forMode: .common)
     }}
     func stopTimer() {
         internalTimer.invalidate()
@@ -115,7 +102,22 @@ private extension MTimer {
         removeObservers()
     }
 }
+private extension MTimer {
+    func aaaa(_ t: Timer) {
+        let newTime = runningTime + publisherTime * timerType.rawValue
 
+
+        let test = (newTime - initialTime.end) * timerType.rawValue
+        if test >= 0 {
+            completion(initialTime.end)
+            stopTimer()
+            return
+        }
+
+        runningTime = newTime
+        completion(runningTime)
+    }
+}
 
 
 
