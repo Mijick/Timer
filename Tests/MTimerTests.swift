@@ -21,13 +21,10 @@ final class MTimerTests: XCTestCase {
 // MARK: - Basics
 extension MTimerTests {
     func testTimerStarts() {
-        let expectation = expectation(description: "")
+        try! defaultTimer.start()
+        wait(for: defaultWaitingTime)
 
-        try! MTimer
-            .publish(every: 0.1) { _ in expectation.fulfill() }
-            .start()
-
-        waitForExpectations(timeout: 0.4)
+        XCTAssertGreaterThan(currentTime, 0)
     }
     func testTimerIsCancellable() {
         try! defaultTimer.start()
@@ -180,5 +177,5 @@ private extension MTimerTests {
 }
 private extension MTimerTests {
     var defaultWaitingTime: TimeInterval { 0.15 }
-    var defaultTimer: MTimer { .publish(every: 0.05) { self.currentTime = $0 } }
+    var defaultTimer: MTimer { .publish(every: 0.05) { self.currentTime = $0.toTimeInterval() } }
 }

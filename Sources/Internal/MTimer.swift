@@ -23,14 +23,14 @@ public final class MTimer {
     // Configuration
     var initialTime: (start: TimeInterval, end: TimeInterval) = (0, 1)
     var publisherTime: TimeInterval = 0
-    var onRunningTimeChange: ((TimeInterval) -> ())!
+    var onRunningTimeChange: ((MTime) -> ())!
     var onTimerActivityChange: ((Bool) -> ())?
 }
 
 
 // MARK: - Initialising Timer
 extension MTimer {
-    static func assignInitialPublisherValues(_ publisherTime: TimeInterval, _ onRunningTimeChange: @escaping (TimeInterval) -> ()) {
+    static func assignInitialPublisherValues(_ publisherTime: TimeInterval, _ onRunningTimeChange: @escaping (MTime) -> ()) {
         shared.publisherTime = publisherTime
         shared.onRunningTimeChange = onRunningTimeChange
     }
@@ -66,10 +66,6 @@ extension MTimer {
 // MARK: - Resetting Timer
 extension MTimer {
     func resetRunningTime() { runningTime = initialTime.start }
-    func resetPublishers() {
-        publishTimerStatusChange()
-        publishRunningTimeChange()
-    }
 }
 
 
@@ -79,7 +75,7 @@ private extension MTimer {
         isTimerRunning = start
         updateInternalTimer(start)
         updateObservers(start)
-        publishTimerStatusChange()
+        publishTimerStatus()
     }}
 }
 private extension MTimer {
@@ -90,9 +86,6 @@ private extension MTimer {
     func updateObservers(_ start: Bool) { switch start {
         case true: addObservers()
         case false: removeObservers()
-    }}
-    func publishTimerStatusChange() { DispatchQueue.main.async { [self] in
-        onTimerActivityChange?(isTimerRunning)
     }}
 }
 
@@ -111,9 +104,6 @@ private extension MTimer {
     }
     func stopTimerIfNecessary() { if !canTimerBeStarted {
         stopTimer()
-    }}
-    func publishRunningTimeChange() { DispatchQueue.main.async { [self] in
-        onRunningTimeChange(runningTime)
     }}
 }
 
@@ -147,6 +137,22 @@ private extension MTimer {
 private extension MTimer {
     func resumeTimerAfterReturningFromBackground() { if canTimerBeStarted {
         updateInternalTimer(true)
+    }}
+}
+
+// MARK: - Publishers
+extension MTimer {
+    func publishTimerStatus() {
+        publishTimerStatusChange()
+        publishRunningTimeChange()
+    }
+}
+private extension MTimer {
+    func publishTimerStatusChange() { DispatchQueue.main.async { [self] in
+        onTimerActivityChange?(isTimerRunning)
+    }}
+    func publishRunningTimeChange() { DispatchQueue.main.async { [self] in
+        onRunningTimeChange?(.init(runningTime))
     }}
 }
 
