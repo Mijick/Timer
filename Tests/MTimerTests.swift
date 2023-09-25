@@ -128,12 +128,6 @@ extension MTimerTests {
     }
 }
 
-
-// MARK: - Text Formatting
-extension MTimerTests {
-
-}
-
 // MARK: - Errors
 extension MTimerTests {
     func testTimerDoesNotStart_StartTimeEqualsEndTime() {

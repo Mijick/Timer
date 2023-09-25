@@ -17,30 +17,6 @@ public struct MTime {
     public let seconds: Int
     public let milliseconds: Int
 }
-
-// MARK: - Converting to TimeInterval
-extension MTime {
-    public func toTimeInterval() -> TimeInterval {
-        let hoursAsTimeInterval = 60 * 60 * TimeInterval(hours)
-        let minutesAsTimeInterval = 60 * TimeInterval(minutes)
-        let secondsAsTimeInterval = 1 * TimeInterval(seconds)
-        let millisecondsAsTimeInterval = 0.001 * TimeInterval(milliseconds)
-
-        return hoursAsTimeInterval + minutesAsTimeInterval + secondsAsTimeInterval + millisecondsAsTimeInterval
-    }
-}
-
-// MARK: - Converting to String
-extension MTime {
-    public func toString(using units: Unit..., separator: String = ":") -> String {
-        fatalError()
-    }
-}
-
-
-
-
-
 extension MTime {
     init(_ timeInterval: TimeInterval) {
         let millisecondsInt = Int(timeInterval * 1000)
@@ -57,16 +33,18 @@ extension MTime {
     }
 }
 
-private extension MTime {
+// MARK: - Helpers
+extension MTime {
+    var defaultTimeFormatter: DateComponentsFormatter {
+        let formatter = DateComponentsFormatter()
 
+        formatter.allowedUnits = [.hour, .minute, .second]
+        formatter.unitsStyle = .positional
+        formatter.zeroFormattingBehavior = .pad
+        formatter.maximumUnitCount = 0
+        formatter.allowsFractionalUnits = false
+        formatter.collapsesLargestUnit = false
+
+        return formatter
+    }
 }
-
-
-
-
-
-
-
-extension MTime { public enum Unit {
-    case milliseconds, seconds, minutes, hours
-}}

@@ -78,3 +78,27 @@ extension MTimeTests {
         XCTAssertEqual(time.toTimeInterval(), 122312.141, accuracy: 0.001)
     }
 }
+
+// MARK: - Converting to String
+extension MTimeTests {
+    func testTimeConvertsCorrectly_ToString_3seconds() {
+        let time = MTime(hours: 0, minutes: 0, seconds: 3, milliseconds: 0)
+
+        XCTAssertEqual(time.toString(), "00:00:03")
+    }
+    func testTimeConvertsCorrectly_ToString_12minutes_33seconds() {
+        let time = MTime(hours: 0, minutes: 12, seconds: 33, milliseconds: 0)
+
+        XCTAssertEqual(time.toString(), "00:12:33")
+    }
+    func testTimeConvertsCorrectly_ToString_1hour_3minutes_17seconds() {
+        let time = MTime(hours: 1, minutes: 3, seconds: 17, milliseconds: 0)
+
+        XCTAssertEqual(time.toString(), "01:03:17")
+    }
+    func testTimeConvertsCorrectly_ToString_31hours_1minute_21seconds() {
+        let time = MTime(hours: 31, minutes: 1, seconds: 21, milliseconds: 0)
+
+        XCTAssertEqual(time.toString(), "31:01:21")
+    }
+}
