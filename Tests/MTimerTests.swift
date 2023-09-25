@@ -135,7 +135,36 @@ extension MTimerTests {
         XCTAssertEqual(currentTime, 0)
     }
     func testTimerCanHaveMultipleInstances() {
-        //XCTAssert(false)
+        var newTime: TimeInterval = 0
+
+        let newTimer = MTimer.createNewInstance()
+        try! newTimer
+            .publish(every: 0.3) { newTime = $0.toTimeInterval() }
+            .start(from: 10, to: 100)
+        try! defaultTimer.start(from: 0, to: 100)
+
+        wait(for: 1)
+
+        XCTAssertGreaterThan(newTime, 10)
+        XCTAssertGreaterThan(currentTime, 0)
+        XCTAssertNotEqual(newTime, currentTime)
+    }
+    func testNewInstanceTimerCanBeStopped() {
+        let newTimer = MTimer.createNewInstance()
+
+        try! newTimer
+            .publish(every: 0.1) { self.currentTime = $0.toTimeInterval() }
+            .start()
+        wait(for: defaultWaitingTime)
+
+        newTimer.stop()
+        wait(for: defaultWaitingTime)
+
+        let timeAfterStop = currentTime
+        wait(for: defaultWaitingTime)
+
+        XCTAssertGreaterThan(currentTime, 0)
+        XCTAssertEqual(timeAfterStop, currentTime)
     }
 }
 
@@ -196,5 +225,5 @@ private extension MTimerTests {
 }
 private extension MTimerTests {
     var defaultWaitingTime: TimeInterval { 0.15 }
-    var defaultTimer: MTimer { try! .publish(every: 0.05) { self.currentTime = $0.toTimeInterval() } }
+    var defaultTimer: MTimer { try! .publish(every: 0.05, tolerance: 0.5) { self.currentTime = $0.toTimeInterval() } }
 }
