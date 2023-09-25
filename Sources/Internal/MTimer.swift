@@ -31,13 +31,13 @@ public final class MTimer {
 
 // MARK: - Initialising Timer
 extension MTimer {
-    static func checkRequirementsForInitialisingTimer(_ publisherTime: TimeInterval) throws {
+    func checkRequirementsForInitialisingTimer(_ publisherTime: TimeInterval) throws {
         if publisherTime < 0.001 { throw Error.publisherTimeCannotBeLessThanOneMillisecond }
     }
-    static func assignInitialPublisherValues(_ publisherTime: TimeInterval, _ publisherTimeTolerance: TimeInterval, _ onRunningTimeChange: @escaping (MTime) -> ()) {
-        shared.publisherTime = publisherTime
-        shared.publisherTimeTolerance = publisherTimeTolerance
-        shared.onRunningTimeChange = onRunningTimeChange
+    func assignInitialPublisherValues(_ time: TimeInterval, _ tolerance: TimeInterval, _ completion: @escaping (MTime) -> ()) {
+        publisherTime = time
+        publisherTimeTolerance = tolerance
+        onRunningTimeChange = completion
     }
 }
 
