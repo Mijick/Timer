@@ -120,14 +120,11 @@ private extension MTimer {
 
 
             runningTime = newTime
+
+            onRunningTimeChange(runningTime)
+
+            startTimer()
         }
-
-
-        // czy tutaj też musi być running?
-        onRunningTimeChange(runningTime)
-
-        startTimer()
-
 
         backgroundTransitionDate = nil
     }
