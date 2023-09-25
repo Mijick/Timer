@@ -14,12 +14,18 @@ import Foundation
 // MARK: - Creating Timer
 extension MTimer {
     public static func publish(every time: TimeInterval, _ completion: @escaping (_ currentTime: TimeInterval) -> ()) -> MTimer {
-        shared.publisherTime = time
-        shared.onRunningTimeChange = completion
+        assignInitialPublisherValues(time, completion)
         return shared
     }
 }
 
+extension MTimer {
+    public func start(from startTime: TimeInterval = 0, to endTime: TimeInterval = .infinity) throws {
+        try checkRequirementsForStartingTimer(startTime, endTime)
+        assignInitialStartValues(startTime, endTime)
+        startTimer()
+    }
+}
 
 
 extension MTimer {

@@ -11,7 +11,7 @@
 
 import SwiftUI
 
-public class MTimer {
+public final class MTimer {
     static let shared: MTimer = .init()
 
     // Current State
@@ -33,12 +33,9 @@ public class MTimer {
 
 
 private extension MTimer {
-    func publishTimerStatusChange() {
-        DispatchQueue.main.async { [self] in onTimerActivityChange?(isTimerRunning) }
-    }
-
-
-
+    func publishTimerStatusChange() { DispatchQueue.main.async { [self] in
+        onTimerActivityChange?(isTimerRunning)
+    }}
 }
 
 
@@ -61,26 +58,30 @@ extension MTimer {
 
 
 
+// MARK: - Initialising Timer
 extension MTimer {
-    public func start(from: TimeInterval = 0, to: TimeInterval = .infinity) throws {
-        guard from >= 0,
-              to >= 0
-        else { throw Error.timeCannotBeLessThanZero }
-        guard from != to else { throw Error.startTimeCannotBeTheSameAsEndTime }
-
-
-        initialTime = (from, to)
-
-
-        runningTime = from
-
-
-        startTimer()
+    static func assignInitialPublisherValues(_ publisherTime: TimeInterval, _ onRunningTimeChange: @escaping (TimeInterval) -> ()) {
+        shared.publisherTime = publisherTime
+        shared.onRunningTimeChange = onRunningTimeChange
     }
-    
-
 }
-private extension MTimer {
+
+// MARK: - Starting Timer
+extension MTimer {
+    func checkRequirementsForStartingTimer(_ startTime: TimeInterval, _ endTime: TimeInterval) throws {
+        if startTime < 0 || endTime < 0 { throw Error.timeCannotBeLessThanZero }
+        if startTime == endTime { throw Error.startTimeCannotBeTheSameAsEndTime }
+    }
+    func assignInitialStartValues(_ startTime: TimeInterval, _ endTime: TimeInterval) {
+        initialTime = (startTime, endTime)
+        runningTime = startTime
+    }
+}
+
+
+
+
+extension MTimer {
     func startTimer() {
         guard !isTimerRunning || backgroundTransitionDate != nil else { return }
 
@@ -93,8 +94,6 @@ private extension MTimer {
 
         DispatchQueue.main.async { [self] in
             internalTimer = .scheduledTimer(withTimeInterval: publisherTime, repeats: true, block: aaaa)
-
-            //RunLoop.current.add(internalTimer, forMode: .common)
         }
 
         publishTimerStatusChange()
