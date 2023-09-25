@@ -48,31 +48,32 @@ extension MTimer {
         initialTime = (startTime, endTime)
         runningTime = startTime
     }
+    func startTimer() { handleTimer(start: true) }
 }
 
 
 
 
-extension MTimer {
-    func startTimer() {
-        addObservers()
-
-
-
-
-        DispatchQueue.main.async { [self] in
-            internalTimer = .scheduledTimer(withTimeInterval: publisherTime, repeats: true, block: aaaa)
-        }
-
-        isTimerRunning = true
+private extension MTimer {
+    func handleTimer(start: Bool) {
+        isTimerRunning = start
+        updateInternalTimer(start)
+        updateObservers(start)
         publishTimerStatusChange()
     }
-    func stopTimer() {
-        isTimerRunning = false
-        internalTimer?.invalidate()
-        removeObservers()
-        publishTimerStatusChange()
-    }
+}
+private extension MTimer {
+    func updateInternalTimer(_ start: Bool) { DispatchQueue.main.async { [self] in switch start {
+        case true: internalTimer = .scheduledTimer(withTimeInterval: publisherTime, repeats: true, block: aaaa)
+        case false: internalTimer?.invalidate()
+    }}}
+    func updateObservers(_ start: Bool) { switch start {
+        case true: addObservers()
+        case false: removeObservers()
+    }}
+    func publishTimerStatusChange() { DispatchQueue.main.async { [self] in
+        onTimerActivityChange?(isTimerRunning)
+    }}
 }
 private extension MTimer {
     func aaaa(_ t: Timer) {
@@ -82,7 +83,7 @@ private extension MTimer {
         let test = (newTime - initialTime.end) * timeIncrementMultiplier
         if test >= 0 {
             onRunningTimeChange(initialTime.end)
-            stopTimer()
+            handleTimer(start: false)
             return
         }
 
@@ -114,7 +115,7 @@ private extension MTimer {
             let test = (newTime - initialTime.end) * timeIncrementMultiplier
             if test >= 0 {
                 onRunningTimeChange(initialTime.end)
-                stopTimer()
+                handleTimer(start: false)
                 return
             }
 
@@ -123,7 +124,7 @@ private extension MTimer {
 
             onRunningTimeChange(runningTime)
 
-            startTimer()
+            handleTimer(start: true)
         }
 
         backgroundTransitionDate = nil
@@ -135,9 +136,7 @@ private extension MTimer {
 
 
 private extension MTimer {
-    func publishTimerStatusChange() { DispatchQueue.main.async { [self] in
-        onTimerActivityChange?(isTimerRunning)
-    }}
+
 }
 
 
@@ -145,7 +144,6 @@ private extension MTimer {
 
 private extension MTimer {
     var timeIncrementMultiplier: Double { initialTime.start > initialTime.end ? -1 : 1 }
-    //var isTimerRunning: Bool { internalTimer?.isValid ?? false }
 }
 
 
@@ -157,10 +155,10 @@ extension MTimer {
     public static func resume() throws {
         guard shared.onRunningTimeChange != nil else { throw Error.cannotResumeNotInitialisedTimer }
 
-        shared.startTimer()
+        shared.handleTimer(start: true)
     }
     public static func stop() {
-        shared.stopTimer()
+        shared.handleTimer(start: false)
     }
     public static func reset() {
         shared.runningTime = shared.initialTime.start

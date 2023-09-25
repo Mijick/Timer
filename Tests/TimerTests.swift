@@ -3,6 +3,8 @@ import XCTest
 
 final class TimerTests: XCTestCase {
     var currentTime: TimeInterval = 0
+
+    override func setUp() async throws { MTimer.stop() }
 }
 
 // MARK: - Basics
