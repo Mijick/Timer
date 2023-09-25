@@ -126,24 +126,23 @@ private extension MTimer {
         NotificationCenter.removeAppStateChangedNotifications(self)
     }
 }
-
-
-
 private extension MTimer {
     @objc func didEnterBackgroundNotification() {
         internalTimer?.invalidate()
         backgroundTransitionDate = .init()
     }
     @objc func willEnterForegroundNotification() {
-        if let backgroundTransitionDate, isTimerRunning {
-            let timeChange = Date().timeIntervalSince(backgroundTransitionDate)
-
-            handleTimeChange(timeChange)
-            resumeTimerAfterReturningFromBackground()
-        }
-
+        handleReturnFromBackgroundWhenTimerIsRunning()
         backgroundTransitionDate = nil
     }
+}
+private extension MTimer {
+    func handleReturnFromBackgroundWhenTimerIsRunning() { if let backgroundTransitionDate, isTimerRunning {
+        let timeChange = Date().timeIntervalSince(backgroundTransitionDate)
+
+        handleTimeChange(timeChange)
+        resumeTimerAfterReturningFromBackground()
+    }}
 }
 private extension MTimer {
     func resumeTimerAfterReturningFromBackground() { if canTimerBeStarted {
@@ -151,17 +150,7 @@ private extension MTimer {
     }}
 }
 
-
-
-
-
-private extension MTimer {
-
-}
-
-
-
-
+// MARK: - Others
 private extension MTimer {
     var canTimerBeStarted: Bool { runningTime != initialTime.end }
     var timeIncrementMultiplier: Double { initialTime.start > initialTime.end ? -1 : 1 }
