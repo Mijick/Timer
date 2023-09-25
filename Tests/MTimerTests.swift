@@ -31,6 +31,8 @@ extension MTimerTests {
         wait(for: defaultWaitingTime)
 
         MTimer.stop()
+        wait(for: defaultWaitingTime)
+
         let timeAfterStop = currentTime
         wait(for: defaultWaitingTime)
 
@@ -42,16 +44,13 @@ extension MTimerTests {
         try! defaultTimer.start(from: startTime)
         wait(for: defaultWaitingTime)
 
-        MTimer.stop()
-
-        var currentRunningTime = currentTime
-        XCTAssertNotEqual(currentRunningTime, startTime)
-
-        MTimer.reset()
+        XCTAssertNotEqual(currentTime, startTime)
 
         wait(for: defaultWaitingTime)
-        currentRunningTime = currentTime
-        XCTAssertEqual(startTime, currentRunningTime)
+        MTimer.reset()
+        wait(for: defaultWaitingTime)
+
+        XCTAssertEqual(startTime, currentTime)
     }
     func testTimerCanBeResumed() {
         try! defaultTimer.start()
@@ -70,6 +69,20 @@ extension MTimerTests {
 
 // MARK: - Additional Basics
 extension MTimerTests {
+    func testTimerShouldPublishAccurateValuesWithZeroTolerance() {
+        try! MTimer
+            .publish(every: 0.1, tolerance: 0) { self.currentTime = $0.toTimeInterval() }
+            .start()
+        wait(for: 0.6)
+
+        XCTAssertEqual(currentTime, 0.6)
+    }
+    func testTimerShouldPublishInaccurateValuesWithNonZeroTolerance() {
+        try! defaultTimer.start()
+        wait(for: 0.6)
+
+        XCTAssertNotEqual(currentTime, 0.6)
+    }
     func testTimerCanRunBackwards() {
         try! defaultTimer.start(from: 3, to: 1)
         wait(for: defaultWaitingTime)
