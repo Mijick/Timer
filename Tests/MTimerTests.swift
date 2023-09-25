@@ -52,6 +52,7 @@ extension MTimerTests {
 
         MTimer.reset()
 
+        wait(for: defaultWaitingTime)
         currentRunningTime = currentTime
         XCTAssertEqual(startTime, currentRunningTime)
     }
