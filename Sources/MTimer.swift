@@ -16,6 +16,7 @@ public final class MTimer {
 
     // Current State
     var internalTimer: Timer?
+    var isTimerRunning: Bool = false
     var runningTime: TimeInterval = 0
     var backgroundTransitionDate: Date? = nil
 
@@ -41,7 +42,7 @@ extension MTimer {
         if startTime < 0 || endTime < 0 { throw Error.timeCannotBeLessThanZero }
         if startTime == endTime { throw Error.startTimeCannotBeTheSameAsEndTime }
 
-        if isTimerRunning { throw Error.timerIsAlreadyRunning }
+        if isTimerRunning && backgroundTransitionDate == nil { throw Error.timerIsAlreadyRunning }
     }
     func assignInitialStartValues(_ startTime: TimeInterval, _ endTime: TimeInterval) {
         initialTime = (startTime, endTime)
@@ -63,9 +64,11 @@ extension MTimer {
             internalTimer = .scheduledTimer(withTimeInterval: publisherTime, repeats: true, block: aaaa)
         }
 
+        isTimerRunning = true
         publishTimerStatusChange()
     }
     func stopTimer() {
+        isTimerRunning = false
         internalTimer?.invalidate()
         removeObservers()
         publishTimerStatusChange()
@@ -145,7 +148,7 @@ private extension MTimer {
 
 private extension MTimer {
     var timeIncrementMultiplier: Double { initialTime.start > initialTime.end ? -1 : 1 }
-    var isTimerRunning: Bool { internalTimer?.isValid ?? false }
+    //var isTimerRunning: Bool { internalTimer?.isValid ?? false }
 }
 
 

@@ -129,22 +129,30 @@ extension TimerTests {
             XCTAssertEqual(error, .startTimeCannotBeTheSameAsEndTime)
         }
     }
-    func testTimerDoesNotStart_StartIntervalIsLessThanZero() {
+    func testTimerDoesNotStart_StartTimeIsLessThanZero() {
         XCTAssertThrowsError(try defaultTimer.start(from: -10, to: 5)) { error in
             let error = error as! MTimer.Error
             XCTAssertEqual(error, .timeCannotBeLessThanZero)
         }
     }
-    func testTimerDoesNotStart_EndIntervalIsLessThanZero() {
+    func testTimerDoesNotStart_EndTimeIsLessThanZero() {
         XCTAssertThrowsError(try defaultTimer.start(from: 10, to: -15)) { error in
             let error = error as! MTimer.Error
             XCTAssertEqual(error, .timeCannotBeLessThanZero)
         }
     }
-    func testCannotInitialiseTimer_LaunchTimerWithoutInitialisation() {
+    func testCannotResumeTimer_WhenTimerIsNotInitialised() {
         XCTAssertThrowsError(try MTimer.resume()) { error in
             let error = error as! MTimer.Error
             XCTAssertEqual(error, .cannotResumeNotInitialisedTimer)
+        }
+    }
+    func testCannotStartTimer_WhenTimerIsRunning() {
+        try! defaultTimer.start()
+
+        XCTAssertThrowsError(try defaultTimer.start()) { error in
+            let error = error as! MTimer.Error
+            XCTAssertEqual(error, .timerIsAlreadyRunning)
         }
     }
 }
