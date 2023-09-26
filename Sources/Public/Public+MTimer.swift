@@ -9,7 +9,7 @@
 //  Copyright ©2023 Mijick. Licensed under MIT License.
 
 
-import Foundation
+import SwiftUI
 
 // MARK: - Creating New Instance Of Timer
 extension MTimer {
@@ -21,10 +21,16 @@ extension MTimer {
     public static func publish(every time: TimeInterval, tolerance: TimeInterval = 0.4, _ completion: @escaping (_ currentTime: MTime) -> ()) throws -> MTimer {
         try shared.publish(every: time, tolerance: tolerance, completion)
     }
+    public static func publish(every time: TimeInterval, tolerance: TimeInterval = 0.4, currentTime: Binding<MTime>) throws -> MTimer {
+        try shared.publish(every: time, tolerance: tolerance) { currentTime.wrappedValue = $0 }
+    }
     public func publish(every time: TimeInterval, tolerance: TimeInterval = 0.4, _ completion: @escaping (_ currentTime: MTime) -> ()) throws -> MTimer {
         try checkRequirementsForInitialisingTimer(time)
         assignInitialPublisherValues(time, tolerance, completion)
         return self
+    }
+    public func publish(every time: TimeInterval, tolerance: TimeInterval = 0.4, currentTime: Binding<MTime>) throws -> MTimer {
+        try publish(every: time, tolerance: tolerance) { currentTime.wrappedValue = $0 }
     }
 }
 
@@ -37,6 +43,9 @@ extension MTimer {
         try checkRequirementsForStartingTimer(startTime, endTime)
         assignInitialStartValues(startTime, endTime)
         startTimer()
+    }
+    public func start() throws {
+        try start(from: .zero, to: .infinity)
     }
 }
 
@@ -77,5 +86,8 @@ extension MTimer {
     public func onTimerActivityChange(_ action: @escaping (_ isRunning: Bool) -> ()) -> MTimer {
         onTimerActivityChange = action
         return self
+    }
+    public func bindTimerStatus(_ isTimerRunning: Binding<Bool>) -> MTimer {
+        onTimerActivityChange { isTimerRunning.wrappedValue = $0 }
     }
 }

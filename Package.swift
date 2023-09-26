@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "MijickTimer",
     platforms: [
-        .iOS(.v12)
+        .iOS(.v13)
     ],
     products: [
         .library(name: "MijickTimer", targets: ["MijickTimer"]),
