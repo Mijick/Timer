@@ -96,7 +96,12 @@ Call the `publish()` method that has three parameters:
 ```
 
 ### 3. Start the timer
-
+Start the timer using the `start()` method. You can customise the start and end time using the parameters of this method.
+```Swift
+  try! MTimer
+      .publish(every: 1, currentTime: $currentTime)
+      .start(from: .init(minutes: 21, seconds: 37), to: .zero)
+```
 
 
 
