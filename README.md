@@ -50,6 +50,6 @@
 
 Timer is a free and open-source library dedicated for Swift that makes the process of handling timers easier and much cleaner.
 * **Improves code quality.** Start timer using the `publish().start()` method. Stop the timer with `stop()`. Simple as never.
-
+* **Run your timer in both directions.** Our timer can operate in both modes (increasing or decreasing).
 
 <br>
