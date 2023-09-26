@@ -15,7 +15,7 @@ import XCTest
 final class MTimerTests: XCTestCase {
     var currentTime: TimeInterval = 0
 
-    override func setUp() async throws { MTimer.stop() }
+    override func setUp() { MTimer.stop() }
 }
 
 // MARK: - Basics
