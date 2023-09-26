@@ -26,6 +26,7 @@ public final class MTimer {
     var publisherTimeTolerance: TimeInterval = 0.4
     var onRunningTimeChange: ((MTime) -> ())!
     var onTimerActivityChange: ((Bool) -> ())?
+    var onTimerProgressChange: ((Double) -> ())?
 }
 
 
@@ -158,7 +159,15 @@ private extension MTimer {
     }}
     func publishRunningTimeChange() { DispatchQueue.main.async { [self] in
         onRunningTimeChange?(.init(runningTime))
+        onTimerProgressChange?(calculateTimerProgress())
     }}
+}
+private extension MTimer {
+    func calculateTimerProgress() -> Double {
+        let timerTotalTime = max(initialTime.start, initialTime.end) - min(initialTime.start, initialTime.end)
+        let timerRunningTime = abs(runningTime - initialTime.start)
+        return timerRunningTime / timerTotalTime
+    }
 }
 
 // MARK: - Others
