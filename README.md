@@ -103,6 +103,14 @@ Start the timer using the `start()` method. You can customise the start and end 
       .start(from: .init(minutes: 21, seconds: 37), to: .zero)
 ```
 
+### 4. Stop the timer
+Timer can be stopped with `stop()` method.
+```Swift
+  MTimer.stop()
+```
+
+### 5. Displaying the current time as String
+
 
 
 <br>
