@@ -123,9 +123,15 @@ Timer can be stopped with `stop()` method.
   MTimer.reset()
 ```
 
-
 ### 6. Displaying the current time as String
-
+You can convert the current MTime to String by calling the `toString()` method. Use the `formatter` parameter to customise the output.
+```Swift
+  currentTime.toString {
+      $0.unitsStyle = .full
+      $0.allowedUnits = [.hour, .minute]
+      return $0
+  }
+```
 
 
 
