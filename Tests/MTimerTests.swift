@@ -79,9 +79,9 @@ extension MTimerTests {
     }
     func testTimerShouldPublishInaccurateValuesWithNonZeroTolerance() {
         try! defaultTimer.start()
-        wait(for: 0.6)
+        wait(for: 1)
 
-        XCTAssertNotEqual(currentTime, 0.6)
+        XCTAssertNotEqual(currentTime, 1)
     }
     func testTimerCanRunBackwards() {
         try! defaultTimer.start(from: 3, to: 1)
