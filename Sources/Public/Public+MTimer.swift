@@ -101,12 +101,12 @@ extension MTimer {
 
 // MARK: - Publishing Timer Activity Status
 extension MTimer {
-
+    /// Publishes the timer activity changes.
     public func onTimerActivityChange(_ action: @escaping (_ isRunning: Bool) -> ()) -> MTimer {
         onTimerActivityChange = action
         return self
     }
-
+    /// Publishes the timer activity changes.
     public func bindTimerStatus(isTimerRunning: Binding<Bool>) -> MTimer {
         onTimerActivityChange { isTimerRunning.wrappedValue = $0 }
     }
@@ -114,12 +114,12 @@ extension MTimer {
 
 // MARK: - Publishing Timer Progress
 extension MTimer {
-
+    /// Publishes the timer progress changes.
     public func onTimerProgressChange(_ action: @escaping (_ progress: Double) -> ()) -> MTimer {
         onTimerProgressChange = action
         return self
     }
-    
+    /// Publishes the timer progress changes.
     public func bindTimerProgress(progress: Binding<Double>) -> MTimer {
         onTimerProgressChange { progress.wrappedValue = $0 }
     }
