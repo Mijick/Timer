@@ -87,11 +87,14 @@ Create a new instance of timer and assign it to a new variable.
 ```
 
 ### 2. Initialise timer
+Call the `publish()` method that has three parameters:
+* **time** - The number of seconds between firings of the timer.
+* **tolerance** - The number of seconds after the update date that the timer may fire.
+* **currentTime** - The current timer time.
 
 
 
-
-
+<br>
 
 # Try our demo
 See for yourself how does it work by cloning [project][Demo] we created
