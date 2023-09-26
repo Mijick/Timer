@@ -133,21 +133,17 @@ You can convert the current MTime to String by calling the `toString()` method. 
   }
 ```
 
-
-
-
-
-
-
-
-### 6. (Optional) Create a timer
-*Skip this step if you want to use a single instance of timer*<br>
-Create a new instance of timer and assign it to a new variable.
+### 7. Creating more timer instances
+Create a new instance of the timer and assign it to a new variable. Use the above functions directly with it
 ```Swift
   let newTimer = MTimer.createNewInstance()
+
+  try! newTimer
+      .publish(every: 1, currentTime: $currentTime)
+      .start()
+
+  newTimer.stop()
 ```
-
-
 
 <br>
 
