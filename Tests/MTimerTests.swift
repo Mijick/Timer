@@ -168,6 +168,65 @@ extension MTimerTests {
     }
 }
 
+// MARK: - Progress
+extension MTimerTests {
+    func testTimerProgressCountsCorrectly_From0To10() {
+        var progress: Double = 0
+
+        try! MTimer
+            .publish(every: 0.5, tolerance: 0) { self.currentTime = $0.toTimeInterval() }
+            .onTimerProgressChange { progress = $0 }
+            .start(from: 0, to: 10)
+        wait(for: 1)
+
+        XCTAssertEqual(progress, 0.1)
+    }
+    func testTimerProgressCountsCorrectly_From10To29() {
+        var progress: Double = 0
+
+        try! MTimer
+            .publish(every: 0.5, tolerance: 0) { self.currentTime = $0.toTimeInterval() }
+            .onTimerProgressChange { progress = $0 }
+            .start(from: 10, to: 29)
+        wait(for: 1)
+
+        XCTAssertEqual(progress, 1/19)
+    }
+    func testTimerProgressCountsCorrectly_From31To100() {
+        var progress: Double = 0
+
+        try! MTimer
+            .publish(every: 0.5, tolerance: 0) { self.currentTime = $0.toTimeInterval() }
+            .onTimerProgressChange { progress = $0 }
+            .start(from: 31, to: 100)
+        wait(for: 1)
+
+        XCTAssertEqual(progress, 1/69)
+    }
+    func testTimerProgressCountsCorrectly_From100To0() {
+        var progress: Double = 0
+
+        try! MTimer
+            .publish(every: 0.5, tolerance: 0) { self.currentTime = $0.toTimeInterval() }
+            .onTimerProgressChange { progress = $0 }
+            .start(from: 100, to: 0)
+        wait(for: 1.5)
+
+        XCTAssertEqual(progress, 1.5/100)
+    }
+    func testTimerProgressCountsCorrectly_From31To14() {
+        var progress: Double = 0
+
+        try! MTimer
+            .publish(every: 0.25, tolerance: 0) { self.currentTime = $0.toTimeInterval() }
+            .onTimerProgressChange { progress = $0 }
+            .start(from: 31, to: 14)
+        wait(for: 1)
+
+        XCTAssertEqual(progress, 1/17)
+    }
+}
+
 // MARK: - Errors
 extension MTimerTests {
     func testTimerCannotBeInitialised_PublishTimeIsTooLess() {

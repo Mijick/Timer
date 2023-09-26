@@ -87,7 +87,18 @@ extension MTimer {
         onTimerActivityChange = action
         return self
     }
-    public func bindTimerStatus(_ isTimerRunning: Binding<Bool>) -> MTimer {
+    public func bindTimerStatus(isTimerRunning: Binding<Bool>) -> MTimer {
         onTimerActivityChange { isTimerRunning.wrappedValue = $0 }
+    }
+}
+
+// MARK: - Publishing Timer Progress
+extension MTimer {
+    public func onTimerProgressChange(_ action: @escaping (_ progress: Double) -> ()) -> MTimer {
+        onTimerProgressChange = action
+        return self
+    }
+    public func bindTimerProgress(progress: Binding<Double>) -> MTimer {
+        onTimerProgressChange { progress.wrappedValue = $0 }
     }
 }
