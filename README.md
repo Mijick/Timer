@@ -47,3 +47,7 @@
 </p>
 
 <br>
+
+Timer is a free and open-source library dedicated for Swift that makes the process of handling timers easier and much cleaner.
+
+<br>
