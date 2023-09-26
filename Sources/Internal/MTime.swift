@@ -11,7 +11,7 @@
 
 import Foundation
 
-public struct MTime {
+public struct MTime: Equatable {
     public let hours: Int
     public let minutes: Int
     public let seconds: Int
