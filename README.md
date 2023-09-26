@@ -80,6 +80,24 @@ dependencies: [
 
 
 
+# Try our demo
+See for yourself how does it work by cloning [project][Demo] we created
+                      
+# License
+Navigattie is released under the MIT license. See [LICENSE][License] for details.
+                      
+<br><br>
+                      
+# Our other open source SwiftUI libraries
+[PopupView] - The most powerful popup library that allows you to present any popup
+<br>
+[Navigattie] - Easier and cleaner way of navigating through your app
+<br>
+[GridView] - Lay out your data with no effort
+
+
+
+
 [MIT]: https://en.wikipedia.org/wiki/MIT_License
 [SPM]: https://www.swift.org/package-manager
                       
