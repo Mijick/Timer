@@ -78,13 +78,26 @@ dependencies: [
                       
 <br>
 
+# Usage
+### 1. (Optional) Create a timer
+*Skip this step if you want to use a single instance of timer*<br>
+Create a new instance of timer and assign it to a new variable.
+```Swift
+  let newTimer = MTimer.createNewInstance()
+```
+
+### 2. Initialise timer
+
+
+
+
 
 
 # Try our demo
 See for yourself how does it work by cloning [project][Demo] we created
                       
 # License
-Navigattie is released under the MIT license. See [LICENSE][License] for details.
+Timer is released under the MIT license. See [LICENSE][License] for details.
                       
 <br><br>
                       
