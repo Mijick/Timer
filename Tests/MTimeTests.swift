@@ -14,9 +14,9 @@ import XCTest
 
 final class MTimeTests: XCTestCase {}
 
-// MARK: - Initialisation
+// MARK: - Initialisation from TimeInterval
 extension MTimeTests {
-    func testTimeInitialisedCorrectly_1second() {
+    func testTimeInitialisesCorrectly_1second() {
         let time = MTime(1)
 
         XCTAssertEqual(time.hours, 0)
@@ -24,7 +24,7 @@ extension MTimeTests {
         XCTAssertEqual(time.seconds, 1)
         XCTAssertEqual(time.milliseconds, 0)
     }
-    func testTimeInitialisedCorrectly_59seconds120milliseconds() {
+    func testTimeInitialisesCorrectly_59seconds120milliseconds() {
         let time = MTime(59.12)
 
         XCTAssertEqual(time.hours, 0)
@@ -32,7 +32,7 @@ extension MTimeTests {
         XCTAssertEqual(time.seconds, 59)
         XCTAssertEqual(time.milliseconds, 120)
     }
-    func testTimeInitialisedCorrectly_21minutes37seconds() {
+    func testTimeInitialisesCorrectly_21minutes37seconds() {
         let time = MTime(1297)
 
         XCTAssertEqual(time.hours, 0)
@@ -40,13 +40,81 @@ extension MTimeTests {
         XCTAssertEqual(time.seconds, 37)
         XCTAssertEqual(time.milliseconds, 0)
     }
-    func testTimeInitialisedCorrectly_1hour39minutes17seconds140milliseconds() {
+    func testTimeInitialisesCorrectly_1hour39minutes17seconds140milliseconds() {
         let time = MTime(5957.14)
 
         XCTAssertEqual(time.hours, 1)
         XCTAssertEqual(time.minutes, 39)
         XCTAssertEqual(time.seconds, 17)
         XCTAssertEqual(time.milliseconds, 140)
+    }
+}
+
+// MARK: - Initialisation from Values
+extension MTimeTests {
+    func testTimeInitialisesCorrectly_140milliseconds() {
+        let time = MTime(milliseconds: 140)
+
+        XCTAssertEqual(time.hours, 0)
+        XCTAssertEqual(time.minutes, 0)
+        XCTAssertEqual(time.seconds, 0)
+        XCTAssertEqual(time.milliseconds, 140)
+    }
+    func testTimeInitialisesCorrectly_0point3seconds() {
+        let time = MTime(seconds: 0.3)
+
+        XCTAssertEqual(time.hours, 0)
+        XCTAssertEqual(time.minutes, 0)
+        XCTAssertEqual(time.seconds, 0)
+        XCTAssertEqual(time.milliseconds, 300)
+    }
+    func testTimeInitialisesCorrectly_31seconds() {
+        let time = MTime(seconds: 31.0)
+
+        XCTAssertEqual(time.hours, 0)
+        XCTAssertEqual(time.minutes, 0)
+        XCTAssertEqual(time.seconds, 31)
+        XCTAssertEqual(time.milliseconds, 0)
+    }
+    func testTimeInitialisesCorrectly_31point5seconds() {
+        let time = MTime(seconds: 31.5)
+
+        XCTAssertEqual(time.hours, 0)
+        XCTAssertEqual(time.minutes, 0)
+        XCTAssertEqual(time.seconds, 31)
+        XCTAssertEqual(time.milliseconds, 500)
+    }
+    func testTimeInitialisesCorrectly_107seconds() {
+        let time = MTime(seconds: 107.0)
+
+        XCTAssertEqual(time.hours, 0)
+        XCTAssertEqual(time.minutes, 1)
+        XCTAssertEqual(time.seconds, 47)
+        XCTAssertEqual(time.milliseconds, 0)
+    }
+    func testTimeInitialisesCorrectly_1point5minutes() {
+        let time = MTime(minutes: 1.5)
+
+        XCTAssertEqual(time.hours, 0)
+        XCTAssertEqual(time.minutes, 1)
+        XCTAssertEqual(time.seconds, 30)
+        XCTAssertEqual(time.milliseconds, 0)
+    }
+    func testTimeInitialisesCorrectly_69minutes() {
+        let time = MTime(minutes: 69.0)
+
+        XCTAssertEqual(time.hours, 1)
+        XCTAssertEqual(time.minutes, 9)
+        XCTAssertEqual(time.seconds, 0)
+        XCTAssertEqual(time.milliseconds, 0)
+    }
+    func testTimeInitialisesCorrectly_3hours72minutes21seconds14milliseconds() {
+        let time = MTime(hours: 3.0, minutes: 72.0, seconds: 21.0, milliseconds: 14)
+
+        XCTAssertEqual(time.hours, 4)
+        XCTAssertEqual(time.minutes, 12)
+        XCTAssertEqual(time.seconds, 21)
+        XCTAssertEqual(time.milliseconds, 14)
     }
 }
 
