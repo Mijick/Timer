@@ -55,3 +55,17 @@ Timer is a free and open-source library dedicated for Swift that makes the proce
 * **And much more.** Our library allows you to convert the current time to a string and display the timer progress in no time.
 
 <br>
+
+
+
+
+
+[MIT]: https://en.wikipedia.org/wiki/MIT_License
+[SPM]: https://www.swift.org/package-manager
+                      
+[Demo]: https://github.com/Mijick/Timer-Demo
+[License]: https://github.com/Mijick/Timer/blob/main/LICENSE
+                     
+[PopupView]: https://github.com/Mijick/PopupView
+[Navigattie]: https://github.com/Mijick/Navigattie
+[GridView]: https://github.com/Mijick/GridView
