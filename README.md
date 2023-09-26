@@ -13,7 +13,7 @@
 </h3>
 
 <p align="center">
-    Stop and run your timers from any point in the app. Keep your code clean
+    Easy to use yet powerful Timer library. Keep your code clean
 </p>
 
 <p align="center">
