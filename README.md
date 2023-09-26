@@ -104,9 +104,24 @@ Timer can be stopped with `stop()` method.
 ```
 
 ### 4. Additional timer controls
+- Once stopped, the timer can be resumed. Simply use the `resume()` method.
+```Swift
+  try! MTimer.resume()
+```
+- To stop and reset the timer to its initial values, use the `reset()` method.
+```Swift
+  MTimer.reset()
+```
 
 
 ### 5. Displaying the current time as String
+
+
+
+
+
+
+
 
 
 ### 6. (Optional) Create a timer
