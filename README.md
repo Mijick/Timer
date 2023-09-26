@@ -86,11 +86,17 @@ Create a new instance of timer and assign it to a new variable.
   let newTimer = MTimer.createNewInstance()
 ```
 
-### 2. Initialise timer
+### 2. Initialise the timer
 Call the `publish()` method that has three parameters:
 * **time** - The number of seconds between firings of the timer.
 * **tolerance** - The number of seconds after the update date that the timer may fire.
 * **currentTime** - The current timer time.
+```Swift
+  try! MTimer.publish(every: 1, currentTime: $currentTime)
+```
+
+### 3. Start the timer
+
 
 
 
