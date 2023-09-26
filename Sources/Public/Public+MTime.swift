@@ -11,6 +11,20 @@
 
 import Foundation
 
+// MARK: - Initialisation
+extension MTime {
+    public init(hours: Double = 0, minutes: Double = 0, seconds: Double = 0, milliseconds: Int = 0) {
+        let hoursInterval = hours * 60 * 60
+        let minutesInterval = minutes * 60
+        let secondsInterval = seconds
+        let millisecondsInterval = Double(milliseconds) / 1000
+        
+        let timeInterval = hoursInterval + minutesInterval + secondsInterval + millisecondsInterval
+        self.init(timeInterval)
+    }
+    public static var zero: MTime { .init() }
+}
+
 // MARK: - Converting to TimeInterval
 extension MTime {
     public func toTimeInterval() -> TimeInterval {
