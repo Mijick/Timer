@@ -40,6 +40,7 @@ extension MTime {
 
 // MARK: - Converting To String
 extension MTime {
+    /// Converts the object to a string representation. Output can be customised by modifying the formatter block.
     public func toString(_ formatter: (DateComponentsFormatter) -> DateComponentsFormatter = { $0 }) -> String {
         formatter(defaultTimeFormatter).string(from: toTimeInterval()) ?? ""
     }
