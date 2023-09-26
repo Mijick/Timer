@@ -27,6 +27,8 @@ public final class MTimer {
     var onRunningTimeChange: ((MTime) -> ())!
     var onTimerActivityChange: ((Bool) -> ())?
     var onTimerProgressChange: ((Double) -> ())?
+
+    deinit { internalTimer?.invalidate() }
 }
 
 
