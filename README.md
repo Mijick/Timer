@@ -114,7 +114,7 @@ Timer can be stopped with `stop()` method.
 ```
 
 ### 5. Additional timer controls
-- Once stopped, the timer can be resumed. Simply use the `resume()` method.
+- Once stopped, the timer can be resumed - simply use the `resume()` method.
 ```Swift
   try! MTimer.resume()
 ```
