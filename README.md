@@ -56,7 +56,27 @@ Timer is a free and open-source library dedicated for Swift that makes the proce
 
 <br>
 
+# Getting Started
+### ✋ Requirements
 
+| **Platforms** | **Minimum Swift Version** |
+|:----------|:----------|
+| iOS 13+ | 5.0 |
+
+### ⏳ Installation
+    
+#### [Swift package manager][spm]
+Swift package manager is a tool for automating the distribution of Swift code and is integrated into the Swift compiler.
+
+Once you have your Swift package set up, adding Timer as a dependency is as easy as adding it to the `dependencies` value of your `Package.swift`.
+
+```Swift
+dependencies: [
+    .package(url: "https://github.com/Mijick/Timer", branch(“main”))
+]
+``` 
+                      
+<br>
 
 
 
