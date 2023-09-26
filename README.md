@@ -50,9 +50,9 @@
 
 Timer is a free and open-source library dedicated for Swift that makes the process of handling timers easier and much cleaner.
 * **Improves code quality.** Start timer using the `publish().start()` method. Stop the timer with `stop()`. Simple as never.
-* **Run your timer in both directions.** Our timer can operate in both modes (increasing or decreasing).
+* **Run your timer in both directions.** Our Timer can operate in both modes (increasing or decreasing).
 * **Supports background mode.** Don't worry about the timer when the app goes into the background. We handled it!
-* **And much more.** Our library allows you to convert the current time to a string and display the timer progress in no time.
+* **And much more.** Our library allows you to convert the current time to a string or to display the timer progress in no time.
 
 <br>
 
