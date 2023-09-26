@@ -23,6 +23,7 @@ extension MTime {
         self.init(timeInterval)
     }
     public static var zero: MTime { .init() }
+    public static var max: MTime { .init(hours: 60 * 60 * 24 * 365 * 100) }
 }
 
 // MARK: - Converting to TimeInterval

@@ -30,6 +30,9 @@ extension MTimer {
 
 // MARK: - Starting Timer
 extension MTimer {
+    public func start(from startTime: MTime = .zero, to endTime: MTime = .max) throws {
+        try start(from: startTime.toTimeInterval(), to: endTime.toTimeInterval())
+    }
     public func start(from startTime: TimeInterval = 0, to endTime: TimeInterval = .infinity) throws {
         try checkRequirementsForStartingTimer(startTime, endTime)
         assignInitialStartValues(startTime, endTime)
