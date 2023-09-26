@@ -79,14 +79,8 @@ dependencies: [
 <br>
 
 # Usage
-### 1. (Optional) Create a timer
-*Skip this step if you want to use a single instance of timer*<br>
-Create a new instance of timer and assign it to a new variable.
-```Swift
-  let newTimer = MTimer.createNewInstance()
-```
 
-### 2. Initialise the timer
+### 1. Initialise the timer
 Call the `publish()` method that has three parameters:
 * **time** - The number of seconds between firings of the timer.
 * **tolerance** - The number of seconds after the update date that the timer may fire.
@@ -95,7 +89,7 @@ Call the `publish()` method that has three parameters:
   try! MTimer.publish(every: 1, currentTime: $currentTime)
 ```
 
-### 3. Start the timer
+### 2. Start the timer
 Start the timer using the `start()` method. You can customise the start and end time using the parameters of this method.
 ```Swift
   try! MTimer
@@ -103,13 +97,24 @@ Start the timer using the `start()` method. You can customise the start and end 
       .start(from: .init(minutes: 21, seconds: 37), to: .zero)
 ```
 
-### 4. Stop the timer
+### 3. Stop the timer
 Timer can be stopped with `stop()` method.
 ```Swift
   MTimer.stop()
 ```
 
+### 4. Additional timer controls
+
+
 ### 5. Displaying the current time as String
+
+
+### 6. (Optional) Create a timer
+*Skip this step if you want to use a single instance of timer*<br>
+Create a new instance of timer and assign it to a new variable.
+```Swift
+  let newTimer = MTimer.createNewInstance()
+```
 
 
 
