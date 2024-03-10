@@ -76,8 +76,26 @@ Once you have your Swift package set up, adding Timer as a dependency is as easy
 dependencies: [
     .package(url: "https://github.com/Mijick/Timer", branch(“main”))
 ]
-``` 
-                      
+```
+
+#### [Cocoapods][cocoapods]   
+Cocoapods is a dependency manager for Swift and Objective-C Cocoa projects that helps to scale them elegantly.
+
+Installation steps:
+- Install CocoaPods 1.10.0 (or later)
+- [Generate CocoaPods][generate_cocoapods] for your project
+```Swift
+    pod init
+```
+- Add CocoaPods dependency into your `Podfile`   
+```Swift
+    pod 'MijickTimer'
+```
+- Install dependency and generate `.xcworkspace` file
+```Swift
+    pod install
+```
+- Use new XCode project file `.xcworkspace`                
 <br>
 
 # Usage
@@ -169,6 +187,8 @@ Timer is released under the MIT license. See [LICENSE][License] for details.
 
 [MIT]: https://en.wikipedia.org/wiki/MIT_License
 [SPM]: https://www.swift.org/package-manager
+[cocoapods]: https://cocoapods.org/
+[generate_cocoapods]: https://github.com/square/cocoapods-generate
                       
 [Demo]: https://github.com/Mijick/Timer-Demo
 [License]: https://github.com/Mijick/Timer/blob/main/LICENSE
