@@ -19,7 +19,7 @@ extension NotificationCenter {
 
         #elseif os(macOS)
         Self.default.addObserver(observer, selector: (backgroundNotification), name: NSApplication.didResignActiveNotification, object: nil)
-        Self.default.addObserver(observer, selector: (foregroundNotification), name: NSApplication.didBecomeActiveNotification, object: nil)
+        Self.default.addObserver(observer, selector: (foregroundNotification), name: NSApplication.willBecomeActiveNotification, object: nil)
 
         #endif
     }
@@ -30,7 +30,7 @@ extension NotificationCenter {
 
         #elseif os(macOS)
         Self.default.removeObserver(observer, name: NSApplication.didResignActiveNotification, object: nil)
-        Self.default.removeObserver(observer, name: NSApplication.didBecomeActiveNotification, object: nil)
+        Self.default.removeObserver(observer, name: NSApplication.willBecomeActiveNotification, object: nil)
         
         #endif
     }
