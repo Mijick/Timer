@@ -88,13 +88,30 @@ private extension MTimer {
 }
 private extension MTimer {
     func updateInternalTimer(_ start: Bool) { DispatchQueue.main.async { [self] in switch start {
-        case true: internalTimer = .scheduledTimer(withTimeInterval: publisherTime, repeats: true, block: handleTimeChange); internalTimer?.tolerance = publisherTimeTolerance
-        case false: internalTimer?.invalidate()
+        case true: updateInternalTimerStart()
+        case false: updateInternalTimerStop()
     }}}
     func updateObservers(_ start: Bool) { switch start {
         case true: addObservers()
         case false: removeObservers()
     }}
+}
+private extension MTimer {
+    func updateInternalTimerStart() {
+        internalTimer = .scheduledTimer(withTimeInterval: publisherTime, repeats: true, block: handleTimeChange)
+        internalTimer?.tolerance = publisherTimeTolerance
+        updateInternalTimerStartAddToRunLoop()
+    }
+    func updateInternalTimerStop() { internalTimer?.invalidate() }
+}
+private extension MTimer {
+    /// **CONTEXT**: On macOS, when the mouse is down in a menu item or other tracking loop, the timer will not start.
+    /// **DECISION**: Adding a timer the RunLoop seems to fix the issue issue.
+    func updateInternalTimerStartAddToRunLoop() {
+        #if os(macOS)
+        if let internalTimer { RunLoop.main.add(internalTimer, forMode: .common) }
+        #endif
+    }
 }
 
 // MARK: - Handling Time Change

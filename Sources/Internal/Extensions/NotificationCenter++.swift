@@ -13,11 +13,25 @@ import SwiftUI
 
 extension NotificationCenter {
     static func addAppStateNotifications(_ observer: Any, onDidEnterBackground backgroundNotification: Selector, onWillEnterForeground foregroundNotification: Selector) {
+        #if os(iOS)
         Self.default.addObserver(observer, selector: (backgroundNotification), name: UIApplication.didEnterBackgroundNotification, object: nil)
         Self.default.addObserver(observer, selector: (foregroundNotification), name: UIApplication.willEnterForegroundNotification, object: nil)
+
+        #elseif os(macOS)
+        Self.default.addObserver(observer, selector: (backgroundNotification), name: NSApplication.didResignActiveNotification, object: nil)
+        Self.default.addObserver(observer, selector: (foregroundNotification), name: NSApplication.didBecomeActiveNotification, object: nil)
+
+        #endif
     }
     static func removeAppStateChangedNotifications(_ observer: Any) {
+        #if os(iOS)
         Self.default.removeObserver(observer, name: UIApplication.didEnterBackgroundNotification, object: nil)
         Self.default.removeObserver(observer, name: UIApplication.willEnterForegroundNotification, object: nil)
+
+        #elseif os(macOS)
+        Self.default.removeObserver(observer, name: NSApplication.didResignActiveNotification, object: nil)
+        Self.default.removeObserver(observer, name: NSApplication.didBecomeActiveNotification, object: nil)
+        
+        #endif
     }
 }
