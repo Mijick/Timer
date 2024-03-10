@@ -160,6 +160,8 @@ Timer is released under the MIT license. See [LICENSE][License] for details.
 <br>
 [Navigattie] - Easier and cleaner way of navigating through your app
 <br>
+[CalendarView] - Create your own calendar object in no time
+<br>
 [GridView] - Lay out your data with no effort
 
 
@@ -174,3 +176,4 @@ Timer is released under the MIT license. See [LICENSE][License] for details.
 [PopupView]: https://github.com/Mijick/PopupView
 [Navigattie]: https://github.com/Mijick/Navigattie
 [GridView]: https://github.com/Mijick/GridView
+[CalendarView]: https://github.com/Mijick/CalendarView
