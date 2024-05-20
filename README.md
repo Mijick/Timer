@@ -178,11 +178,13 @@ Timer is released under the MIT license. See [LICENSE][License] for details.
 # Our other open source SwiftUI libraries
 [PopupView] - The most powerful popup library that allows you to present any popup
 <br>
-[Navigattie] - Easier and cleaner way of navigating through your app
+[NavigationView] - Easier and cleaner way of navigating through your app
 <br>
 [CalendarView] - Create your own calendar object in no time
 <br>
 [GridView] - Lay out your data with no effort
+<br>
+[CameraView] - The most powerful CameraController. Designed for SwiftUI
 
 
 
@@ -196,6 +198,7 @@ Timer is released under the MIT license. See [LICENSE][License] for details.
 [License]: https://github.com/Mijick/Timer/blob/main/LICENSE
                      
 [PopupView]: https://github.com/Mijick/PopupView
-[Navigattie]: https://github.com/Mijick/Navigattie
+[NavigationView]: https://github.com/Mijick/NavigationView
 [CalendarView]: https://github.com/Mijick/CalendarView 
 [GridView]: https://github.com/Mijick/GridView
+[CameraView]: https://github.com/Mijick/CameraView
