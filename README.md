@@ -178,7 +178,7 @@ Timer is released under the MIT license. See [LICENSE][License] for details.
 # Our other open source SwiftUI libraries
 [PopupView] - The most powerful popup library that allows you to present any popup
 <br>
-[Navigattie] - Easier and cleaner way of navigating through your app
+[NavigationView] - Easier and cleaner way of navigating through your app
 <br>
 [CalendarView] - Create your own calendar object in no time
 <br>
