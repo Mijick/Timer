@@ -18,6 +18,10 @@
 
 <p align="center">
     <a href="https://github.com/Mijick/Timer-Demo" rel="nofollow">Try demo we prepared</a>
+    |
+    <a href="https://mijick.notion.site/122683c582c8441fa4b4bbb00290598e?v=f7b570720ff94414835ed7894dbacd96&pvs=25" rel="nofollow">Roadmap</a>
+    |
+    <a href="https://github.com/Mijick/Timer/issues/new" rel="nofollow">Propose a new feature</a>
 </p>
 
 <br>
