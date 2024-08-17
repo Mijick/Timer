@@ -177,7 +177,7 @@ private extension MTimer {
         onTimerActivityChange?(isTimerRunning)
     }}
     func publishRunningTimeChange() { DispatchQueue.main.async { [self] in
-        onRunningTimeChange?(.init(runningTime))
+        onRunningTimeChange?(.init(timeInterval: runningTime))
         onTimerProgressChange?(calculateTimerProgress())
     }}
 }
