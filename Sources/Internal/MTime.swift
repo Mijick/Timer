@@ -17,21 +17,6 @@ public struct MTime: Equatable {
     public let seconds: Int
     public let milliseconds: Int
 }
-extension MTime {
-    init(_ timeInterval: TimeInterval) {
-        let millisecondsInt = Int(timeInterval * 1000)
-
-        let hoursDiv = 1000 * 60 * 60
-        let minutesDiv = 1000 * 60
-        let secondsDiv = 1000
-        let millisecondsDiv = 1
-
-        hours = millisecondsInt / hoursDiv
-        minutes = (millisecondsInt % hoursDiv) / minutesDiv
-        seconds = (millisecondsInt % hoursDiv % minutesDiv) / secondsDiv
-        milliseconds = (millisecondsInt % hoursDiv % minutesDiv % secondsDiv) / millisecondsDiv
-    }
-}
 
 // MARK: - Helpers
 extension MTime {

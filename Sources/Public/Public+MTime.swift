@@ -20,7 +20,20 @@ extension MTime {
         let millisecondsInterval = Double(milliseconds) / 1000
         
         let timeInterval = hoursInterval + minutesInterval + secondsInterval + millisecondsInterval
-        self.init(timeInterval)
+        self.init(timeInterval: timeInterval)
+    }
+    public init(timeInterval: TimeInterval) {
+        let millisecondsInt = Int(timeInterval * 1000)
+
+        let hoursDiv = 1000 * 60 * 60
+        let minutesDiv = 1000 * 60
+        let secondsDiv = 1000
+        let millisecondsDiv = 1
+
+        hours = millisecondsInt / hoursDiv
+        minutes = (millisecondsInt % hoursDiv) / minutesDiv
+        seconds = (millisecondsInt % hoursDiv % minutesDiv) / secondsDiv
+        milliseconds = (millisecondsInt % hoursDiv % minutesDiv % secondsDiv) / millisecondsDiv
     }
     public static var zero: MTime { .init() }
     public static var max: MTime { .init(hours: 60 * 60 * 24 * 365 * 100) }
