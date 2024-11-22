@@ -1,166 +1,180 @@
 //
-//  MTimer.swift of Timer
+//  MTimer.swift
+//  MijickTimer
 //
-//  Created by Tomasz Kurylik
-//    - Twitter: https://twitter.com/tkurylik
-//    - Mail: tomasz.kurylik@mijick.com
-//    - GitHub: https://github.com/FulcrumOne
+//  Created by Alina Petrovska on 11.11.2024.
 //
-//  Copyright ©2023 Mijick. Licensed under MIT License.
-
 
 import SwiftUI
 
-public final class MTimer {
-    static let shared: MTimer = .init()
-
-    // Current State
-    var internalTimer: Timer?
-    var isTimerRunning: Bool = false
-    var runningTime: TimeInterval = 0
-    var backgroundTransitionDate: Date? = nil
-
-    // Configuration
-    var initialTime: (start: TimeInterval, end: TimeInterval) = (0, 1)
-    var publisherTime: TimeInterval = 0
-    var publisherTimeTolerance: TimeInterval = 0.4
-    var onRunningTimeChange: ((MTime) -> ())!
-    var onTimerActivityChange: ((Bool) -> ())?
-    var onTimerProgressChange: ((Double) -> ())?
-
-    deinit { internalTimer?.invalidate() }
+public final class MTimer: ObservableObject, FactoryInitializable {
+    private let state = MTimerStateManager()
+    private let configuration = MTimerConfigurationManager()
+    private let validator = MTimerValidator()
+    
+    let callbacks = MTimerCallbacks()
+    let id: MTimerID
+    
+    @Published public private(set) var timerTime: MTime = .init()
+    @Published public private(set) var timerState: MTimerStatus = .notStarted
+    @Published public private(set) var timerProgress: Double = 0
+    
+    init(identifier: MTimerID) { self.id = identifier }
 }
-
 
 // MARK: - Initialising Timer
 extension MTimer {
-    func checkRequirementsForInitialisingTimer(_ publisherTime: TimeInterval) throws {
-        if publisherTime < 0.001 { throw Error.publisherTimeCannotBeLessThanOneMillisecond }
+    func checkRequirementsForInitializingTimer(_ publisherTime: TimeInterval) throws {
+        try validator.checkRequirementsForInitializingTimer(publisherTime)
     }
     func assignInitialPublisherValues(_ time: TimeInterval, _ tolerance: TimeInterval, _ completion: @escaping (MTime) -> ()) {
-        publisherTime = time
-        publisherTimeTolerance = tolerance
-        onRunningTimeChange = completion
+        configuration.assignInitialPublisherValues(time, tolerance)
+        callbacks.onRunningTimeChange = completion
     }
 }
 
 // MARK: - Starting Timer
 extension MTimer {
     func checkRequirementsForStartingTimer(_ startTime: TimeInterval, _ endTime: TimeInterval) throws {
-        if startTime < 0 || endTime < 0 { throw Error.timeCannotBeLessThanZero }
-        if startTime == endTime { throw Error.startTimeCannotBeTheSameAsEndTime }
-
-        if isTimerRunning && backgroundTransitionDate == nil { throw Error.timerIsAlreadyRunning }
+        try validator.checkRequirementsForStartingTimer(startTime, endTime, state, timerState)
     }
     func assignInitialStartValues(_ startTime: TimeInterval, _ endTime: TimeInterval) {
-        initialTime = (startTime, endTime)
-        runningTime = startTime
+        configuration.assignInitialStartValues(startTime, endTime)
+        resetRunningTime()
+        resetTimerPublishers()
     }
-    func startTimer() { handleTimer(start: true) }
+    func startTimer() {
+        handleTimer(status: .inProgress)
+    }
 }
 
 // MARK: - Resuming Timer
 extension MTimer {
     func checkRequirementsForResumingTimer() throws {
-        if onRunningTimeChange == nil { throw Error.cannotResumeNotInitialisedTimer }
+        try validator.checkRequirementsForResumingTimer(callbacks)
     }
 }
 
-// MARK: - Stopping Timer
+// MARK: - Timer State Control
 extension MTimer {
-    func stopTimer() { handleTimer(start: false) }
+    func pauseTimer() { handleTimer(status: .paused) }
+    func cancelTimer() { handleTimer(status: .cancelled) }
+    func finishTimer() { handleTimer(status: .finished) }
 }
 
-// MARK: - Resetting Timer
+// MARK: - Reset Timer
 extension MTimer {
-    func resetRunningTime() { runningTime = initialTime.start }
+    func resetTimer() {
+        configuration.reset()
+        updateInternalTimer(false)
+        timerState = .notStarted
+        updateObservers(false)
+        resetTimerPublishers()
+        publishTimerStatus()
+    }
 }
 
+// MARK: - Running Time Updates
+extension MTimer {
+    func resetRunningTime() { configuration.resetRunningTime() }
+    func skipRunningTime() { configuration.skipRunningTime() }
+}
 
 // MARK: - Handling Timer
 private extension MTimer {
-    func handleTimer(start: Bool) { if !start || canTimerBeStarted {
-        isTimerRunning = start
-        updateInternalTimer(start)
-        updateObservers(start)
+    func handleTimer(status: MTimerStatus) { if status != .inProgress || configuration.canTimerBeStarted {
+        timerState = status
+        updateInternalTimer(isTimerRunning)
+        updateObservers(isTimerRunning)
         publishTimerStatus()
     }}
 }
 private extension MTimer {
-    func updateInternalTimer(_ start: Bool) { DispatchQueue.main.async { [self] in switch start {
-        case true: updateInternalTimerStart()
-        case false: updateInternalTimerStop()
-    }}}
-    func updateObservers(_ start: Bool) { switch start {
-        case true: addObservers()
-        case false: removeObservers()
+    func updateInternalTimer(_ start: Bool) {
+        switch start {
+            case true: updateInternalTimerStart()
+            case false: updateInternalTimerStop()
     }}
+    func updateObservers(_ start: Bool) {
+        switch start {
+            case true: addObservers()
+            case false: removeObservers()
+        }
+    }
 }
 private extension MTimer {
     func updateInternalTimerStart() {
-        internalTimer = .scheduledTimer(withTimeInterval: publisherTime, repeats: true, block: handleTimeChange)
-        internalTimer?.tolerance = publisherTimeTolerance
+        let publisherTime = configuration.getPublisherTime()
+        state.internalTimer = .scheduledTimer(timeInterval: publisherTime,
+                                              target: self,
+                                              selector: #selector(handleTimeChange),
+                                              userInfo: nil,
+                                              repeats: true)
+        state.internalTimer?.tolerance = configuration.publisherTimeTolerance
         updateInternalTimerStartAddToRunLoop()
     }
-    func updateInternalTimerStop() { internalTimer?.invalidate() }
+    func updateInternalTimerStop() {
+        state.internalTimer?.invalidate()
+    }
 }
+
 private extension MTimer {
     /// **CONTEXT**: On macOS, when the mouse is down in a menu item or other tracking loop, the timer will not start.
     /// **DECISION**: Adding a timer the RunLoop seems to fix the issue issue.
     func updateInternalTimerStartAddToRunLoop() {
         #if os(macOS)
-        if let internalTimer { RunLoop.main.add(internalTimer, forMode: .common) }
+        guard let internalTimer = state.internalTimer else { return }
+        RunLoop.main.add(internalTimer, forMode: .common)
         #endif
     }
 }
 
 // MARK: - Handling Time Change
 private extension MTimer {
-    func handleTimeChange(_ timeChange: Any? = nil) {
-        runningTime = calculateNewRunningTime(timeChange as? TimeInterval ?? publisherTime)
+    @objc func handleTimeChange(_ timeChange: Any) {
+        configuration.calculateNewRunningTime(timeChange)
         stopTimerIfNecessary()
         publishRunningTimeChange()
     }
 }
 private extension MTimer {
-    func calculateNewRunningTime(_ timeChange: TimeInterval) -> TimeInterval {
-        let newRunningTime = runningTime + timeChange * timeIncrementMultiplier
-        return timeIncrementMultiplier == -1 ? max(newRunningTime, initialTime.end) : min(newRunningTime, initialTime.end)
-    }
-    func stopTimerIfNecessary() { if !canTimerBeStarted {
-        stopTimer()
+    func stopTimerIfNecessary() { if !configuration.canTimerBeStarted {
+        finishTimer()
     }}
 }
 
 // MARK: - Handling Background Mode
 private extension MTimer {
     func addObservers() {
-        NotificationCenter.addAppStateNotifications(self, onDidEnterBackground: #selector(didEnterBackgroundNotification), onWillEnterForeground: #selector(willEnterForegroundNotification))
+        NotificationCenter
+            .addAppStateNotifications(self,
+                                      onDidEnterBackground: #selector(didEnterBackgroundNotification),
+                                      onWillEnterForeground: #selector(willEnterForegroundNotification))
     }
     func removeObservers() {
         NotificationCenter.removeAppStateChangedNotifications(self)
     }
 }
 private extension MTimer {
-    @objc func didEnterBackgroundNotification() {
-        internalTimer?.invalidate()
-        backgroundTransitionDate = .init()
-    }
     @objc func willEnterForegroundNotification() {
         handleReturnFromBackgroundWhenTimerIsRunning()
-        backgroundTransitionDate = nil
+        state.willEnterForeground()
+    }
+    @objc func didEnterBackgroundNotification() {
+        state.didEnterBackground()
     }
 }
 private extension MTimer {
-    func handleReturnFromBackgroundWhenTimerIsRunning() { if let backgroundTransitionDate, isTimerRunning {
+    func handleReturnFromBackgroundWhenTimerIsRunning() {
+        guard let backgroundTransitionDate = state.backgroundTransitionDate, isTimerRunning else { return }
         let timeChange = Date().timeIntervalSince(backgroundTransitionDate)
-
+        
         handleTimeChange(timeChange)
         resumeTimerAfterReturningFromBackground()
-    }}
+    }
 }
 private extension MTimer {
-    func resumeTimerAfterReturningFromBackground() { if canTimerBeStarted {
+    func resumeTimerAfterReturningFromBackground() { if configuration.canTimerBeStarted {
         updateInternalTimer(true)
     }}
 }
@@ -171,26 +185,30 @@ private extension MTimer {
         publishTimerStatusChange()
         publishRunningTimeChange()
     }
-}
-private extension MTimer {
-    func publishTimerStatusChange() { DispatchQueue.main.async { [self] in
-        onTimerActivityChange?(isTimerRunning)
-    }}
-    func publishRunningTimeChange() { DispatchQueue.main.async { [self] in
-        onRunningTimeChange?(.init(timeInterval: runningTime))
-        onTimerProgressChange?(calculateTimerProgress())
-    }}
-}
-private extension MTimer {
-    func calculateTimerProgress() -> Double {
-        let timerTotalTime = max(initialTime.start, initialTime.end) - min(initialTime.start, initialTime.end)
-        let timerRunningTime = abs(runningTime - initialTime.start)
-        return timerRunningTime / timerTotalTime
+    func resetTimerPublishers() {
+        guard isNeededReset else { return }
+        timerState = .notStarted
+        timerProgress = 0
+        timerTime = .init(timeInterval: configuration.initialTime.start)
     }
 }
 
-// MARK: - Others
 private extension MTimer {
-    var canTimerBeStarted: Bool { runningTime != initialTime.end }
-    var timeIncrementMultiplier: Double { initialTime.start > initialTime.end ? -1 : 1 }
+    func publishTimerStatusChange() { DispatchQueue.main.async(qos: .userInteractive) { [weak self] in
+        guard let self else { return }
+        callbacks.onTimerActivityChange?(timerState)
+    }}
+    func publishRunningTimeChange() { DispatchQueue.main.async(qos: .userInteractive) { [weak self] in
+        guard let self else { return }
+        callbacks.onRunningTimeChange?(.init(timeInterval: configuration.runningTime))
+        callbacks.onTimerProgressChange?(configuration.calculateTimerProgress())
+        timerTime = .init(timeInterval: configuration.runningTime)
+        timerProgress = configuration.calculateTimerProgress()
+    }}
+}
+
+// MARK: - Helpers
+private extension MTimer {
+    var isTimerRunning: Bool { timerState == .inProgress }
+    var isNeededReset: Bool { timerState == .finished || timerState == .cancelled || timerState == .notStarted }
 }

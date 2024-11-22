@@ -11,24 +11,8 @@
 
 import SwiftUI
 
-// MARK: - Creating New Instance Of Timer
-extension MTimer {
-    /// Allows to create multiple instances of a timer.
-    public static func createNewInstance() -> MTimer { .init() }
-}
-
 // MARK: - Initialising Timer
 extension MTimer {
-    /// Prepares the timer to start.
-    /// WARNING: Use the start() method to start the timer.
-    public static func publish(every time: TimeInterval, tolerance: TimeInterval = 0.4, _ completion: @escaping (_ currentTime: MTime) -> ()) throws -> MTimer {
-        try shared.publish(every: time, tolerance: tolerance, completion)
-    }
-    /// Prepares the timer to start.
-    /// WARNING: Use the start() method to start the timer.
-    public static func publish(every time: TimeInterval, tolerance: TimeInterval = 0.4, currentTime: Binding<MTime>) throws -> MTimer {
-        try shared.publish(every: time, tolerance: tolerance) { currentTime.wrappedValue = $0 }
-    }
     /// Prepares the timer to start.
     /// WARNING: Use the start() method to start the timer.
     public func publish(every time: TimeInterval, tolerance: TimeInterval = 0.4, currentTime: Binding<MTime>) throws -> MTimer {
@@ -37,7 +21,7 @@ extension MTimer {
     /// Prepares the timer to start.
     /// WARNING: Use the start() method to start the timer.
     public func publish(every time: TimeInterval, tolerance: TimeInterval = 0.4, _ completion: @escaping (_ currentTime: MTime) -> ()) throws -> MTimer {
-        try checkRequirementsForInitialisingTimer(time)
+        try checkRequirementsForInitializingTimer(time)
         assignInitialPublisherValues(time, tolerance, completion)
         return self
     }
@@ -63,22 +47,14 @@ extension MTimer {
 
 // MARK: - Stopping Timer
 extension MTimer {
-    /// Stops the timer.
-    public static func stop() {
-        shared.stop()
-    }
-    /// Stops the timer.
-    public func stop() {
-        stopTimer()
+    /// Pause the timer.
+    public func pause() {
+        pauseTimer()
     }
 }
 
 // MARK: - Resuming Timer
 extension MTimer {
-    /// Resumes the stopped timer.
-    public static func resume() throws {
-        try shared.resume()
-    }
     /// Resumes the stopped timer.
     public func resume() throws {
         try checkRequirementsForResumingTimer()
@@ -86,29 +62,42 @@ extension MTimer {
     }
 }
 
-// MARK: - Resetting Timer
+// MARK: - Aborting Timer
 extension MTimer {
     /// Stops the timer and resets its current time to the initial value.
-    public static func reset() {
-        shared.reset()
-    }
-    /// Stops the timer and resets its current time to the initial value.
-    public func reset() {
+    public func cancel() {
         resetRunningTime()
-        stopTimer()
+        cancelTimer()
+    }
+}
+
+// MARK: - Aborting Timer
+extension MTimer {
+    /// Stops the timer and resets all timer states to default
+    public func reset() {
+        resetTimer()
+    }
+}
+
+// MARK: - Skip Timer
+extension MTimer {
+    /// Stops the timer and skips it's condition to the final state.
+    public func skip() {
+        skipRunningTime()
+        finishTimer()
     }
 }
 
 // MARK: - Publishing Timer Activity Status
 extension MTimer {
     /// Publishes the timer activity changes.
-    public func onTimerActivityChange(_ action: @escaping (_ isRunning: Bool) -> ()) -> MTimer {
-        onTimerActivityChange = action
+    public func onTimerActivityChange(_ action: @escaping (_ isRunning: MTimerStatus) -> ()) -> MTimer {
+        callbacks.onTimerActivityChange = action
         return self
     }
     /// Publishes the timer activity changes.
     public func bindTimerStatus(isTimerRunning: Binding<Bool>) -> MTimer {
-        onTimerActivityChange { isTimerRunning.wrappedValue = $0 }
+        onTimerActivityChange { isTimerRunning.wrappedValue = $0 == .inProgress }
     }
 }
 
@@ -116,7 +105,7 @@ extension MTimer {
 extension MTimer {
     /// Publishes the timer progress changes.
     public func onTimerProgressChange(_ action: @escaping (_ progress: Double) -> ()) -> MTimer {
-        onTimerProgressChange = action
+        callbacks.onTimerProgressChange = action
         return self
     }
     /// Publishes the timer progress changes.

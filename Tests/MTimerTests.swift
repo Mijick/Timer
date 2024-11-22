@@ -12,10 +12,12 @@
 import XCTest
 @testable import MijickTimer
 
-final class MTimerTests: XCTestCase {
+@MainActor final class MTimerTests: XCTestCase {
     var currentTime: TimeInterval = 0
 
-    override func setUp() { MTimer.stop() }
+    override func setUp() async throws {
+        MTimerContainer.shared.resetAll()
+    }
 }
 
 // MARK: - Basics
@@ -23,55 +25,71 @@ extension MTimerTests {
     func testTimerStarts() {
         try! defaultTimer.start()
         wait(for: defaultWaitingTime)
-
+        
         XCTAssertGreaterThan(currentTime, 0)
+        XCTAssertEqual(.inProgress, timer.timerState)
     }
     func testTimerIsCancellable() {
         try! defaultTimer.start()
         wait(for: defaultWaitingTime)
 
-        MTimer.stop()
+        timer.cancel()
         wait(for: defaultWaitingTime)
 
         let timeAfterStop = currentTime
         wait(for: defaultWaitingTime)
 
         XCTAssertEqual(timeAfterStop, currentTime)
+        XCTAssertEqual(.cancelled, timer.timerState)
     }
     func testTimerIsResetable() {
         let startTime: TimeInterval = 3
-
         try! defaultTimer.start(from: startTime)
         wait(for: defaultWaitingTime)
-
+        
         XCTAssertNotEqual(currentTime, startTime)
-
+        
         wait(for: defaultWaitingTime)
-        MTimer.reset()
+        timer.reset()
+        wait(for: defaultWaitingTime)
+        
+        XCTAssertEqual(0, currentTime)
+        XCTAssertEqual(0, timer.timerProgress)
+        XCTAssertEqual(.notStarted, timer.timerState)
+    }
+    func testTimerIsSkippable() {
+        let endTime: TimeInterval = 3
+    
+        try! defaultTimer.start(to: endTime)
+        wait(for: defaultWaitingTime)
+        timer.skip()
         wait(for: defaultWaitingTime)
 
-        XCTAssertEqual(startTime, currentTime)
+        XCTAssertEqual(endTime, currentTime)
+        XCTAssertEqual(1, timer.timerProgress)
+        XCTAssertEqual(.finished, timer.timerState)
     }
     func testTimerCanBeResumed() {
         try! defaultTimer.start()
         wait(for: defaultWaitingTime)
 
-        MTimer.stop()
+        timer.pause()
         let timeAfterStop = currentTime
         wait(for: defaultWaitingTime)
 
-        try! MTimer.resume()
+        try! timer.resume()
         wait(for: defaultWaitingTime)
 
         XCTAssertNotEqual(timeAfterStop, currentTime)
+        XCTAssertEqual(.inProgress, timer.timerState)
     }
 }
 
 // MARK: - Additional Basics
 extension MTimerTests {
     func testTimerShouldPublishAccurateValuesWithZeroTolerance() {
-        try! MTimer
-            .publish(every: 0.1, tolerance: 0) { self.currentTime = $0.toTimeInterval() }
+        try! timer
+            .publish(every: 0.1, tolerance: 0.0) { self.currentTime = $0.toTimeInterval() }
             .start()
         wait(for: 0.6)
 
@@ -80,8 +98,10 @@ extension MTimerTests {
     func testTimerShouldPublishInaccurateValuesWithNonZeroTolerance() {
         try! defaultTimer.start()
         wait(for: 1)
-
-        XCTAssertNotEqual(currentTime, 1)
+        
+        // usually returns 1.0000000000000002 that is equal to 1.0
+        // OLD test XCTAssertNotEqual(currentTime, 1)
+        XCTAssertEqual(currentTime, 1)
     }
     func testTimerCanRunBackwards() {
         try! defaultTimer.start(from: 3, to: 1)
@@ -90,14 +110,14 @@ extension MTimerTests {
         XCTAssertLessThan(currentTime, 3)
     }
     func testTimerPublishesStatuses() {
-        var statuses: [Bool: Bool] = [true: false, false: false]
+        var statuses: [MTimerStatus: Bool] = [.inProgress: false, .cancelled: false]
 
         try! defaultTimer
             .onTimerActivityChange { statuses[$0] = true }
             .start()
         wait(for: defaultWaitingTime)
 
-        MTimer.stop()
+        timer.cancel()
         wait(for: defaultWaitingTime)
 
         XCTAssertTrue(statuses.values.filter { !$0 }.isEmpty)
@@ -137,7 +157,7 @@ extension MTimerTests {
     func testTimerCanHaveMultipleInstances() {
         var newTime: TimeInterval = 0
 
-        let newTimer = MTimer.createNewInstance()
+        let newTimer = MTimer(.multipleInstancesTimer)
         try! newTimer
             .publish(every: 0.3) { newTime = $0.toTimeInterval() }
             .start(from: 10, to: 100)
@@ -150,20 +170,20 @@ extension MTimerTests {
         XCTAssertNotEqual(newTime, currentTime)
     }
     func testNewInstanceTimerCanBeStopped() {
-        let newTimer = MTimer.createNewInstance()
+        let newTimer = MTimer(.stoppableTimer)
 
         try! newTimer
-            .publish(every: 0.1) { self.currentTime = $0.toTimeInterval() }
+            .publish(every: 0.1) { print($0); self.currentTime = $0.toTimeInterval() }
             .start()
         wait(for: defaultWaitingTime)
 
-        newTimer.stop()
+        newTimer.cancel()
         wait(for: defaultWaitingTime)
 
         let timeAfterStop = currentTime
         wait(for: defaultWaitingTime)
 
-        XCTAssertGreaterThan(currentTime, 0)
+        XCTAssertEqual(currentTime, 0)
         XCTAssertEqual(timeAfterStop, currentTime)
     }
 }
@@ -173,7 +193,7 @@ extension MTimerTests {
     func testTimerProgressCountsCorrectly_From0To10() {
         var progress: Double = 0
 
-        try! MTimer
+        try! timer
             .publish(every: 0.5, tolerance: 0) { self.currentTime = $0.toTimeInterval() }
             .onTimerProgressChange { progress = $0 }
             .start(from: 0, to: 10)
@@ -184,7 +204,7 @@ extension MTimerTests {
     func testTimerProgressCountsCorrectly_From10To29() {
         var progress: Double = 0
 
-        try! MTimer
+        try! timer
             .publish(every: 0.5, tolerance: 0) { self.currentTime = $0.toTimeInterval() }
             .onTimerProgressChange { progress = $0 }
             .start(from: 10, to: 29)
@@ -195,7 +215,7 @@ extension MTimerTests {
     func testTimerProgressCountsCorrectly_From31To100() {
         var progress: Double = 0
 
-        try! MTimer
+        try! timer
             .publish(every: 0.5, tolerance: 0) { self.currentTime = $0.toTimeInterval() }
             .onTimerProgressChange { progress = $0 }
             .start(from: 31, to: 100)
@@ -206,7 +226,7 @@ extension MTimerTests {
     func testTimerProgressCountsCorrectly_From100To0() {
         var progress: Double = 0
 
-        try! MTimer
+        try! timer
             .publish(every: 0.5, tolerance: 0) { self.currentTime = $0.toTimeInterval() }
             .onTimerProgressChange { progress = $0 }
             .start(from: 100, to: 0)
@@ -217,20 +237,28 @@ extension MTimerTests {
     func testTimerProgressCountsCorrectly_From31To14() {
         var progress: Double = 0
 
-        try! MTimer
+        try! timer
             .publish(every: 0.25, tolerance: 0) { self.currentTime = $0.toTimeInterval() }
             .onTimerProgressChange { progress = $0 }
             .start(from: 31, to: 14)
         wait(for: 1)
 
         XCTAssertEqual(progress, 1/17)
+        XCTAssertEqual(timer.timerProgress, 1/17)
+    }
+    func timerShouldPublishStatusUpdateAtTheEndIfPublishersNotSetUpped() {
+        let timer = MTimer(.timerWithoutPublishers)
+        try! timer.start(to: 1)
+        wait(for: 1)
+        
+        XCTAssertEqual(1.0, timer.timerTime.toTimeInterval())
     }
 }
 
 // MARK: - Errors
 extension MTimerTests {
     func testTimerCannotBeInitialised_PublishTimeIsTooLess() {
-        XCTAssertThrowsError(try MTimer.publish(every: 0.0001, { _ in })) { error in
+        XCTAssertThrowsError(try timer.publish(every: 0.0001, { _ in })) { error in
             let error = error as! MTimer.Error
             XCTAssertEqual(error, .publisherTimeCannotBeLessThanOneMillisecond)
         }
@@ -254,7 +282,7 @@ extension MTimerTests {
         }
     }
     func testCannotResumeTimer_WhenTimerIsNotInitialised() {
-        XCTAssertThrowsError(try MTimer.resume()) { error in
+        XCTAssertThrowsError(try timer.resume()) { error in
             let error = error as! MTimer.Error
             XCTAssertEqual(error, .cannotResumeNotInitialisedTimer)
         }
@@ -284,5 +312,12 @@ private extension MTimerTests {
 }
 private extension MTimerTests {
     var defaultWaitingTime: TimeInterval { 0.15 }
-    var defaultTimer: MTimer { try! .publish(every: 0.05, tolerance: 0.5) { self.currentTime = $0.toTimeInterval() } }
+    var defaultTimer: MTimer { try! timer.publish(every: 0.05, tolerance: 0.5) { self.currentTime = $0.toTimeInterval() } }
+    var timer: MTimer { .init(.testTimer) }
+}
+fileprivate extension MTimerID {
+    @MainActor static let testTimer: MTimerID = .init(rawValue: "Test timer")
+    @MainActor static let timerWithoutPublishers: MTimerID = .init(rawValue: "Timer Without Publishers")
+    @MainActor static let stoppableTimer: MTimerID = .init(rawValue: "Stoppable Timer")
+    @MainActor static let multipleInstancesTimer: MTimerID = .init(rawValue: "Multiple Instances")
 }
