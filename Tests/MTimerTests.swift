@@ -27,7 +27,7 @@ extension MTimerTests {
         wait(for: defaultWaitingTime)
         
         XCTAssertGreaterThan(currentTime, 0)
-        XCTAssertEqual(.inProgress, timer.timerState)
+        XCTAssertEqual(.inProgress, timer.timerStatus)
     }
     func testTimerIsCancellable() {
         try! defaultTimer.start()
@@ -40,7 +40,7 @@ extension MTimerTests {
         wait(for: defaultWaitingTime)
 
         XCTAssertEqual(timeAfterStop, currentTime)
-        XCTAssertEqual(.cancelled, timer.timerState)
+        XCTAssertEqual(.cancelled, timer.timerStatus)
     }
     func testTimerIsResetable() {
         let startTime: TimeInterval = 3
@@ -55,7 +55,7 @@ extension MTimerTests {
         
         XCTAssertEqual(0, currentTime)
         XCTAssertEqual(0, timer.timerProgress)
-        XCTAssertEqual(.notStarted, timer.timerState)
+        XCTAssertEqual(.notStarted, timer.timerStatus)
     }
     func testTimerIsSkippable() {
         let endTime: TimeInterval = 3
@@ -67,7 +67,7 @@ extension MTimerTests {
 
         XCTAssertEqual(endTime, currentTime)
         XCTAssertEqual(1, timer.timerProgress)
-        XCTAssertEqual(.finished, timer.timerState)
+        XCTAssertEqual(.finished, timer.timerStatus)
     }
     func testTimerCanBeResumed() {
         try! defaultTimer.start()
@@ -81,7 +81,7 @@ extension MTimerTests {
         wait(for: defaultWaitingTime)
 
         XCTAssertNotEqual(timeAfterStop, currentTime)
-        XCTAssertEqual(.inProgress, timer.timerState)
+        XCTAssertEqual(.inProgress, timer.timerStatus)
     }
 }
 

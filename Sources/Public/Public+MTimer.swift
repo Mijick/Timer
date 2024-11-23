@@ -92,7 +92,7 @@ public extension MTimer {
 public extension MTimer {
     /// Publishes the timer activity changes.
     func onTimerActivityChange(_ action: @escaping (_ isRunning: MTimerStatus) -> ()) -> MTimer {
-        callbacks.onTimerActivityChange = action
+        callbacks.onTimerStatusChange = action
         return self
     }
     /// Publishes the timer activity changes.

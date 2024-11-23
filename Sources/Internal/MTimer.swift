@@ -16,7 +16,7 @@ public final class MTimer: ObservableObject, FactoryInitializable {
     let id: MTimerID
     
     @Published public private(set) var timerTime: MTime = .init()
-    @Published public private(set) var timerState: MTimerStatus = .notStarted
+    @Published public private(set) var timerStatus: MTimerStatus = .notStarted // Status not state
     @Published public private(set) var timerProgress: Double = 0
     
     init(identifier: MTimerID) { self.id = identifier }
@@ -36,7 +36,7 @@ extension MTimer {
 // MARK: - Starting Timer
 extension MTimer {
     func checkRequirementsForStartingTimer(_ startTime: TimeInterval, _ endTime: TimeInterval) throws {
-        try validator.checkRequirementsForStartingTimer(startTime, endTime, state, timerState)
+        try validator.checkRequirementsForStartingTimer(startTime, endTime, state, timerStatus)
     }
     func assignInitialStartValues(_ startTime: TimeInterval, _ endTime: TimeInterval) {
         configuration.assignInitialStartValues(startTime, endTime)
@@ -67,7 +67,7 @@ extension MTimer {
     func resetTimer() {
         configuration.reset()
         updateInternalTimer(false)
-        timerState = .notStarted
+        timerStatus = .notStarted
         updateObservers(false)
         resetTimerPublishers()
         publishTimerStatus()
@@ -83,7 +83,7 @@ extension MTimer {
 // MARK: - Handling Timer
 private extension MTimer {
     func handleTimer(status: MTimerStatus) { if status != .inProgress || configuration.canTimerBeStarted {
-        timerState = status
+        timerStatus = status
         updateInternalTimer(isTimerRunning)
         updateObservers(isTimerRunning)
         publishTimerStatus()
@@ -187,7 +187,7 @@ private extension MTimer {
     }
     func resetTimerPublishers() {
         guard isNeededReset else { return }
-        timerState = .notStarted
+        timerStatus = .notStarted
         timerProgress = 0
         timerTime = .init(timeInterval: configuration.initialTime.start)
     }
@@ -196,7 +196,7 @@ private extension MTimer {
 private extension MTimer {
     func publishTimerStatusChange() { DispatchQueue.main.async(qos: .userInteractive) { [weak self] in
         guard let self else { return }
-        callbacks.onTimerActivityChange?(timerState)
+        callbacks.onTimerStatusChange?(timerStatus)
     }}
     func publishRunningTimeChange() { DispatchQueue.main.async(qos: .userInteractive) { [weak self] in
         guard let self else { return }
@@ -209,6 +209,6 @@ private extension MTimer {
 
 // MARK: - Helpers
 private extension MTimer {
-    var isTimerRunning: Bool { timerState == .inProgress }
-    var isNeededReset: Bool { timerState == .finished || timerState == .cancelled || timerState == .notStarted }
+    var isTimerRunning: Bool { timerStatus == .inProgress }
+    var isNeededReset: Bool { timerStatus == .finished || timerStatus == .cancelled || timerStatus == .notStarted }
 }

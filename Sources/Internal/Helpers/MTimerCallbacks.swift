@@ -9,6 +9,6 @@ import SwiftUI
 
 class MTimerCallbacks {
     var onRunningTimeChange: ((MTime) -> ())?
-    var onTimerActivityChange: ((MTimerStatus) -> ())?
+    var onTimerStatusChange: ((MTimerStatus) -> ())?
     var onTimerProgressChange: ((Double) -> ())?
 }
