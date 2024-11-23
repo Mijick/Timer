@@ -14,13 +14,25 @@ class MTimerConfigurationManager {
     private(set) var currentTime: TimeInterval = 0
 }
 
+// MARK: Getters
+extension MTimerConfigurationManager {
+    func getPublisherTime() -> TimeInterval {
+        publisherTime == 0 ? max(time.start, time.end) : publisherTime
+    }
+    func getTimerProgress() -> Double {
+        let timerTotalTime = max(time.start, time.end) - min(time.start, time.end)
+        let timerRunningTime = abs(currentTime - time.start)
+        return timerRunningTime / timerTotalTime
+    }
+}
+
 // MARK: Setters
 extension MTimerConfigurationManager {
     func setInitialTime(startTime: TimeInterval, endTime: TimeInterval) {
         time = (startTime, endTime)
         currentTime = startTime
     }
-    func setInitialPublisher(time: TimeInterval, tolerance: TimeInterval) {
+    func setPublishers(time: TimeInterval, tolerance: TimeInterval) {
         publisherTime = time
         publisherTimeTolerance = tolerance
     }
@@ -44,20 +56,11 @@ extension MTimerConfigurationManager {
         currentTime = 0
     }
 }
-
-// MARK: Getters
-extension MTimerConfigurationManager {
-    func getPublisherTime() -> TimeInterval {
-        publisherTime == 0 ? max(time.start, time.end) : publisherTime
-    }
-    func getTimerProgress() -> Double {
-        let timerTotalTime = max(time.start, time.end) - min(time.start, time.end)
-        let timerRunningTime = abs(currentTime - time.start)
-        return timerRunningTime / timerTotalTime
-    }
+private extension MTimerConfigurationManager {
+    var timeIncrementMultiplier: Double { time.start > time.end ? -1 : 1 }
 }
 
+// MARK: Helpers
 extension MTimerConfigurationManager {
     var canTimerBeStarted: Bool { currentTime != time.end }
-    var timeIncrementMultiplier: Double { time.start > time.end ? -1 : 1 }
 }

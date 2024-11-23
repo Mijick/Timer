@@ -28,7 +28,7 @@ extension MTimer {
         try validator.checkRequirementsForInitializingTimer(publisherTime)
     }
     func assignInitialPublisherValues(_ time: TimeInterval, _ tolerance: TimeInterval, _ completion: @escaping (MTime) -> ()) {
-        configuration.setInitialPublisher(time: time, tolerance: tolerance)
+        configuration.setPublishers(time: time, tolerance: tolerance)
         callbacks.onRunningTimeChange = completion
     }
 }
