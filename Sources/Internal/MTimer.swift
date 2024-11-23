@@ -105,11 +105,7 @@ private extension MTimer {
 private extension MTimer {
     func updateInternalTimerStart() {
         let publisherTime = configuration.getPublisherTime()
-        state.internalTimer = .scheduledTimer(timeInterval: publisherTime,
-                                              target: self,
-                                              selector: #selector(handleTimeChange),
-                                              userInfo: nil,
-                                              repeats: true)
+        state.runTimer(self, publisherTime, #selector(handleTimeChange))
         state.internalTimer?.tolerance = configuration.publisherTimeTolerance
         updateInternalTimerStartAddToRunLoop()
     }

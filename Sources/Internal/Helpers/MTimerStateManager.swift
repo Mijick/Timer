@@ -15,6 +15,13 @@ class MTimerStateManager {
 }
 
 extension MTimerStateManager {
+    func runTimer(_ target: Any, _ timeInterval: TimeInterval, _ selector: Selector) {
+        internalTimer = .scheduledTimer(timeInterval: timeInterval,
+                                        target: target,
+                                        selector: selector,
+                                        userInfo: nil,
+                                        repeats: true)
+    }
     func didEnterBackground() {
         internalTimer?.invalidate()
         backgroundTransitionDate = .init()
