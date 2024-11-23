@@ -15,7 +15,7 @@ class MTimerStateManager {
 }
 
 extension MTimerStateManager {
-    func runTimer(_ target: Any, _ timeInterval: TimeInterval, _ selector: Selector) {
+    func runTimer(_ target: Any, _ timeInterval: TimeInterval, _ selector: Selector) { // TODO: create separate func to hadnle it 
         internalTimer = .scheduledTimer(
             timeInterval: timeInterval,
             target: target,
