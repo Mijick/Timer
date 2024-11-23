@@ -17,7 +17,6 @@ public final class MTimer: ObservableObject, FactoryInitializable {
     
     private let state = MTimerStateManager()
     private let configuration = MTimerConfigurationManager()
-    private let validator = MTimerValidator()
     
     init(identifier: MTimerID) { self.id = identifier }
 }
@@ -25,7 +24,7 @@ public final class MTimer: ObservableObject, FactoryInitializable {
 // MARK: - Initialising Timer
 extension MTimer {
     func checkRequirementsForInitializingTimer(_ publisherTime: TimeInterval) throws {
-        try validator.checkRequirementsForInitializingTimer(publisherTime)
+        try MTimerValidator.checkRequirementsForInitializingTimer(publisherTime)
     }
     func assignInitialPublisherValues(_ time: TimeInterval, _ tolerance: TimeInterval, _ completion: @escaping (MTime) -> ()) {
         configuration.setPublishers(time: time, tolerance: tolerance)
@@ -36,7 +35,7 @@ extension MTimer {
 // MARK: - Starting Timer
 extension MTimer {
     func checkRequirementsForStartingTimer(_ startTime: TimeInterval, _ endTime: TimeInterval) throws {
-        try validator.checkRequirementsForStartingTimer(startTime, endTime, state, timerStatus)
+        try MTimerValidator.checkRequirementsForStartingTimer(startTime, endTime, state, timerStatus)
     }
     func assignInitialStartValues(_ startTime: TimeInterval, _ endTime: TimeInterval) {
         configuration.setInitialTime(startTime: startTime, endTime: endTime)
@@ -51,7 +50,7 @@ extension MTimer {
 // MARK: - Resuming Timer
 extension MTimer {
     func checkRequirementsForResumingTimer() throws {
-        try validator.checkRequirementsForResumingTimer(callbacks)
+        try MTimerValidator.checkRequirementsForResumingTimer(callbacks)
     }
 }
 
