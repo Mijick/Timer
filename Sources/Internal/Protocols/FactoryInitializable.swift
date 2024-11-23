@@ -13,8 +13,8 @@ import SwiftUI
 
 extension FactoryInitializable where Self: MTimer {
      public init(_ id: MTimerID) {
-         let timer = MTimerContainer.getTimer(id) ?? MTimer(identifier: id)
-         MTimerContainer.register(timer)
-         self = timer as! Self
+         let timer = MTimer(identifier: id)
+         let registeredTimer = MTimerContainer.register(timer)
+         self = registeredTimer as! Self
     }
 }

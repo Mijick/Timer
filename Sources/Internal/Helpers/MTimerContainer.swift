@@ -10,15 +10,15 @@
 }
 
 extension MTimerContainer {
-    static func getTimer(_ id: MTimerID) -> MTimer? {
-        timers.first(where: { $0.id == id })
+    static func register(_ timer: MTimer) -> MTimer  {
+        if let timer = getTimer(timer.id) { return timer }
+        timers.append(timer)
+        return timer
     }
 }
-
-extension MTimerContainer {
-    static func register(_ timer: MTimer)  {
-        guard getTimer(timer.id) == nil else { return }
-        timers.append(timer)
+private extension MTimerContainer {
+    static func getTimer(_ id: MTimerID) -> MTimer? {
+        timers.first(where: { $0.id == id })
     }
 }
 
