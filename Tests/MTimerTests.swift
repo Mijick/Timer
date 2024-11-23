@@ -98,7 +98,7 @@ extension MTimerTests {
     func testTimerShouldPublishInaccurateValuesWithNonZeroTolerance() {
         try! defaultTimer.start()
         wait(for: 1)
-        
+        // TODO: TIMER run not from main actor / therad. How much takes resources
         // usually returns 1.0000000000000002 that is equal to 1.0
         // OLD test XCTAssertNotEqual(currentTime, 1)
         XCTAssertEqual(currentTime, 1)
@@ -312,7 +312,7 @@ private extension MTimerTests {
 }
 private extension MTimerTests {
     var defaultWaitingTime: TimeInterval { 0.15 }
-    var defaultTimer: MTimer { try! timer.publish(every: 0.05, tolerance: 0.5) { self.currentTime = $0.toTimeInterval() } }
+    var defaultTimer: MTimer { try! timer.publish(every: 0.05, tolerance: 20) { self.currentTime = $0.toTimeInterval() } }
     var timer: MTimer { .init(.testTimer) }
 }
 fileprivate extension MTimerID {
