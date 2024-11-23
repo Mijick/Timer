@@ -316,8 +316,8 @@ private extension MTimerTests {
     var timer: MTimer { .init(.testTimer) }
 }
 fileprivate extension MTimerID {
-    @MainActor static let testTimer: MTimerID = .init(rawValue: "Test timer")
-    @MainActor static let timerWithoutPublishers: MTimerID = .init(rawValue: "Timer Without Publishers")
-    @MainActor static let stoppableTimer: MTimerID = .init(rawValue: "Stoppable Timer")
-    @MainActor static let multipleInstancesTimer: MTimerID = .init(rawValue: "Multiple Instances")
+    static let testTimer: MTimerID = .init(rawValue: "Test timer")
+    static let timerWithoutPublishers: MTimerID = .init(rawValue: "Timer Without Publishers")
+    static let stoppableTimer: MTimerID = .init(rawValue: "Stoppable Timer")
+    static let multipleInstancesTimer: MTimerID = .init(rawValue: "Multiple Instances")
 }
