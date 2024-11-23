@@ -8,16 +8,16 @@
 import SwiftUI
 
 public final class MTimer: ObservableObject, FactoryInitializable {
-    private let state = MTimerStateManager()
-    private let configuration = MTimerConfigurationManager()
-    private let validator = MTimerValidator()
+    @Published public private(set) var timerTime: MTime = .init()
+    @Published public private(set) var timerStatus: MTimerStatus = .notStarted
+    @Published public private(set) var timerProgress: Double = 0
     
     let callbacks = MTimerCallbacks()
     let id: MTimerID
     
-    @Published public private(set) var timerTime: MTime = .init()
-    @Published public private(set) var timerStatus: MTimerStatus = .notStarted // Status not state
-    @Published public private(set) var timerProgress: Double = 0
+    private let state = MTimerStateManager()
+    private let configuration = MTimerConfigurationManager()
+    private let validator = MTimerValidator()
     
     init(identifier: MTimerID) { self.id = identifier }
 }
