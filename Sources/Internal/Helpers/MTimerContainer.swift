@@ -6,17 +6,14 @@
 //
 
 @MainActor class MTimerContainer {
-    private var timers: [MTimer] = []
-    static let shared = MTimerContainer()
-    
-    private init() { }
+    private static var timers: [MTimer] = []
 }
 
 extension MTimerContainer {
-    func getTimer(_ id: MTimerID) -> MTimer? { timers.first(where: { $0.id == id }) }
-    func register(_ timer: MTimer)  { if getTimer(timer.id) == nil { timers.append(timer) }}
+    static func getTimer(_ id: MTimerID) -> MTimer? { timers.first(where: { $0.id == id }) }
+    static func register(_ timer: MTimer)  { if getTimer(timer.id) == nil { timers.append(timer) }}
 }
 
 extension MTimerContainer {
-    func resetAll() { timers.forEach { $0.reset() }}
+    static func resetAll() { timers.forEach { $0.reset() }}
 }

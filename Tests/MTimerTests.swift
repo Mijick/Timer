@@ -16,7 +16,7 @@ import XCTest
     var currentTime: TimeInterval = 0
 
     override func setUp() async throws {
-        MTimerContainer.shared.resetAll()
+        MTimerContainer.resetAll()
     }
 }
 
