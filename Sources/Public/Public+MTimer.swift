@@ -22,8 +22,8 @@ public extension MTimer {
     /// WARNING: Use the start() method to start the timer.
     func publish(every time: TimeInterval, tolerance: TimeInterval = 0.4, _ completion: @escaping (_ currentTime: MTime) -> ()) throws -> MTimer {
         // TODO: add and test assert instead of throwing error
-        try checkRequirementsForInitializingTimer(time)
-        assignInitialPublisherValues(time, tolerance, completion)
+        try MTimerValidator.checkRequirementsForInitializingTimer(time)
+        setupPublishers(time, tolerance, completion)
         return self
     }
 }
@@ -36,7 +36,7 @@ public extension MTimer {
     }
     /// Starts the timer using the specified initial values. Can be run backwards - use any "to" value that is greater than  "from".
     func start(from startTime: TimeInterval = 0, to endTime: TimeInterval = .infinity) throws {
-        try checkRequirementsForStartingTimer(startTime, endTime)
+        try MTimerValidator.checkRequirementsForStartingTimer(startTime, endTime, state, timerStatus)
         assignInitialStartValues(startTime, endTime)
         startTimer()
     }
@@ -58,7 +58,7 @@ public extension MTimer {
 public extension MTimer {
     /// Resumes the stopped timer.
     func resume() throws {
-        try checkRequirementsForResumingTimer()
+        try MTimerValidator.checkRequirementsForResumingTimer(callbacks)
         startTimer()
     }
 }
