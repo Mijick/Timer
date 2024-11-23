@@ -21,6 +21,7 @@ public extension MTimer {
     /// Prepares the timer to start.
     /// WARNING: Use the start() method to start the timer.
     func publish(every time: TimeInterval, tolerance: TimeInterval = 0.4, _ completion: @escaping (_ currentTime: MTime) -> ()) throws -> MTimer {
+        // TODO: add and test assert instead of throwing error
         try checkRequirementsForInitializingTimer(time)
         assignInitialPublisherValues(time, tolerance, completion)
         return self

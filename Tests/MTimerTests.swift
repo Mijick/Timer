@@ -259,31 +259,31 @@ extension MTimerTests {
 extension MTimerTests {
     func testTimerCannotBeInitialised_PublishTimeIsTooLess() {
         XCTAssertThrowsError(try timer.publish(every: 0.0001, { _ in })) { error in
-            let error = error as! MTimer.Error
+            let error = error as! MTimerError
             XCTAssertEqual(error, .publisherTimeCannotBeLessThanOneMillisecond)
         }
     }
     func testTimerDoesNotStart_StartTimeEqualsEndTime() {
         XCTAssertThrowsError(try defaultTimer.start(from: 0, to: 0)) { error in
-            let error = error as! MTimer.Error
+            let error = error as! MTimerError
             XCTAssertEqual(error, .startTimeCannotBeTheSameAsEndTime)
         }
     }
     func testTimerDoesNotStart_StartTimeIsLessThanZero() {
         XCTAssertThrowsError(try defaultTimer.start(from: -10, to: 5)) { error in
-            let error = error as! MTimer.Error
+            let error = error as! MTimerError
             XCTAssertEqual(error, .timeCannotBeLessThanZero)
         }
     }
     func testTimerDoesNotStart_EndTimeIsLessThanZero() {
         XCTAssertThrowsError(try defaultTimer.start(from: 10, to: -15)) { error in
-            let error = error as! MTimer.Error
+            let error = error as! MTimerError
             XCTAssertEqual(error, .timeCannotBeLessThanZero)
         }
     }
     func testCannotResumeTimer_WhenTimerIsNotInitialised() {
         XCTAssertThrowsError(try timer.resume()) { error in
-            let error = error as! MTimer.Error
+            let error = error as! MTimerError
             XCTAssertEqual(error, .cannotResumeNotInitialisedTimer)
         }
     }
@@ -291,7 +291,7 @@ extension MTimerTests {
         try! defaultTimer.start()
 
         XCTAssertThrowsError(try defaultTimer.start()) { error in
-            let error = error as! MTimer.Error
+            let error = error as! MTimerError
             XCTAssertEqual(error, .timerIsAlreadyRunning)
         }
     }
