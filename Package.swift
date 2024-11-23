@@ -16,5 +16,5 @@ let package = Package(
         .target(name: "MijickTimer", dependencies: [], path: "Sources"),
         .testTarget(name: "MijickTimerTests", dependencies: ["MijickTimer"], path: "Tests")
     ],
-    swiftLanguageModes: [.version("6"), .v5]
+    swiftLanguageModes: [.v6]
 )
