@@ -132,7 +132,7 @@ private extension MTimer {
 // MARK: - Handling Time Change
 private extension MTimer {
     @objc func handleTimeChange(_ timeChange: Any) {
-        configuration.calculateNewCurrentTime(timeChange)
+        configuration.setNewCurrentTime(timeChange)
         stopTimerIfNecessary()
         publishRunningTimeChange()
     }
@@ -201,9 +201,9 @@ private extension MTimer {
     func publishRunningTimeChange() { DispatchQueue.main.async(qos: .userInteractive) { [weak self] in
         guard let self else { return }
         callbacks.onRunningTimeChange?(.init(timeInterval: configuration.currentTime))
-        callbacks.onTimerProgressChange?(configuration.calculateTimerProgress())
+        callbacks.onTimerProgressChange?(configuration.getTimerProgress())
         timerTime = .init(timeInterval: configuration.currentTime)
-        timerProgress = configuration.calculateTimerProgress()
+        timerProgress = configuration.getTimerProgress()
     }}
 }
 

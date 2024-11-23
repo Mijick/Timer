@@ -14,6 +14,7 @@ class MTimerConfigurationManager {
     private(set) var currentTime: TimeInterval = 0
 }
 
+// MARK: Setters
 extension MTimerConfigurationManager {
     func setInitialTime(startTime: TimeInterval, endTime: TimeInterval) {
         time = (startTime, endTime)
@@ -29,26 +30,30 @@ extension MTimerConfigurationManager {
     func setCurrentTimeToEnd() {
         currentTime = time.end
     }
-    func getPublisherTime() -> TimeInterval {
-        publisherTime == 0 ? max(time.start, time.end) : publisherTime
-    }
-    func calculateNewCurrentTime(_ timeChange: Any?) {
+    func setNewCurrentTime(_ timeChange: Any?) {
         let timeChange = timeChange as? TimeInterval ?? publisherTime
         let newCurrentTime = currentTime + timeChange * timeIncrementMultiplier
         currentTime = timeIncrementMultiplier == -1
                     ? max(newCurrentTime, time.end)
                     : min(newCurrentTime, time.end)
     }
-    func calculateTimerProgress() -> Double {
-        let timerTotalTime = max(time.start, time.end) - min(time.start, time.end)
-        let timerRunningTime = abs(currentTime - time.start)
-        return timerRunningTime / timerTotalTime
-    }
     func reset() {
         time = (0, 1)
         publisherTime = 0
         publisherTimeTolerance = 0.4
         currentTime = 0
+    }
+}
+
+// MARK: Getters
+extension MTimerConfigurationManager {
+    func getPublisherTime() -> TimeInterval {
+        publisherTime == 0 ? max(time.start, time.end) : publisherTime
+    }
+    func getTimerProgress() -> Double {
+        let timerTotalTime = max(time.start, time.end) - min(time.start, time.end)
+        let timerRunningTime = abs(currentTime - time.start)
+        return timerRunningTime / timerTotalTime
     }
 }
 
