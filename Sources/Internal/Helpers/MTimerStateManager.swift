@@ -10,12 +10,10 @@ import SwiftUI
 class MTimerStateManager {
     var internalTimer: Timer?
     var backgroundTransitionDate: Date? = nil
-    
-    deinit { internalTimer?.invalidate() }
 }
 
 extension MTimerStateManager {
-    func runTimer(_ target: Any, _ timeInterval: TimeInterval, _ selector: Selector) { // TODO: create separate func to hadnle it 
+    func runTimer(_ target: Any, _ timeInterval: TimeInterval, _ selector: Selector) { // TODO: create separate func to handle it
         internalTimer = .scheduledTimer(
             timeInterval: timeInterval,
             target: target,
@@ -26,6 +24,7 @@ extension MTimerStateManager {
     }
 }
 
+// MARK: App State Handle
 extension MTimerStateManager {
     func didEnterBackground() {
         internalTimer?.invalidate()
