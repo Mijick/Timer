@@ -8,51 +8,51 @@
 import SwiftUI
 
 class MTimerConfigurationManager {
-    var initialTime: (start: TimeInterval, end: TimeInterval) = (0, 1)
-    var publisherTime: TimeInterval = 0
-    var publisherTimeTolerance: TimeInterval = 0.4
-    var runningTime: TimeInterval = 0
+    private(set) var time: (start: TimeInterval, end: TimeInterval) = (0, 1)
+    private(set) var publisherTime: TimeInterval = 0
+    private(set) var publisherTimeTolerance: TimeInterval = 0.4
+    private(set) var currentTime: TimeInterval = 0
 }
 
 extension MTimerConfigurationManager {
-    func assignInitialStartValues(_ startTime: TimeInterval, _ endTime: TimeInterval) {
-        initialTime = (startTime, endTime)
-        runningTime = startTime
+    func setInitialTime(startTime: TimeInterval, endTime: TimeInterval) {
+        time = (startTime, endTime)
+        currentTime = startTime
     }
-    func assignInitialPublisherValues(_ time: TimeInterval, _ tolerance: TimeInterval) {
+    func setInitialPublisher(time: TimeInterval, tolerance: TimeInterval) {
         publisherTime = time
         publisherTimeTolerance = tolerance
     }
-    func resetRunningTime() {
-        runningTime = initialTime.start
+    func setCurrentTimeToStart() {
+        currentTime = time.start
     }
-    func skipRunningTime() {
-        runningTime = initialTime.end
+    func setCurrentTimeToEnd() {
+        currentTime = time.end
     }
     func getPublisherTime() -> TimeInterval {
-        publisherTime == 0 ? max(initialTime.start, initialTime.end) : publisherTime
+        publisherTime == 0 ? max(time.start, time.end) : publisherTime
     }
-    func calculateNewRunningTime(_ timeChange: Any?) {
+    func calculateNewCurrentTime(_ timeChange: Any?) {
         let timeChange = timeChange as? TimeInterval ?? publisherTime
-        let newRunningTime = runningTime + timeChange * timeIncrementMultiplier
-        runningTime = timeIncrementMultiplier == -1
-                    ? max(newRunningTime, initialTime.end)
-                    : min(newRunningTime, initialTime.end)
+        let newCurrentTime = currentTime + timeChange * timeIncrementMultiplier
+        currentTime = timeIncrementMultiplier == -1
+                    ? max(newCurrentTime, time.end)
+                    : min(newCurrentTime, time.end)
     }
     func calculateTimerProgress() -> Double {
-        let timerTotalTime = max(initialTime.start, initialTime.end) - min(initialTime.start, initialTime.end)
-        let timerRunningTime = abs(runningTime - initialTime.start)
+        let timerTotalTime = max(time.start, time.end) - min(time.start, time.end)
+        let timerRunningTime = abs(currentTime - time.start)
         return timerRunningTime / timerTotalTime
     }
     func reset() {
-        initialTime = (0, 1)
+        time = (0, 1)
         publisherTime = 0
         publisherTimeTolerance = 0.4
-        runningTime = 0
+        currentTime = 0
     }
 }
 
 extension MTimerConfigurationManager {
-    var canTimerBeStarted: Bool { runningTime != initialTime.end }
-    var timeIncrementMultiplier: Double { initialTime.start > initialTime.end ? -1 : 1 }
+    var canTimerBeStarted: Bool { currentTime != time.end }
+    var timeIncrementMultiplier: Double { time.start > time.end ? -1 : 1 }
 }

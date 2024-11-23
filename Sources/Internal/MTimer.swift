@@ -28,7 +28,7 @@ extension MTimer {
         try validator.checkRequirementsForInitializingTimer(publisherTime)
     }
     func assignInitialPublisherValues(_ time: TimeInterval, _ tolerance: TimeInterval, _ completion: @escaping (MTime) -> ()) {
-        configuration.assignInitialPublisherValues(time, tolerance)
+        configuration.setInitialPublisher(time: time, tolerance: tolerance)
         callbacks.onRunningTimeChange = completion
     }
 }
@@ -39,7 +39,7 @@ extension MTimer {
         try validator.checkRequirementsForStartingTimer(startTime, endTime, state, timerStatus)
     }
     func assignInitialStartValues(_ startTime: TimeInterval, _ endTime: TimeInterval) {
-        configuration.assignInitialStartValues(startTime, endTime)
+        configuration.setInitialTime(startTime: startTime, endTime: endTime)
         resetRunningTime()
         resetTimerPublishers()
     }
@@ -76,8 +76,8 @@ extension MTimer {
 
 // MARK: - Running Time Updates
 extension MTimer {
-    func resetRunningTime() { configuration.resetRunningTime() }
-    func skipRunningTime() { configuration.skipRunningTime() }
+    func resetRunningTime() { configuration.setCurrentTimeToStart() }
+    func skipRunningTime() { configuration.setCurrentTimeToEnd() }
 }
 
 // MARK: - Handling Timer
@@ -132,7 +132,7 @@ private extension MTimer {
 // MARK: - Handling Time Change
 private extension MTimer {
     @objc func handleTimeChange(_ timeChange: Any) {
-        configuration.calculateNewRunningTime(timeChange)
+        configuration.calculateNewCurrentTime(timeChange)
         stopTimerIfNecessary()
         publishRunningTimeChange()
     }
@@ -189,7 +189,7 @@ private extension MTimer {
         guard isNeededReset else { return }
         timerStatus = .notStarted
         timerProgress = 0
-        timerTime = .init(timeInterval: configuration.initialTime.start)
+        timerTime = .init(timeInterval: configuration.time.start)
     }
 }
 
@@ -200,9 +200,9 @@ private extension MTimer {
     }}
     func publishRunningTimeChange() { DispatchQueue.main.async(qos: .userInteractive) { [weak self] in
         guard let self else { return }
-        callbacks.onRunningTimeChange?(.init(timeInterval: configuration.runningTime))
+        callbacks.onRunningTimeChange?(.init(timeInterval: configuration.currentTime))
         callbacks.onTimerProgressChange?(configuration.calculateTimerProgress())
-        timerTime = .init(timeInterval: configuration.runningTime)
+        timerTime = .init(timeInterval: configuration.currentTime)
         timerProgress = configuration.calculateTimerProgress()
     }}
 }
