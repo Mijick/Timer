@@ -43,7 +43,7 @@ extension MTimerConfigurationManager {
         currentTime = time.end
     }
     func setNewCurrentTime(_ timeChange: Any?) {
-        let timeChange = timeChange as? TimeInterval ?? publisherTime
+        let timeChange = timeChange as? TimeInterval ?? getPublisherTime()
         let newCurrentTime = currentTime + timeChange * timeIncrementMultiplier
         currentTime = timeIncrementMultiplier == -1
                     ? max(newCurrentTime, time.end)

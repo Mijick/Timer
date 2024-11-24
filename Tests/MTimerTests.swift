@@ -98,9 +98,7 @@ extension MTimerTests {
     func testTimerShouldPublishInaccurateValuesWithNonZeroTolerance() {
         try! defaultTimer.start()
         wait(for: 1)
-        // TODO: TIMER run not from main actor / therad. How much takes resources
-        // usually returns 1.0000000000000002 that is equal to 1.0
-        // OLD test XCTAssertNotEqual(currentTime, 1)
+        
         XCTAssertEqual(currentTime, 1)
     }
     func testTimerCanRunBackwards() {
@@ -113,7 +111,7 @@ extension MTimerTests {
         var statuses: [MTimerStatus: Bool] = [.inProgress: false, .cancelled: false]
 
         try! defaultTimer
-            .onTimerActivityChange { statuses[$0] = true }
+            .onTimerStatusChange { statuses[$0] = true }
             .start()
         wait(for: defaultWaitingTime)
 
@@ -258,7 +256,7 @@ extension MTimerTests {
 // MARK: - Errors
 extension MTimerTests {
     func testTimerCannotBeInitialised_PublishTimeIsTooLess() {
-        XCTAssertThrowsError(try timer.publish(every: 0.0001, { _ in })) { error in
+        XCTAssertThrowsError(try timer.publish(every: -1, { _ in })) { error in
             let error = error as! MTimerError
             XCTAssertEqual(error, .publisherTimeCannotBeLessThanOneMillisecond)
         }

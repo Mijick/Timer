@@ -23,8 +23,7 @@ extension MTime {
         self.init(timeInterval: timeInterval)
     }
     public init(timeInterval: TimeInterval) {
-        // TODO: Refactor
-        let millisecondsInt = timeInterval == .infinity ? Int(Self.max.toTimeInterval() * 1000) : Int(timeInterval * 1000)
+        let millisecondsInt = timeInterval == .infinity ? Self.maxMilliseconds : Int(timeInterval * 1000)
 
         let hoursDiv = 1000 * 60 * 60
         let minutesDiv = 1000 * 60
@@ -38,6 +37,9 @@ extension MTime {
     }
     public static var zero: MTime { .init() }
     public static var max: MTime { .init(hours: 60 * 60 * 24 * 365 * 100) }
+}
+private extension MTime {
+    static var maxMilliseconds: Int { Int(max.toTimeInterval() * 1000) }
 }
 
 // MARK: - Converting to TimeInterval

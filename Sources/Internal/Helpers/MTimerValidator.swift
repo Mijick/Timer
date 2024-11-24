@@ -9,7 +9,7 @@ import Foundation
 
 class MTimerValidator {
     static func checkRequirementsForInitializingTimer(_ publisherTime: TimeInterval) throws {
-        if publisherTime < 0.001 { throw MTimerError.publisherTimeCannotBeLessThanOneMillisecond }
+        if publisherTime < 0 { throw MTimerError.publisherTimeCannotBeLessThanOneMillisecond }
     }
     static func checkRequirementsForStartingTimer(_ startTime: TimeInterval, _ endTime: TimeInterval, _ state: MTimerStateManager, _ status: MTimerStatus) throws {
         if startTime < 0 || endTime < 0 { throw MTimerError.timeCannotBeLessThanZero }

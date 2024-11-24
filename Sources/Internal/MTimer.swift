@@ -12,7 +12,7 @@ public final class MTimer: ObservableObject, FactoryInitializable {
     @Published public private(set) var timerStatus: MTimerStatus = .notStarted
     @Published public private(set) var timerProgress: Double = 0
     
-    let id: MTimerID
+    public let id: MTimerID
     let callbacks = MTimerCallbacks()
     let state = MTimerStateManager()
     let configuration = MTimerConfigurationManager()
@@ -88,26 +88,8 @@ private extension MTimer {
     }
 }
 private extension MTimer {
-    func updateInternalTimerStart() {
-        let publisherTime = configuration.getPublisherTime()
-        state.runTimer(self, publisherTime, #selector(handleTimeChange))
-        state.internalTimer?.tolerance = configuration.publisherTimeTolerance
-        updateInternalTimerStartAddToRunLoop()
-    }
-    func updateInternalTimerStop() {
-        state.internalTimer?.invalidate()
-    }
-}
-
-private extension MTimer {
-    /// **CONTEXT**: On macOS, when the mouse is down in a menu item or other tracking loop, the timer will not start.
-    /// **DECISION**: Adding a timer the RunLoop seems to fix the issue issue.
-    func updateInternalTimerStartAddToRunLoop() {
-        #if os(macOS)
-        guard let internalTimer = state.internalTimer else { return }
-        RunLoop.main.add(internalTimer, forMode: .common)
-        #endif
-    }
+    func updateInternalTimerStart() { state.runTimer(configuration, self, #selector(handleTimeChange)) }
+    func updateInternalTimerStop() { state.stopTimer() }
 }
 
 // MARK: - Handling Time Change

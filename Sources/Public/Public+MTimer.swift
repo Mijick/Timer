@@ -18,10 +18,10 @@ public extension MTimer {
     func publish(every time: TimeInterval, tolerance: TimeInterval = 0.4, currentTime: Binding<MTime>) throws -> MTimer {
         try publish(every: time, tolerance: tolerance) { currentTime.wrappedValue = $0 }
     }
+    
     /// Prepares the timer to start.
     /// WARNING: Use the start() method to start the timer.
     func publish(every time: TimeInterval, tolerance: TimeInterval = 0.4, _ completion: @escaping (_ currentTime: MTime) -> ()) throws -> MTimer {
-        // TODO: add and test assert instead of throwing error
         try MTimerValidator.checkRequirementsForInitializingTimer(time)
         setupPublishers(time, tolerance, completion)
         return self
@@ -91,14 +91,14 @@ public extension MTimer {
 
 // MARK: - Publishing Timer Activity Status
 public extension MTimer {
-    /// Publishes the timer activity changes.
-    func onTimerActivityChange(_ action: @escaping (_ isRunning: MTimerStatus) -> ()) -> MTimer {
+    /// Publishes the timer status changes.
+    func onTimerStatusChange(_ action: @escaping (_ isRunning: MTimerStatus) -> ()) -> MTimer {
         callbacks.onTimerStatusChange = action
         return self
     }
     /// Publishes the timer activity changes.
     func bindTimerStatus(isTimerRunning: Binding<Bool>) -> MTimer {
-        onTimerActivityChange { isTimerRunning.wrappedValue = $0 == .inProgress }
+        onTimerStatusChange { isTimerRunning.wrappedValue = $0 == .inProgress }
     }
 }
 
