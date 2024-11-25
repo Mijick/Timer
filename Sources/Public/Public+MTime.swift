@@ -44,6 +44,7 @@ private extension MTime {
 
 // MARK: - Converting to TimeInterval
 extension MTime {
+    /// Converts MTime values to TimeInterval
     public func toTimeInterval() -> TimeInterval {
         let hoursAsTimeInterval = 60 * 60 * TimeInterval(hours)
         let minutesAsTimeInterval = 60 * TimeInterval(minutes)
@@ -56,7 +57,9 @@ extension MTime {
 
 // MARK: - Converting To String
 extension MTime {
-    /// Converts the object to a string representation. Output can be customised by modifying the formatter block.
+    /// Converts the object to a string representation. Output can be customized by modifying the formatter block.
+    /// - Parameters:
+    ///     - formatter:  A formatter that creates string representations of quantities of time
     public func toString(_ formatter: (DateComponentsFormatter) -> DateComponentsFormatter = { $0 }) -> String {
         formatter(defaultTimeFormatter).string(from: toTimeInterval()) ?? ""
     }

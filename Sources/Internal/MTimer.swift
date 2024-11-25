@@ -8,11 +8,22 @@
 import SwiftUI
 
 public final class MTimer: ObservableObject, FactoryInitializable {
+    /// Timer time updates publisher.
+    /// - important: The frequency for updating this property can be configured with function ``MTimer/publish(every:tolerance:currentTime:)``
+    /// - NOTE: By default, updates are triggered each time the timer status is marked as **finished**
     @Published public private(set) var timerTime: MTime = .init()
+    
+    /// Timer status updates publisher.
     @Published public private(set) var timerStatus: MTimerStatus = .notStarted
+    
+    /// Timer progress publisher.
+    /// - important: The frequency for updating this property can be configured with function ``MTimer/publish(every:tolerance:currentTime:)``
+    /// - NOTE: By default, updates are triggered each time the timer status is marked as **finished**
     @Published public private(set) var timerProgress: Double = 0
     
+    /// Unique id that enables an access to the registered timer from any location.
     public let id: MTimerID
+    
     let callbacks = MTimerCallbacks()
     let state = MTimerStateManager()
     let configuration = MTimerConfigurationManager()

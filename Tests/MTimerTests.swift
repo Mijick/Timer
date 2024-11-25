@@ -258,7 +258,7 @@ extension MTimerTests {
     func testTimerCannotBeInitialised_PublishTimeIsTooLess() {
         XCTAssertThrowsError(try timer.publish(every: -1, { _ in })) { error in
             let error = error as! MTimerError
-            XCTAssertEqual(error, .publisherTimeCannotBeLessThanOneMillisecond)
+            XCTAssertEqual(error, .publisherTimeCannotBeLessThanZero)
         }
     }
     func testTimerDoesNotStart_StartTimeEqualsEndTime() {
