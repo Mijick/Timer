@@ -42,22 +42,51 @@ public extension MTimer {
 
 // MARK: - Starting Timer
 public extension MTimer {
-    /// Starts the timer using the specified initial values.
-    ///
-    /// - Note: Can be run backwards - use any  **to** value that is greater than  **from**.
+    /**
+     Starts the timer using the specified initial values.
+     
+     - Note: Can be run backwards - use any  **to** value that is greater than  **from**.
+     
+     ### Up going timer
+     ```swift
+         MTimer(.exampleId)
+             .start(from: .zero, to: .init(seconds: 10))
+     ```
+     
+     ### Down going timer
+     ```swift
+         MTimer(.exampleId)
+             .start(from: .init(seconds: 10), to: .zero)
+     ```
+     */
     func start(from startTime: MTime = .zero, to endTime: MTime = .max) throws {
         try start(from: startTime.toTimeInterval(), to: endTime.toTimeInterval())
     }
     
-    /// Starts the timer using the specified initial values.
-    ///
-    /// - Note: Can be run backwards - use any  **to** value that is greater than  **from**.
+    /**
+     Starts the timer using the specified initial values.
+     
+     - Note: Can be run backwards - use any  **to** value that is greater than  **from**.
+     
+     ### Up going timer
+     ```swift
+         MTimer(.exampleId)
+             .start(from: .zero, to: 10)
+     ```
+     
+     ### Down going timer
+     ```swift
+         MTimer(.exampleId)
+             .start(from: 10, to: .zero)
+     ```
+     */
     func start(from startTime: TimeInterval = 0, to endTime: TimeInterval = .infinity) throws {
         try MTimerValidator.checkRequirementsForStartingTimer(startTime, endTime, state, timerStatus)
         assignInitialStartValues(startTime, endTime)
         startTimer()
     }
-    /// Starts infinity timer
+    
+    /// Starts up going infinity timer
     func start() throws {
         try start(from: .zero, to: .infinity)
     }
