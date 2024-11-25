@@ -7,11 +7,10 @@
 
 import SwiftUI
 
-@MainActor public protocol FactoryInitializable {
-    init(_ id: MTimerID)
-}
+@MainActor public protocol FactoryInitializable { }
 
 extension FactoryInitializable where Self: MTimer {
+    /// Registers or returns registered Timer
      public init(_ id: MTimerID) {
          let timer = MTimer(identifier: id)
          let registeredTimer = MTimerContainer.register(timer)

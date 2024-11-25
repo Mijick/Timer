@@ -20,7 +20,7 @@ public extension MTimer {
     ///   - tolerance: The amount of time after the scheduled fire date that the timer may fire.
     ///   - currentTime: Binding value that will be updated every **time** interval
     ///
-    /// - WARNING: Use the ``start()`` method to start the timer.
+    /// - WARNING: Use the ``start()``  or ``start(from:to:)-1mvp1`` methods to start the timer.
     func publish(every time: TimeInterval, tolerance: TimeInterval = 0.4, currentTime: Binding<MTime>) throws -> MTimer {
         try publish(every: time, tolerance: tolerance) { currentTime.wrappedValue = $0 }
     }
@@ -32,7 +32,7 @@ public extension MTimer {
     ///   - tolerance: The amount of time after the scheduled fire date that the timer may fire.
     ///   - completion: Completion block that will be executed every **time** interval
     ///
-    /// - WARNING: Use the ``start()`` method to start the timer.
+    /// - WARNING: Use the ``start()`` or  ``start(from:to:)-1mvp1`` method to start the timer.
     func publish(every time: TimeInterval, tolerance: TimeInterval = 0.4, _ completion: @escaping (_ currentTime: MTime) -> ()) throws -> MTimer {
         try MTimerValidator.checkRequirementsForInitializingTimer(time)
         setupPublishers(time, tolerance, completion)
@@ -110,14 +110,14 @@ public extension MTimer {
 public extension MTimer {
     /// Publishes the timer status changes.
     ///  - Note: To configure the interval at which the timer's status will be published use the method ``publish(every:tolerance:currentTime:)``
-    func onTimerStatusChange(_ action: @escaping (_ isRunning: MTimerStatus) -> ()) -> MTimer {
+    func onTimerStatusChange(_ action: @escaping (_ timerStatus: MTimerStatus) -> ()) -> MTimer {
         callbacks.onTimerStatusChange = action
         return self
     }
     /// Publishes the timer activity changes.
     /// - Note: To configure the interval at which the timer's status will be published use the method ``publish(every:tolerance:currentTime:)``
-    func bindTimerStatus(isTimerRunning: Binding<Bool>) -> MTimer {
-        onTimerStatusChange { isTimerRunning.wrappedValue = $0 == .inProgress }
+    func bindTimerStatus(timerStatus: Binding<MTimerStatus>) -> MTimer {
+        onTimerStatusChange { timerStatus.wrappedValue = $0 }
     }
 }
 

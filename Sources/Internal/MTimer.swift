@@ -8,12 +8,12 @@
 import SwiftUI
 
 public final class MTimer: ObservableObject, FactoryInitializable {
-    /// Timer time updates publisher.
+    /// Timer time publisher.
     /// - important: The frequency for updating this property can be configured with function ``MTimer/publish(every:tolerance:currentTime:)``
     /// - NOTE: By default, updates are triggered each time the timer status is marked as **finished**
     @Published public private(set) var timerTime: MTime = .init()
     
-    /// Timer status updates publisher.
+    /// Timer status publisher.
     @Published public private(set) var timerStatus: MTimerStatus = .notStarted
     
     /// Timer progress publisher.
@@ -36,6 +36,7 @@ extension MTimer {
     func setupPublishers(_ time: TimeInterval, _ tolerance: TimeInterval, _ completion: @escaping (MTime) -> ()) {
         configuration.setPublishers(time: time, tolerance: tolerance)
         callbacks.onRunningTimeChange = completion
+        resetTimerPublishers()
     }
 }
 
