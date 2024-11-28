@@ -15,5 +15,5 @@ public enum MTimerError: Error {
     case publisherTimeCannotBeLessThanZero
     case startTimeCannotBeTheSameAsEndTime, timeCannotBeLessThanZero
     case cannotResumeNotInitialisedTimer
-    case timerIsAlreadyRunning
+    case timerIsAlreadyRunning, timerIsNotStarted
 }

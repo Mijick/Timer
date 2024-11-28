@@ -19,4 +19,8 @@ class MTimerValidator {
     static func checkRequirementsForResumingTimer(_ callbacks: MTimerCallbacks) throws {
         if callbacks.onRunningTimeChange == nil { throw MTimerError.cannotResumeNotInitialisedTimer }
     }
+    static func isCanBeSkipped(_ timerStatus: MTimerStatus) throws {
+        if timerStatus == .inProgress || timerStatus == .paused { return }
+        throw MTimerError.timerIsNotStarted
+    }
 }

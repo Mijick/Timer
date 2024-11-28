@@ -33,7 +33,7 @@ public extension MTimer {
     ///   - completion: Completion block that will be executed every **time** interval
     ///
     /// - WARNING: Use the ``start()`` or  ``start(from:to:)-1mvp1`` method to start the timer.
-    func publish(every time: TimeInterval, tolerance: TimeInterval = 0.4, _ completion: @escaping (_ currentTime: MTime) -> ()) throws -> MTimer {
+    func publish(every time: TimeInterval, tolerance: TimeInterval = 0.4, _ completion: @escaping (_ currentTime: MTime) -> () = { _ in }) throws -> MTimer {
         try MTimerValidator.checkRequirementsForInitializingTimer(time)
         setupPublishers(time, tolerance, completion)
         return self
@@ -50,13 +50,13 @@ public extension MTimer {
      ### Up going timer
      ```swift
          MTimer(.exampleId)
-             .start(from: .zero, to: .init(seconds: 10))
+             .start(from: .zero, to: MTime(seconds: 10))
      ```
      
      ### Down going timer
      ```swift
          MTimer(.exampleId)
-             .start(from: .init(seconds: 10), to: .zero)
+             .start(from: MTime(seconds: 10), to: .zero)
      ```
      */
     func start(from startTime: MTime = .zero, to endTime: MTime = .max) throws {
@@ -128,8 +128,9 @@ public extension MTimer {
 
 // MARK: - Skip Timer
 public extension MTimer {
-    /// Stops the timer and it's condition to the final state.
-    func skip() {
+    /// Stops the timer and updates its status to the final state
+    func skip() throws {
+        try MTimerValidator.isCanBeSkipped(timerStatus)
         skipRunningTime()
         finishTimer()
     }
