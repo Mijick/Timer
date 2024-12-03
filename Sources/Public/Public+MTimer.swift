@@ -96,6 +96,7 @@ public extension MTimer {
 public extension MTimer {
     /// Pause the timer.
     func pause() {
+        guard timerStatus == .inProgress else { return }
         pauseTimer()
     }
 }
@@ -113,6 +114,7 @@ public extension MTimer {
 public extension MTimer {
     /// Stops the timer and resets its current time to the initial value.
     func cancel() {
+        guard timerStatus.isCancellable else { return }
         resetRunningTime()
         cancelTimer()
     }
@@ -130,6 +132,7 @@ public extension MTimer {
 public extension MTimer {
     /// Stops the timer and updates its status to the final state
     func skip() throws {
+        guard timerStatus.isSkippable else { return }
         try MTimerValidator.isCanBeSkipped(timerStatus)
         skipRunningTime()
         finishTimer()

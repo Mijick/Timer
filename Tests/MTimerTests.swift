@@ -62,7 +62,7 @@ extension MTimerTests {
     
         try! defaultTimer.start(to: endTime)
         wait(for: defaultWaitingTime)
-        timer.skip()
+        try! timer.skip()
         wait(for: defaultWaitingTime)
 
         XCTAssertEqual(endTime, currentTime)

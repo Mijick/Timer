@@ -37,3 +37,11 @@ public enum MTimerStatus {
     ///  - ``MTimer/skip()``
     case finished
 }
+
+
+extension MTimerStatus {
+    var isTimerRunning: Bool { self == .inProgress }
+    var isNeededReset: Bool { self == .notStarted || self == .finished || self == .cancelled }
+    var isSkippable: Bool { self == .inProgress || self == .paused }
+    var isCancellable: Bool { self == .inProgress || self == .paused }
+}

@@ -184,6 +184,6 @@ private extension MTimer {
 
 // MARK: - Helpers
 private extension MTimer {
-    var isTimerRunning: Bool { timerStatus == .inProgress }
-    var isNeededReset: Bool { timerStatus == .finished || timerStatus == .cancelled || timerStatus == .notStarted }
+    var isTimerRunning: Bool { timerStatus.isTimerRunning }
+    var isNeededReset: Bool { timerStatus.isNeededReset }
 }
