@@ -96,7 +96,7 @@ public extension MTimer {
 public extension MTimer {
     /// Pause the timer.
     func pause() {
-        guard timerStatus == .inProgress else { return }
+        guard timerStatus == .running else { return }
         pauseTimer()
     }
 }
@@ -114,7 +114,6 @@ public extension MTimer {
 public extension MTimer {
     /// Stops the timer and resets its current time to the initial value.
     func cancel() {
-        guard timerStatus.isCancellable else { return }
         resetRunningTime()
         cancelTimer()
     }

@@ -48,14 +48,14 @@ extension MTimer {
         resetTimerPublishers()
     }
     func startTimer() {
-        handleTimer(status: .inProgress)
+        handleTimer(status: .running)
     }
 }
 
 // MARK: - Timer State Control
 extension MTimer {
     func pauseTimer() { handleTimer(status: .paused) }
-    func cancelTimer() { handleTimer(status: .cancelled) }
+    func cancelTimer() { handleTimer(status: .notStarted) }
     func finishTimer() { handleTimer(status: .finished) }
 }
 
@@ -79,7 +79,7 @@ extension MTimer {
 
 // MARK: - Handling Timer
 private extension MTimer {
-    func handleTimer(status: MTimerStatus) { if status != .inProgress || configuration.canTimerBeStarted {
+    func handleTimer(status: MTimerStatus) { if status != .running || configuration.canTimerBeStarted {
         timerStatus = status
         updateInternalTimer(isTimerRunning)
         updateObservers(isTimerRunning)

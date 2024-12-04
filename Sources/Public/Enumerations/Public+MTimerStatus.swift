@@ -17,13 +17,7 @@ public enum MTimerStatus {
     ///  - ``MTimer/start()``
     ///  - ``MTimer/start(from:to:)-1mvp1``
     ///  - ``MTimer/resume()``
-    case inProgress
-    
-    /// Timer was stopped/cancelled
-    ///
-    /// ## Triggered by methods
-    ///  - ``MTimer/cancel()``
-    case cancelled
+    case running
     
     /// Timer is in a pause
     ///
@@ -38,10 +32,8 @@ public enum MTimerStatus {
     case finished
 }
 
-
 extension MTimerStatus {
-    var isTimerRunning: Bool { self == .inProgress }
-    var isNeededReset: Bool { self == .notStarted || self == .finished || self == .cancelled }
-    var isSkippable: Bool { self == .inProgress || self == .paused }
-    var isCancellable: Bool { self == .inProgress || self == .paused }
+    var isTimerRunning: Bool { self == .running }
+    var isNeededReset: Bool { self == .notStarted || self == .finished }
+    var isSkippable: Bool { self == .running || self == .paused }
 }

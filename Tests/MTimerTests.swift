@@ -27,7 +27,7 @@ extension MTimerTests {
         wait(for: defaultWaitingTime)
         
         XCTAssertGreaterThan(currentTime, 0)
-        XCTAssertEqual(.inProgress, timer.timerStatus)
+        XCTAssertEqual(.running, timer.timerStatus)
     }
     func testTimerIsCancellable() {
         try! defaultTimer.start()
@@ -40,7 +40,7 @@ extension MTimerTests {
         wait(for: defaultWaitingTime)
 
         XCTAssertEqual(timeAfterStop, currentTime)
-        XCTAssertEqual(.cancelled, timer.timerStatus)
+        XCTAssertEqual(.notStarted, timer.timerStatus)
     }
     func testTimerIsResetable() {
         let startTime: TimeInterval = 3
@@ -81,7 +81,7 @@ extension MTimerTests {
         wait(for: defaultWaitingTime)
 
         XCTAssertNotEqual(timeAfterStop, currentTime)
-        XCTAssertEqual(.inProgress, timer.timerStatus)
+        XCTAssertEqual(.running, timer.timerStatus)
     }
 }
 
@@ -108,7 +108,7 @@ extension MTimerTests {
         XCTAssertLessThan(currentTime, 3)
     }
     func testTimerPublishesStatuses() {
-        var statuses: [MTimerStatus: Bool] = [.inProgress: false, .cancelled: false]
+        var statuses: [MTimerStatus: Bool] = [.running: false, .notStarted: false]
 
         try! defaultTimer
             .onTimerStatusChange { statuses[$0] = true }
