@@ -222,6 +222,12 @@ See for yourself how does it work by cloning [project](https://github.com/Mijick
 # 🍀 Community
 Join the welcoming community of developers on [Discord](https://link.mijick.com/discord).
 
+<!--Contribution-->
+# 🌼 Contribute
+To contribute a feature or idea to **MijickTimer**, create an [issue](https://github.com/Mijick/Timer/issues/new?assignees=FulcrumOne&labels=state%3A+inactive%2C+type%3A+feature&projects=&template=🚀-feature-request.md&title=%5BFREQ%5D) explaining your idea or bring it up on [Discord](https://discord.com/invite/dT5V7nm5SC). <br>
+If you find a bug, please create an [issue](https://github.com/Mijick/Timer/issues/new?assignees=FulcrumOne%2C+jay-jay-lama&labels=state%3A+inactive%2C+type%3A+bug&projects=&template=🦟-bug-report.md&title=%5BBUG%5D). <br>
+If you would like to contribute, please refer to the [Contribution Guidelines](https://link.mijick.com/contribution-guidelines).
+
 <!--Sponsorship-->
 # 💜 Sponsor our work
 Support our work by [becoming a backer](https://link.mijick.com/buymeacoffee).
