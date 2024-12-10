@@ -1,208 +1,228 @@
-<br>
-
+<!--Hero Image-->
 <p align="center">
-  <picture> 
-    <source media="(prefers-color-scheme: dark)" srcset="https://github.com/Mijick/Assets/blob/main/Timer/Logotype/On%20Dark.svg">
-    <source media="(prefers-color-scheme: light)" srcset="https://github.com/Mijick/Assets/blob/main/Timer/Logotype/On%20Light.svg">
-    <img alt="Timer Logo" src="https://github.com/Mijick/Assets/blob/main/Timer/Logotype/On%20Dark.svg" width="76%"">
-  </picture>
+    <picture> 
+      // ADD PUCTURE HERE 
+    </picture>
 </p>
 
-<h3 style="font-size: 5em" align="center">
-    Modern API for Timer
-</h3>
 
-<p align="center">
-    Easy to use yet powerful Timer library. Keep your code clean
+<!--Text Header-->
+<p>
+    <h3 align="center">Modern API for Timer</h3>
+    <p align="center">Easy to use yet powerful Timer library. Keep your code clean</p>
 </p>
 
+<!--Links: Demo, Wiki-->
 <p align="center">
-    <a href="https://github.com/Mijick/Timer-Demo" rel="nofollow">Try demo we prepared</a>
+    <a href="https://github.com/Mijick/Timer-Demo" rel="nofollow"><b>Try demo we prepared</b></a>
     |
-    <a href="https://mijick.notion.site/122683c582c8441fa4b4bbb00290598e?v=f7b570720ff94414835ed7894dbacd96&pvs=25" rel="nofollow">Roadmap</a>
-    |
-    <a href="https://github.com/Mijick/Timer/issues/new" rel="nofollow">Propose a new feature</a>
+    <a href="https://github.com/Mijick/Timer/wiki" rel="nofollow"><b>Framework documentation</b></a>
 </p>
 
 <br>
 
+<!--Labels-->
+<!--Labels-->
 <p align="center">
-    <img alt="SwiftUI logo" src="https://github.com/Mijick/Assets/blob/main/Timer/Labels/Language.svg"/>
-    <img alt="Platforms: iOS, iPadOS, macOS, tvOS" src="https://github.com/Mijick/Assets/blob/main/Timer/Labels/Platforms.svg"/>
-    <img alt="Current Version" src="https://github.com/Mijick/Assets/blob/main/Timer/Labels/Version.svg"/>
-    <img alt="License: MIT" src="https://github.com/Mijick/Assets/blob/main/Timer/Labels/License.svg"/>
+    <img alt="Labels" src="https://github.com/Mijick/Assets/blob/main/Timer/Labels/labels.svg"/>
 </p>
 
-<p align="center">
-    <img alt="Made in Kraków" src="https://github.com/Mijick/Assets/blob/main/Timer/Labels/Origin.svg"/>
-    <a href="https://twitter.com/MijickTeam">
-        <img alt="Follow us on X" src="https://github.com/Mijick/Assets/blob/main/Timer/Labels/X.svg"/>
-    </a>
-    <a href=mailto:team@mijick.com?subject=Hello>
-        <img alt="Let's work together" src="https://github.com/Mijick/Assets/blob/main/Timer/Labels/Work%20with%20us.svg"/>
-    </a>  
-    <a href="https://github.com/Mijick/Timer/stargazers">
-        <img alt="Stargazers" src="https://github.com/Mijick/Assets/blob/main/Timer/Labels/Stars.svg"/>
-    </a>                                                                                                               
-</p>
+<br>
 
+<!--GIFs-->
 <p align="center">
     <img alt="Timer Examples" src="https://github.com/Mijick/Assets/blob/main/Timer/GIFs/Timer.gif"/>
 </p>
 
 <br>
 
-Timer is a free and open-source library dedicated for Swift that makes the process of handling timers easier and much cleaner.
-* **Improves code quality.** Start timer using the `publish().start()` method. Stop the timer with `stop()`. Simple as never.
-* **Run your timer in both directions.** Our Timer can operate in both modes (increasing or decreasing).
-* **Supports background mode.** Don't worry about the timer when the app goes into the background. We handled it!
-* **And much more.** Our library allows you to convert the current time to a string or to display the timer progress in no time.
+<!--Buttons-->
+<p>
+    <!--Discord-->
+    <a href="https://link.mijick.com/discord">
+        <img alt="Join us on Discord" src="https://github.com/Mijick/Assets/blob/main/Popups/Buttons/discord.png" height="40px">
+    </a>
+    <!--Linkedin-->
+    <a href="https://link.mijick.com/linkedin">
+        <img alt="Follow us on LinkedIn" src="https://github.com/Mijick/Assets/blob/main/Popups/Buttons/linkedin.png" height="40px">
+    </a>
+    <!--GitHub-->
+    <a href="https://link.mijick.com/github">
+        <img alt="See our other frameworks" src="https://github.com/Mijick/Assets/blob/main/Popups/Buttons/github.png" height="40px">
+    </a>
+    <!--Medium-->
+    <a href="https://link.mijick.com/medium">
+        <img alt="Read us on Medium" src="https://github.com/Mijick/Assets/blob/main/Popups/Buttons/medium.png" height="40px">
+    </a>
+    <!--Buymeacoffee-->
+    <a href="https://link.mijick.com/buymeacoffee">
+        <img alt="Buy us a coffee" src="https://github.com/Mijick/Assets/blob/main/Popups/Buttons/buymeacoffee.png" height="40px">
+    </a>
+</p>
 
-<br>
+<!--Description-->
 
-# Getting Started
-### ✋ Requirements
+# ☀️ Why MijickTimer?
+MijickTimer library it’s a Swift-based library that offers powerful and flexible timer features for iOS and macOS apps. Allows to create both countdown and count-up timers with enhanced state management and observation options. 
 
-| **Platforms** | **Minimum Swift Version** |
-|:----------|:----------|
-| iOS 13+ | 5.0 |
-| iPadOS 13+ | 5.0 |
-| macOS 10.15+ | 5.0 |
+# Features
 
-### ⏳ Installation
-    
-#### [Swift package manager][spm]
-Swift package manager is a tool for automating the distribution of Swift code and is integrated into the Swift compiler.
+<!--Features table-->
+<table>
+        <tbody>
+            <tr>
+              <td> 
+                ⏳
+              </td>
+              <td>
+                 Countdown Timer (Down-Going)
+              </td>
+            </tr>
+          <tr>
+              <td> 
+                ⏱️
+              </td>
+              <td>
+                 Count-Up Timer (Elapsed Time)
+              </td>
+          </tr>
+          <tr>
+              <td> 
+                ⏸️
+              </td>
+              <td>
+                 Pause Timer
+              </td>
+          </tr>
+          <tr>
+              <td> 
+                ▶️
+              </td>
+              <td>
+                 Resume Timer
+              </td>
+          </tr>
+          <tr>
+              <td> 
+                ⏭️
+              </td>
+              <td>
+                 Skip Timer
+              </td>
+          </tr>
+          <tr>
+              <td> 
+                ⏮️
+              </td>
+              <td>
+                 Cancel Timer
+              </td>
+          </tr>
+           <tr>
+              <td> 
+              ⚡
+              </td>
+              <td>
+                 Reactive programming friendly
+              </td>
+          </tr>
+        </tbody>
+    </table>
 
-Once you have your Swift package set up, adding Timer as a dependency is as easy as adding it to the `dependencies` value of your `Package.swift`.
+
+<p>
+    <h3>Count-Up Timer</h3>
+    <p> Track elapsed time seamlessly with a count-up timer. Ideal for productivity, logging, or workout apps.</p>
+    <p> Take a look at the implementation details <a href="https://github.com/Mijick/Timer/wiki/Timer-Start-Up">here</a>. </p>
+</p>
 
 ```Swift
-dependencies: [
-    .package(url: "https://github.com/Mijick/Timer", branch(“main”))
-]
+@MainActor class ViewModel: ObservableObject {
+       @Published var time: TimeInterval = 0
+
+       func startTimer() {
+         try? MTimer(.id)
+              .publish(every: 1, onTimerCallback)
+              .start(from: 0, to: 10)
+      }
+      func onTimerCallback(_ time: MTime) {
+        self.time = time.toTimeInterval()
+      }
+}
 ```
 
-#### [Cocoapods][cocoapods]   
-Cocoapods is a dependency manager for Swift and Objective-C Cocoa projects that helps to scale them elegantly.
+<p>
+    <h3>Countdown Timer</h3>
+    <p> Easily create countdown timers to track remaining time. Perfect for games, events, or task timers.</p>
+    <p> Take a look at the implementation details <a href="https://github.com/Mijick/Timer/wiki/Timer-Start-Up">here</a>. </p>
+</p>
 
-Installation steps:
-- Install CocoaPods 1.10.0 (or later)
-- [Generate CocoaPods][generate_cocoapods] for your project
 ```Swift
-    pod init
-```
-- Add CocoaPods dependency into your `Podfile`   
-```Swift
-    pod 'MijickTimer'
-```
-- Install dependency and generate `.xcworkspace` file
-```Swift
-    pod install
-```
-- Use new XCode project file `.xcworkspace`                
-<br>
-
-# Usage
-
-### 1. Initialise the timer
-Call the `publish()` method that has three parameters:
-* **time** - The number of seconds between firings of the timer.
-* **tolerance** - The number of seconds after the update date that the timer may fire.
-* **currentTime** - The current timer time.
-```Swift
-  try! MTimer.publish(every: 1, currentTime: $currentTime)
+func startTimer() {
+  try? MTimer(.id)
+     .start(from: 10, to: 0)
+}
 ```
 
-### 2. Start the timer
-Start the timer using the `start()` method. You can customise the start and end time using the parameters of this method.
-```Swift
-  try! MTimer
-      .publish(every: 1, currentTime: $currentTime)
-      .start(from: .init(minutes: 21, seconds: 37), to: .zero)
-```
+<p>
+    <h3>Control Timer state</h3>
+    <p> Pause timers and resume them later without losing progress, skip and cancel. </p>
+    <p> Take a look at the implementation details <a href="https://github.com/Mijick/Timer/wiki/Timer-State-Control">here</a>. </p>
+    </p>
+</p>
 
-### 3. *(Optional)* Observe TimerStatus and TimerProgress
-You can observe changes in both values by calling either of the methods
 ```Swift
-  try! MTimer
-      .publish(every: 1, currentTime: $currentTime)
-      .bindTimerStatus(isTimerRunning: $isTimerRunning)
-      .bindTimerProgress(progress: $timerProgress)
-      .start(from: .init(minutes: 21, seconds: 37), to: .zero)
-```
+struct ContentView: View {
+  @ObservedObject var timer = MTimer(.id)
 
-### 4. Stop the timer
-Timer can be stopped with `stop()` method.
-```Swift
-  MTimer.stop()
-```
-
-### 5. Additional timer controls
-- Once stopped, the timer can be resumed - simply use the `resume()` method.
-```Swift
-  try! MTimer.resume()
-```
-- To stop and reset the timer to its initial values, use the `reset()` method.
-```Swift
-  MTimer.reset()
-```
-
-### 6. Displaying the current time as String
-You can convert the current MTime to String by calling the `toString()` method. Use the `formatter` parameter to customise the output.
-```Swift
-  currentTime.toString {
-      $0.unitsStyle = .full
-      $0.allowedUnits = [.hour, .minute]
-      return $0
+  var body: some View {
+        (...)
   }
+    
+  func pause() { timer.pause() }
+  func resume() throws { try timer.resume() }
+  func stop() { timer.cancel() }
+  func skip() throws { try timer.skip() }
+}
 ```
 
-### 7. Creating more timer instances
-Create a new instance of the timer and assign it to a new variable. Use the above functions directly with it
-```Swift
-  let newTimer = MTimer.createNewInstance()
+<h3>State Observation Made Easy </h3>
+<p> 
+  <p> Monitor timer states with a variety of different approaches.</p>
+  <p> Take a look at the implementation details <a href="https://github.com/Mijick/Timer/wiki/Timer-State-Observing">here</a>. </p>
+</p>
+<img alt="Code Example 6" src="https://github.com/Mijick/Assets/blob/main/Timer/Code/state-observe.png" width="100%">
 
-  try! newTimer
-      .publish(every: 1, currentTime: $currentTime)
-      .start()
-
-  newTimer.stop()
-```
-
-<br>
-
-# Try our demo
-See for yourself how does it work by cloning [project][Demo] we created
-                      
-# License
-Timer is released under the MIT license. See [LICENSE][License] for details.
-                      
+# ✅ Why Choose This Timer Library?
+**Multiple Apple Platform Support:**
+* Works on iPhone, iPad. Requires iOS 13.0+  .
+* Works on Mac. Requires macOS 10.15+.
+  
+**Built for Swift 6:**
+* Modern, efficient, and designed for performance.
+  
+**All-in-One Timer Solution:**
+* Handles countdowns, count-ups, pausing, resuming, and state management seamlessly.
+  
+**Versatile Observation:**
+*  Choose callbacks, bindings, or Combine for the implementation that works best for you.
+  
+**It's just a cool library 😎**
 <br><br>
-                      
-# Our other open source SwiftUI libraries
-[PopupView] - The most powerful popup library that allows you to present any popup
-<br>
-[NavigationView] - Easier and cleaner way of navigating through your app
-<br>
-[CalendarView] - Create your own calendar object in no time
-<br>
-[GridView] - Lay out your data with no effort
-<br>
-[CameraView] - The most powerful CameraController. Designed for SwiftUI
 
+<!--Documentation-->
+# 🔧 Installation
+Follow the [installation guide](https://github.com/Mijick/Timer/wiki/Installation) to integrate the Timer library into your project.
 
+# 🚀 How to use it?
+Visit the framework's [documentation](https://github.com/Mijick/Timer/wiki) to learn how to integrate your project with **MijickTimer**. <br>
+See for yourself how does it work by cloning [project](https://github.com/Mijick/Timer-Demo) we created
 
+<!--Community-->
+# 🍀 Community
+Join the welcoming community of developers on [Discord](https://link.mijick.com/discord).
 
-[MIT]: https://en.wikipedia.org/wiki/MIT_License
-[SPM]: https://www.swift.org/package-manager
-[cocoapods]: https://cocoapods.org/
-[generate_cocoapods]: https://github.com/square/cocoapods-generate
-                      
-[Demo]: https://github.com/Mijick/Timer-Demo
-[License]: https://github.com/Mijick/Timer/blob/main/LICENSE
-                     
-[PopupView]: https://github.com/Mijick/PopupView
-[NavigationView]: https://github.com/Mijick/NavigationView
-[CalendarView]: https://github.com/Mijick/CalendarView 
-[GridView]: https://github.com/Mijick/GridView
-[CameraView]: https://github.com/Mijick/CameraView
+<!--Sponsorship-->
+# 💜 Sponsor our work
+Support our work by [becoming a backer](https://link.mijick.com/buymeacoffee).
+
