@@ -1,7 +1,7 @@
 <!--Hero Image-->
 <p align="center">
     <picture> 
-      // ADD PUCTURE HERE 
+      <img alt="MijickTimer Hero" src="https://github.com/Mijick/Assets/blob/main/Timer/hero.png" width="100%">
     </picture>
 </p>
 
@@ -60,13 +60,7 @@
     </a>
 </p>
 
-<!--Description-->
-
-# ☀️ Why MijickTimer?
-MijickTimer library it’s a Swift-based library that offers powerful and flexible timer features for iOS and macOS apps. Allows to create both countdown and count-up timers with enhanced state management and observation options. 
-
 # Features
-
 <!--Features table-->
 <table>
         <tbody>
@@ -129,7 +123,14 @@ MijickTimer library it’s a Swift-based library that offers powerful and flexib
         </tbody>
     </table>
 
+<!--Description-->
 
+# ☀️ Why MijickTimer?
+MijickTimer library it’s a Swift-based library that offers powerful and flexible timer features for iOS and macOS apps. Allows to create both countdown and count-up timers with enhanced state management and observation options. 
+
+
+
+<!--Features description-->
 <p>
     <h3>Count-Up Timer</h3>
     <p> Track elapsed time seamlessly with a count-up timer. Ideal for productivity, logging, or workout apps.</p>
@@ -194,21 +195,25 @@ struct ContentView: View {
 <img alt="Code Example 6" src="https://github.com/Mijick/Assets/blob/main/Timer/Code/state-observe.png" width="100%">
 
 # ✅ Why Choose This Timer Library?
-**Multiple Apple Platform Support:**
-* Works on iPhone, iPad. Requires iOS 13.0+  .
-* Works on Mac. Requires macOS 10.15+.
+<h4>Multiple Apple Platform Support:</h4>
+
+* iPhone, iPad. Requires iOS 13.0+  .
+* Mac. Requires macOS 10.15+.
+* Apple Vision Pro. Requires visionOS 1.0+.
   
-**Built for Swift 6:**
+<h4>Built for Swift 6:</h4>
+    
 * Modern, efficient, and designed for performance.
   
-**All-in-One Timer Solution:**
+<h4>All-in-One Timer Solution:</h4>
+    
 * Handles countdowns, count-ups, pausing, resuming, and state management seamlessly.
   
-**Versatile Observation:**
+<h4>Versatile Observation:</h4>
+    
 *  Choose callbacks, bindings, or Combine for the implementation that works best for you.
   
-**It's just a cool library 😎**
-<br><br>
+<h4>It's just a cool library 😎</h4>
 
 <!--Documentation-->
 # 🔧 Installation
