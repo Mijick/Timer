@@ -2,8 +2,11 @@
 //  FactoryInitializable.swift
 //  MijickTimer
 //
-//  Created by Alina Petrovska on 15.11.2024.
+//  Created by Alina Petrovska
+//    - Mail: alina.petrovska@mijick.com
+//    - GitHub: https://github.com/Mijick
 //
+//  Copyright ©2024 Mijick. All rights reserved.
 
 import SwiftUI
 

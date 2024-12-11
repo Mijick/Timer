@@ -6,7 +6,7 @@
 //    - Mail: tomasz.kurylik@mijick.com
 //    - GitHub: https://github.com/FulcrumOne
 //
-//  Copyright ©2023 Mijick. Licensed under MIT License.
+//  Copyright ©2023 Mijick. All rights reserved.
 
 
 import Foundation
