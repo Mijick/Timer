@@ -7,7 +7,8 @@ let package = Package(
     name: "MijickTimer",
     platforms: [
         .iOS(.v13),
-        .macOS(.v10_15)
+        .macOS(.v10_15),
+        .visionOS(.v1)
     ],
     products: [
         .library(name: "MijickTimer", targets: ["MijickTimer"]),
