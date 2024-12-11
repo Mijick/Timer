@@ -6,12 +6,12 @@
 //
 
 public enum MTimerStatus {
-    /// Initial timer state
+    /// Initial timer status
     /// ## Triggered by methods
     /// - ``MTimer/reset()``
     case notStarted
     
-    /// Timer in progress
+    /// Timer is in a progress
     ///
     /// ## Triggered by methods
     ///  - ``MTimer/start()``
@@ -19,13 +19,13 @@ public enum MTimerStatus {
     ///  - ``MTimer/resume()``
     case running
     
-    /// Timer is in a pause
+    /// Timer is in a paused state
     ///
     ///  ## Triggered by methods
     ///  - ``MTimer/pause()``
     case paused
     
-    /// Timer was finished by running out of time or by calling function
+    /// The timer was terminated by running out of time or calling the function
     ///
     /// ## Triggered by methods
     ///  - ``MTimer/skip()``
