@@ -1,19 +1,19 @@
 //
-//  Public+MTimer.Error.swift of Timer
+//  Public+MTimerError.swift
 //
 //  Created by Tomasz Kurylik
 //    - Twitter: https://twitter.com/tkurylik
 //    - Mail: tomasz.kurylik@mijick.com
 //    - GitHub: https://github.com/FulcrumOne
 //
-//  Copyright ©2023 Mijick. Licensed under MIT License.
+//  Copyright ©2023 Mijick. All rights reserved.
 
 
 import Foundation
 
-extension MTimer { public enum Error: Swift.Error {
-    case publisherTimeCannotBeLessThanOneMillisecond
+public enum MTimerError: Error {
+    case publisherTimeCannotBeLessThanZero
     case startTimeCannotBeTheSameAsEndTime, timeCannotBeLessThanZero
     case cannotResumeNotInitialisedTimer
-    case timerIsAlreadyRunning
-}}
+    case timerIsAlreadyRunning, timerIsNotStarted
+}

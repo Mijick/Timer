@@ -1,126 +1,169 @@
 //
 //  Public+MTimer.swift of Timer
+//  MijickTimer
 //
-//  Created by Tomasz Kurylik
-//    - Twitter: https://twitter.com/tkurylik
-//    - Mail: tomasz.kurylik@mijick.com
-//    - GitHub: https://github.com/FulcrumOne
+//  Created by Alina Petrovska
+//    - Mail: alina.petrovska@mijick.com
+//    - GitHub: https://github.com/Mijick
 //
-//  Copyright ©2023 Mijick. Licensed under MIT License.
+//  Copyright ©2024 Mijick. All rights reserved.
 
 
 import SwiftUI
 
-// MARK: - Creating New Instance Of Timer
-extension MTimer {
-    /// Allows to create multiple instances of a timer.
-    public static func createNewInstance() -> MTimer { .init() }
-}
-
 // MARK: - Initialising Timer
-extension MTimer {
-    /// Prepares the timer to start.
-    /// WARNING: Use the start() method to start the timer.
-    public static func publish(every time: TimeInterval, tolerance: TimeInterval = 0.4, _ completion: @escaping (_ currentTime: MTime) -> ()) throws -> MTimer {
-        try shared.publish(every: time, tolerance: tolerance, completion)
-    }
-    /// Prepares the timer to start.
-    /// WARNING: Use the start() method to start the timer.
-    public static func publish(every time: TimeInterval, tolerance: TimeInterval = 0.4, currentTime: Binding<MTime>) throws -> MTimer {
-        try shared.publish(every: time, tolerance: tolerance) { currentTime.wrappedValue = $0 }
-    }
-    /// Prepares the timer to start.
-    /// WARNING: Use the start() method to start the timer.
-    public func publish(every time: TimeInterval, tolerance: TimeInterval = 0.4, currentTime: Binding<MTime>) throws -> MTimer {
+public extension MTimer {
+    /// Configure the interval for publishing the timer status.
+    ///
+    /// - Parameters:
+    ///   - time: timer status publishing interval
+    ///   - tolerance: The amount of time after the scheduled fire date that the timer may fire.
+    ///   - currentTime: A binding value that will be updated every **time** interval.
+    ///
+    /// - WARNING: Use the ``start()``  or ``start(from:to:)-1mvp1`` methods to start the timer.
+    func publish(every time: TimeInterval, tolerance: TimeInterval = 0.4, currentTime: Binding<MTime>) throws -> MTimer {
         try publish(every: time, tolerance: tolerance) { currentTime.wrappedValue = $0 }
     }
-    /// Prepares the timer to start.
-    /// WARNING: Use the start() method to start the timer.
-    public func publish(every time: TimeInterval, tolerance: TimeInterval = 0.4, _ completion: @escaping (_ currentTime: MTime) -> ()) throws -> MTimer {
-        try checkRequirementsForInitialisingTimer(time)
-        assignInitialPublisherValues(time, tolerance, completion)
+    
+    /// Configure the interval for publishing the timer status.
+    ///
+    /// - Parameters:
+    ///   - time: timer status publishing interval
+    ///   - tolerance: The amount of time after the scheduled fire date that the timer may fire.
+    ///   - completion: A completion block that will be executed every **time** interval
+    ///
+    /// - WARNING: Use the ``start()`` or  ``start(from:to:)-1mvp1`` method to start the timer.
+    func publish(every time: TimeInterval, tolerance: TimeInterval = 0.4, _ completion: @escaping (_ currentTime: MTime) -> () = { _ in }) throws -> MTimer {
+        try MTimerValidator.checkRequirementsForInitializingTimer(time)
+        setupPublishers(time, tolerance, completion)
         return self
     }
 }
 
 // MARK: - Starting Timer
-extension MTimer {
-    /// Starts the timer using the specified initial values. Can be run backwards - use any "to" value that is greater than  "from".
-    public func start(from startTime: MTime = .zero, to endTime: MTime = .max) throws {
+public extension MTimer {
+    /**
+     Starts the timer using the specified initial values.
+     
+     - Note: The timer can be run backwards - use any value **to** that is greater than **from**.
+     
+     ### Up-going timer
+     ```swift
+         MTimer(.exampleId)
+             .start(from: .zero, to: MTime(seconds: 10))
+     ```
+     
+     ### Down-going timer
+     ```swift
+         MTimer(.exampleId)
+             .start(from: MTime(seconds: 10), to: .zero)
+     ```
+     */
+    func start(from startTime: MTime = .zero, to endTime: MTime = .max) throws {
         try start(from: startTime.toTimeInterval(), to: endTime.toTimeInterval())
     }
-    /// Starts the timer using the specified initial values. Can be run backwards - use any "to" value that is greater than  "from".
-    public func start(from startTime: TimeInterval = 0, to endTime: TimeInterval = .infinity) throws {
-        try checkRequirementsForStartingTimer(startTime, endTime)
+    
+    /**
+     Starts the timer using the specified initial values.
+     
+     - Note: The timer can be run backwards - use any value **to** that is greater than **from**.
+     
+     ### Up-going timer
+     ```swift
+         MTimer(.exampleId)
+             .start(from: .zero, to: 10)
+     ```
+     
+     ### Down-going timer
+     ```swift
+         MTimer(.exampleId)
+             .start(from: 10, to: .zero)
+     ```
+     */
+    func start(from startTime: TimeInterval = 0, to endTime: TimeInterval = .infinity) throws {
+        try MTimerValidator.checkRequirementsForStartingTimer(startTime, endTime, state, timerStatus)
         assignInitialStartValues(startTime, endTime)
         startTimer()
     }
-    /// Starts the timer.
-    public func start() throws {
+    
+    /// Starts the up-going infinity timer
+    func start() throws {
         try start(from: .zero, to: .infinity)
     }
 }
 
 // MARK: - Stopping Timer
-extension MTimer {
-    /// Stops the timer.
-    public static func stop() {
-        shared.stop()
-    }
-    /// Stops the timer.
-    public func stop() {
-        stopTimer()
+public extension MTimer {
+    /// Pause the timer.
+    func pause() {
+        guard timerStatus == .running else { return }
+        pauseTimer()
     }
 }
 
 // MARK: - Resuming Timer
-extension MTimer {
-    /// Resumes the stopped timer.
-    public static func resume() throws {
-        try shared.resume()
-    }
-    /// Resumes the stopped timer.
-    public func resume() throws {
-        try checkRequirementsForResumingTimer()
+public extension MTimer {
+    /// Resumes the paused timer.
+    func resume() throws {
+        try MTimerValidator.checkRequirementsForResumingTimer(callbacks)
         startTimer()
     }
 }
 
-// MARK: - Resetting Timer
-extension MTimer {
+// MARK: - Aborting Timer
+public extension MTimer {
     /// Stops the timer and resets its current time to the initial value.
-    public static func reset() {
-        shared.reset()
-    }
-    /// Stops the timer and resets its current time to the initial value.
-    public func reset() {
+    func cancel() {
         resetRunningTime()
-        stopTimer()
+        cancelTimer()
+    }
+}
+
+// MARK: - Aborting Timer
+public extension MTimer {
+    /// Stops the timer and resets all timer states to default values.
+    func reset() {
+        resetTimer()
+    }
+}
+
+// MARK: - Skip Timer
+public extension MTimer {
+    /// Stops the timer and updates its status to the final state.
+    func skip() throws {
+        guard timerStatus.isSkippable else { return }
+        try MTimerValidator.isCanBeSkipped(timerStatus)
+        skipRunningTime()
+        finishTimer()
     }
 }
 
 // MARK: - Publishing Timer Activity Status
-extension MTimer {
-    /// Publishes the timer activity changes.
-    public func onTimerActivityChange(_ action: @escaping (_ isRunning: Bool) -> ()) -> MTimer {
-        onTimerActivityChange = action
+public extension MTimer {
+    /// Publishes timer status changes.
+    ///  - Note: To configure the interval at which the state of the timer will be published, use method  ``publish(every:tolerance:currentTime:)``
+    func onTimerStatusChange(_ action: @escaping (_ timerStatus: MTimerStatus) -> ()) -> MTimer {
+        callbacks.onTimerStatusChange = action
         return self
     }
-    /// Publishes the timer activity changes.
-    public func bindTimerStatus(isTimerRunning: Binding<Bool>) -> MTimer {
-        onTimerActivityChange { isTimerRunning.wrappedValue = $0 }
+    /// Publishes timer status changes.
+    /// - Note: To configure the interval at which the state of the timer will be published, use method  ``publish(every:tolerance:currentTime:)``
+    func bindTimerStatus(timerStatus: Binding<MTimerStatus>) -> MTimer {
+        onTimerStatusChange { timerStatus.wrappedValue = $0 }
     }
 }
 
 // MARK: - Publishing Timer Progress
-extension MTimer {
-    /// Publishes the timer progress changes.
-    public func onTimerProgressChange(_ action: @escaping (_ progress: Double) -> ()) -> MTimer {
-        onTimerProgressChange = action
+public extension MTimer {
+    /// Publishes timer progress changes.
+    /// - Note: To configure the interval at which the timer's progress will be published, use method ``publish(every:tolerance:currentTime:)``
+    func onTimerProgressChange(_ action: @escaping (_ progress: Double) -> ()) -> MTimer {
+        callbacks.onTimerProgressChange = action
         return self
     }
-    /// Publishes the timer progress changes.
-    public func bindTimerProgress(progress: Binding<Double>) -> MTimer {
+    /// Publishes timer progress changes.
+    /// - Note: To configure the interval at which the timer's progress will be published, use method ``publish(every:tolerance:currentTime:)``
+    func bindTimerProgress(progress: Binding<Double>) -> MTimer {
         onTimerProgressChange { progress.wrappedValue = $0 }
     }
 }

@@ -17,7 +17,7 @@ final class MTimeTests: XCTestCase {}
 // MARK: - Initialisation from TimeInterval
 extension MTimeTests {
     func testTimeInitialisesCorrectly_1second() {
-        let time = MTime(1)
+        let time = MTime(timeInterval: 1)
 
         XCTAssertEqual(time.hours, 0)
         XCTAssertEqual(time.minutes, 0)
@@ -25,7 +25,7 @@ extension MTimeTests {
         XCTAssertEqual(time.milliseconds, 0)
     }
     func testTimeInitialisesCorrectly_59seconds120milliseconds() {
-        let time = MTime(59.12)
+        let time = MTime(timeInterval: 59.12)
 
         XCTAssertEqual(time.hours, 0)
         XCTAssertEqual(time.minutes, 0)
@@ -33,7 +33,7 @@ extension MTimeTests {
         XCTAssertEqual(time.milliseconds, 120)
     }
     func testTimeInitialisesCorrectly_21minutes37seconds() {
-        let time = MTime(1297)
+        let time = MTime(timeInterval: 1297)
 
         XCTAssertEqual(time.hours, 0)
         XCTAssertEqual(time.minutes, 21)
@@ -41,7 +41,7 @@ extension MTimeTests {
         XCTAssertEqual(time.milliseconds, 0)
     }
     func testTimeInitialisesCorrectly_1hour39minutes17seconds140milliseconds() {
-        let time = MTime(5957.14)
+        let time = MTime(timeInterval: 5957.14)
 
         XCTAssertEqual(time.hours, 1)
         XCTAssertEqual(time.minutes, 39)

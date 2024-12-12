@@ -1,12 +1,12 @@
 //
-//  NotificationCenter++.swift of Timer
+//  NotificationCenter++.swift
+//  MijickTimer
 //
-//  Created by Tomasz Kurylik
-//    - Twitter: https://twitter.com/tkurylik
-//    - Mail: tomasz.kurylik@mijick.com
-//    - GitHub: https://github.com/FulcrumOne
+//  Created by Alina Petrovska
+//    - Mail: alina.petrovska@mijick.com
+//    - GitHub: https://github.com/Mijick
 //
-//  Copyright ©2023 Mijick. Licensed under MIT License.
+//  Copyright ©2024 Mijick. All rights reserved.
 
 
 import SwiftUI
