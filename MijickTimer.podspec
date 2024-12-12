@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
     s.name                  = 'MijickTimer'
     s.summary               = 'Modern API for Timer'
-    s.description           = 'Swift library for timers, supporting countdown, count-up, pause, resume, and state management for iOS, macOS and visionOS.'
+    s.description           = 'Timers made simple: The Ultimate Swift Framework for Modern Apps on iOS, macOS, and visionOS.'
 
     s.version               = '2.0.0'
     s.ios.deployment_target = '13.0'
