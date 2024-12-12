@@ -149,7 +149,7 @@ MijickTimer library is Swift-based library that offers powerful and flexible tim
 
 <p>
     <h3>Control Timer state</h3>
-    <p> Pause timers and resume them later without losing progress. Also allows to skip and cancel the progress. </p>
+    <p> Pause timers and resume them later without losing progress. It also allows to skip and cancel the progress. </p>
     <p> Take a look at the implementation details <a href="https://github.com/Mijick/Timer/wiki/Timer-State-Control">here</a>. </p>
     </p>
 </p>
