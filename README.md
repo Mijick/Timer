@@ -162,6 +162,9 @@ MijickTimer library it’s a Swift-based library that offers powerful and flexib
 </p>
 <img alt="The code illustrates various methods for monitoring the current timer state, including binding, callbacks, combining, and state observation." src="https://github.com/Mijick/Assets/blob/main/Timer/Code/state-observe.png" width="100%">
 
+
+<!--Why description-->
+
 # ✅ Why MijickTimer?
 <h4>Multiple Apple Platform Support:</h4>
 
@@ -180,7 +183,8 @@ MijickTimer library it’s a Swift-based library that offers powerful and flexib
 <h4>Versatile Observation:</h4>
     
 *  Choose callbacks, bindings, or Combine for the implementation that works best for you.
-  
+*  Provides the ability to access the state of a specific timer from any part of the code base.
+
 <h4>It's just a cool library 😎</h4>
 
 <!--Documentation-->
