@@ -14,9 +14,11 @@
 
 <!--Links: Demo, Wiki-->
 <p align="center">
-    <a href="https://github.com/Mijick/Timer-Demo" rel="nofollow"><b>Try demo we prepared</b></a>
+    <a href="https://link.mijick.com/timer-demo" rel="nofollow"><b>Try demo we prepared</b></a>
     |
-    <a href="https://github.com/Mijick/Timer/wiki" rel="nofollow"><b>Framework documentation</b></a>
+    <a href="https://link.mijick.com/timer-wiki" rel="nofollow"><b>Framework documentation</b></a>
+    |
+    <a href="https://link.mijick.com/timer-roadmap" rel="nofollow"><b>Roadmap</b></a>
 </p>
 
 <br>
@@ -125,10 +127,10 @@
 
 <!--Description-->
 
-# ☀️ Why MijickTimer?
+# ☀️ What Is MijickTimer?
 MijickTimer library it’s a Swift-based library that offers powerful and flexible timer features for iOS and macOS apps. Allows to create both countdown and count-up timers with enhanced state management and observation options. 
 
-
+## 💡 Feature Insights 
 
 <!--Features description-->
 <p>
@@ -136,34 +138,14 @@ MijickTimer library it’s a Swift-based library that offers powerful and flexib
     <p> Track elapsed time seamlessly with a count-up timer. Ideal for productivity, logging, or workout apps.</p>
     <p> Take a look at the implementation details <a href="https://github.com/Mijick/Timer/wiki/Timer-Start-Up">here</a>. </p>
 </p>
-
-```Swift
-@MainActor class ViewModel: ObservableObject {
-       @Published var time: TimeInterval = 0
-
-       func startTimer() {
-         try? MTimer(.id)
-              .publish(every: 1, onTimerCallback)
-              .start(from: 0, to: 10)
-      }
-      func onTimerCallback(_ time: MTime) {
-        self.time = time.toTimeInterval()
-      }
-}
-```
+<img alt="A demonstration of the code used to compare the implementation of the native iOS timer framework with the custom MijickTimer." src="https://github.com/Mijick/Assets/blob/main/Timer/Code/less-code.png" width="100%">
 
 <p>
     <h3>Countdown Timer</h3>
     <p> Easily create countdown timers to track remaining time. Perfect for games, events, or task timers.</p>
     <p> Take a look at the implementation details <a href="https://github.com/Mijick/Timer/wiki/Timer-Start-Up">here</a>. </p>
 </p>
-
-```Swift
-func startTimer() {
-  try? MTimer(.id)
-     .start(from: 10, to: 0)
-}
-```
+<img alt="An illustration of how to create a countdown timer using only a few lines of code with the MijickTimer library." src="https://github.com/Mijick/Assets/blob/main/Timer/Code/state-control.png" src="https://github.com/Mijick/Assets/blob/main/Timer/Code/countdown.png" width="100%">
 
 <p>
     <h3>Control Timer state</h3>
@@ -171,30 +153,16 @@ func startTimer() {
     <p> Take a look at the implementation details <a href="https://github.com/Mijick/Timer/wiki/Timer-State-Control">here</a>. </p>
     </p>
 </p>
+<img alt="Demonstrates code for controlling the Timer state via the MijickTimer library: stop, pause, resume, skip, and cancel or stop the Timer.", src="https://github.com/Mijick/Assets/blob/main/Timer/Code/state-control.png" width="100%">
 
-```Swift
-struct ContentView: View {
-  @ObservedObject var timer = MTimer(.id)
-
-  var body: some View {
-        (...)
-  }
-    
-  func pause() { timer.pause() }
-  func resume() throws { try timer.resume() }
-  func stop() { timer.cancel() }
-  func skip() throws { try timer.skip() }
-}
-```
-
-<h3>State Observation Made Easy </h3>
+<h3>Observe Timer State</h3>
 <p> 
-  <p> Monitor timer states with a variety of different approaches.</p>
+  <p> Monitor timer states with a variety of different approaches: binding, callbacks, combine, state value updates</p>
   <p> Take a look at the implementation details <a href="https://github.com/Mijick/Timer/wiki/Timer-State-Observing">here</a>. </p>
 </p>
-<img alt="Code Example 6" src="https://github.com/Mijick/Assets/blob/main/Timer/Code/state-observe.png" width="100%">
+<img alt="The code illustrates various methods for monitoring the current timer state, including binding, callbacks, combining, and state observation." src="https://github.com/Mijick/Assets/blob/main/Timer/Code/state-observe.png" width="100%">
 
-# ✅ Why Choose This Timer Library?
+# ✅ Why MijickTimer?
 <h4>Multiple Apple Platform Support:</h4>
 
 * iPhone, iPad. Requires iOS 13.0+  .
@@ -220,8 +188,8 @@ struct ContentView: View {
 Follow the [installation guide](https://github.com/Mijick/Timer/wiki/Installation) to integrate the Timer library into your project.
 
 # 🚀 How to use it?
-Visit the framework's [documentation](https://github.com/Mijick/Timer/wiki) to learn how to integrate your project with **MijickTimer**. <br>
-See for yourself how does it work by cloning [project](https://github.com/Mijick/Timer-Demo) we created
+Visit the framework's [documentation](https://link.mijick.com/timer-wiki) to learn how to integrate your project with **MijickTimer**. <br>
+See for yourself how does it work by cloning [project](https://link.mijick.com/timer-demo) we created
 
 <!--Community-->
 # 🍀 Community
