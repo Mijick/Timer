@@ -8,8 +8,8 @@
 
 <!--Text Header-->
 <p>
-    <h3 align="center">Modern API for Timer</h3>
-    <p align="center">Easy to use yet powerful Timer library. Keep your code clean</p>
+    <h3 align="center">Timers made simple</h3>
+    <p align="center">Easy to use yet powerful Timer library. Keep your code clean.</p>
 </p>
 
 <!--Links: Demo, Wiki-->
@@ -62,7 +62,7 @@
     </a>
 </p>
 
-# Features
+# ✨ Features
 <!--Features table-->
 <table>
         <tbody>
@@ -128,28 +128,28 @@
 <!--Description-->
 
 # ☀️ What Is MijickTimer?
-MijickTimer library it’s a Swift-based library that offers powerful and flexible timer features for iOS and macOS apps. Allows to create both countdown and count-up timers with enhanced state management and observation options. 
+MijickTimer library is Swift-based library that offers powerful and flexible timer features for iOS and macOS and visionOS apps. It allows to create both countdown and count-up timers with enhanced state management and observation options. 
 
-## 💡 Feature Insights 
+# 💡 Feature Insights 
 
 <!--Features description-->
 <p>
     <h3>Count-Up Timer</h3>
-    <p> Track elapsed time seamlessly with a count-up timer. Ideal for productivity, logging, or workout apps.</p>
+    <p> Track elapsed time seamlessly with a count-up timer. Ideal for productivity, logging or workout apps.</p>
     <p> Take a look at the implementation details <a href="https://github.com/Mijick/Timer/wiki/Timer-Start-Up">here</a>. </p>
 </p>
 <img alt="A demonstration of the code used to compare the implementation of the native iOS timer framework with the custom MijickTimer." src="https://github.com/Mijick/Assets/blob/main/Timer/Code/less-code.png" width="100%">
 
 <p>
     <h3>Countdown Timer</h3>
-    <p> Easily create countdown timers to track remaining time. Perfect for games, events, or task timers.</p>
+    <p> Easily create countdown timers to track remaining time. Perfect for games, events or task apps.</p>
     <p> Take a look at the implementation details <a href="https://github.com/Mijick/Timer/wiki/Timer-Start-Up">here</a>. </p>
 </p>
 <img alt="An illustration of how to create a countdown timer using only a few lines of code with the MijickTimer library." src="https://github.com/Mijick/Assets/blob/main/Timer/Code/countdown.png" width="100%">
 
 <p>
     <h3>Control Timer state</h3>
-    <p> Pause timers and resume them later without losing progress, skip and cancel. </p>
+    <p> Pause timers and resume them later without losing progress. It also allows to skip and cancel the progress. </p>
     <p> Take a look at the implementation details <a href="https://github.com/Mijick/Timer/wiki/Timer-State-Control">here</a>. </p>
     </p>
 </p>
@@ -157,10 +157,10 @@ MijickTimer library it’s a Swift-based library that offers powerful and flexib
 
 <h3>Observe Timer State</h3>
 <p> 
-  <p> Monitor timer states with a variety of different approaches: binding, callbacks, combine, state value updates</p>
+  <p> Monitor timer state with a variety of different approaches: binding, callbacks, combine, state value updates.</p>
   <p> Take a look at the implementation details <a href="https://github.com/Mijick/Timer/wiki/Timer-State-Observing">here</a>. </p>
 </p>
-<img alt="The code illustrates various methods for monitoring the current timer state, including binding, callbacks, combining, and state observation." src="https://github.com/Mijick/Assets/blob/main/Timer/Code/state-observe.png" width="100%">
+<img alt="The code illustrates various methods for monitoring the current timer state, including binding, callbacks, combining, and state observation" src="https://github.com/Mijick/Assets/blob/main/Timer/Code/state-observe.png" width="100%">
 
 
 <!--Why description-->
@@ -178,19 +178,16 @@ MijickTimer library it’s a Swift-based library that offers powerful and flexib
   
 <h4>All-in-One Timer Solution:</h4>
     
-* Handles countdowns, count-ups, pausing, resuming, and state management seamlessly.
+* Handles countdowns, count-ups, pausing, resuming and state management seamlessly.
   
 <h4>Versatile Observation:</h4>
     
-*  Choose callbacks, bindings, or Combine for the implementation that works best for you.
+*  Choose callbacks, bindings or Combine for the implementation that works best for you.
 *  Provides the ability to access the state of a specific timer from any part of the code base.
 
 <h4>It's just a cool library 😎</h4>
 
 <!--Documentation-->
-# 🔧 Installation
-Follow the [installation guide](https://github.com/Mijick/Timer/wiki/Installation) to integrate the Timer library into your project.
-
 # 🚀 How to use it?
 Visit the framework's [documentation](https://link.mijick.com/timer-wiki) to learn how to integrate your project with **MijickTimer**. <br>
 See for yourself how does it work by cloning [project](https://link.mijick.com/timer-demo) we created
