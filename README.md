@@ -145,7 +145,7 @@ MijickTimer library it’s a Swift-based library that offers powerful and flexib
     <p> Easily create countdown timers to track remaining time. Perfect for games, events, or task timers.</p>
     <p> Take a look at the implementation details <a href="https://github.com/Mijick/Timer/wiki/Timer-Start-Up">here</a>. </p>
 </p>
-<img alt="An illustration of how to create a countdown timer using only a few lines of code with the MijickTimer library." src="https://github.com/Mijick/Assets/blob/main/Timer/Code/state-control.png" src="https://github.com/Mijick/Assets/blob/main/Timer/Code/countdown.png" width="100%">
+<img alt="An illustration of how to create a countdown timer using only a few lines of code with the MijickTimer library." src="https://github.com/Mijick/Assets/blob/main/Timer/Code/countdown.png" width="100%">
 
 <p>
     <h3>Control Timer state</h3>
