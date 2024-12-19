@@ -37,8 +37,8 @@
 <table>
     <thead>
         <tr>
-            <th>Nultiple Timers</th>
-            <th>State control</th>
+            <th>Multiple Timers</th>
+            <th>State Control</th>
         </tr>
     </thead>
     <tbody>
