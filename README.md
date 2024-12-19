@@ -12,6 +12,7 @@
     <p align="center">Easy to use yet powerful Timer library. Keep your code clean.</p>
 </p>
 
+
 <!--Links: Demo, Wiki-->
 <p align="center">
     <a href="https://link.mijick.com/timer-demo" rel="nofollow"><b>Try demo we prepared</b></a>
@@ -23,7 +24,7 @@
 
 <br>
 
-<!--Labels-->
+
 <!--Labels-->
 <p align="center">
     <img alt="Labels" src="https://github.com/Mijick/Assets/blob/main/Timer/Labels/labels.svg"/>
@@ -31,39 +32,58 @@
 
 <br>
 
+
 <!--GIFs-->
-<p align="center">
-    <img alt="Timer Examples" src="https://github.com/Mijick/Assets/blob/main/Timer/GIFs/Timer.gif"/>
-</p>
+<table>
+    <thead>
+        <tr>
+            <th>Multiple Timers</th>
+            <th>State Control</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                <img alt="Timer Examples" src="https://github.com/Mijick/Assets/blob/main/Timer/GIFs/Timer-1.gif"/>
+            </td>
+            <td>
+                <img alt="Timer Examples" src="https://github.com/Mijick/Assets/blob/main/Timer/GIFs/Timer-2.gif"/>
+            </td>
+        </tr>
+    </tbody>
+</table>
 
 <br>
+<br>
+
 
 <!--Buttons-->
 <p>
     <!--Discord-->
     <a href="https://link.mijick.com/discord">
-        <img alt="Join us on Discord" src="https://github.com/Mijick/Assets/blob/main/Popups/Buttons/discord.png" height="40px">
+        <img alt="Join us on Discord" src="https://github.com/Mijick/Assets/blob/main/Common/Buttons/discord.png" height="40px">
     </a>
     <!--Linkedin-->
     <a href="https://link.mijick.com/linkedin">
-        <img alt="Follow us on LinkedIn" src="https://github.com/Mijick/Assets/blob/main/Popups/Buttons/linkedin.png" height="40px">
+        <img alt="Follow us on LinkedIn" src="https://github.com/Mijick/Assets/blob/main/Common/Buttons/linkedin.png" height="40px">
     </a>
     <!--GitHub-->
     <a href="https://link.mijick.com/github">
-        <img alt="See our other frameworks" src="https://github.com/Mijick/Assets/blob/main/Popups/Buttons/github.png" height="40px">
+        <img alt="See our other frameworks" src="https://github.com/Mijick/Assets/blob/main/Common/Buttons/github.png" height="40px">
     </a>
     <!--Medium-->
     <a href="https://link.mijick.com/medium">
-        <img alt="Read us on Medium" src="https://github.com/Mijick/Assets/blob/main/Popups/Buttons/medium.png" height="40px">
+        <img alt="Read us on Medium" src="https://github.com/Mijick/Assets/blob/main/Common/Buttons/medium.png" height="40px">
     </a>
     <!--Buymeacoffee-->
     <a href="https://link.mijick.com/buymeacoffee">
-        <img alt="Buy us a coffee" src="https://github.com/Mijick/Assets/blob/main/Popups/Buttons/buymeacoffee.png" height="40px">
+        <img alt="Buy us a coffee" src="https://github.com/Mijick/Assets/blob/main/Common/Buttons/buymeacoffee.png" height="40px">
     </a>
 </p>
 
-# ✨ Features
+
 <!--Features table-->
+# ✨ Features
 <table>
         <tbody>
             <tr>
@@ -125,14 +145,11 @@
         </tbody>
     </table>
 
-<!--Description-->
 
-# ☀️ What Is MijickTimer?
+<!--Description-->
+# ☀️ What is MijickTimer?
 MijickTimer library is Swift-based library that offers powerful and flexible timer features for iOS and macOS and visionOS apps. It allows to create both countdown and count-up timers with enhanced state management and observation options. 
 
-# 💡 Feature Insights 
-
-<!--Features description-->
 <p>
     <h3>Count-Up Timer</h3>
     <p> Track elapsed time seamlessly with a count-up timer. Ideal for productivity, logging or workout apps.</p>
@@ -163,8 +180,7 @@ MijickTimer library is Swift-based library that offers powerful and flexible tim
 <img alt="The code illustrates various methods for monitoring the current timer state, including binding, callbacks, combining, and state observation" src="https://github.com/Mijick/Assets/blob/main/Timer/Code/state-observe.png" width="100%">
 
 
-<!--Why description-->
-
+<!--Why to choose description-->
 # ✅ Why MijickTimer?
 <h4>Multiple Apple Platform Support:</h4>
 
@@ -187,20 +203,24 @@ MijickTimer library is Swift-based library that offers powerful and flexible tim
 
 <h4>It's just a cool library 😎</h4>
 
+
 <!--Documentation-->
 # 🚀 How to use it?
 Visit the framework's [documentation](https://link.mijick.com/timer-wiki) to learn how to integrate your project with **MijickTimer**. <br>
 See for yourself how does it work by cloning [project](https://link.mijick.com/timer-demo) we created
 
+
 <!--Community-->
 # 🍀 Community
 Join the welcoming community of developers on [Discord](https://link.mijick.com/discord).
+
 
 <!--Contribution-->
 # 🌼 Contribute
 To contribute a feature or idea to **MijickTimer**, create an [issue](https://github.com/Mijick/Timer/issues/new?assignees=FulcrumOne&labels=state%3A+inactive%2C+type%3A+feature&projects=&template=🚀-feature-request.md&title=%5BFREQ%5D) explaining your idea or bring it up on [Discord](https://discord.com/invite/dT5V7nm5SC). <br>
 If you find a bug, please create an [issue](https://github.com/Mijick/Timer/issues/new?assignees=FulcrumOne%2C+jay-jay-lama&labels=state%3A+inactive%2C+type%3A+bug&projects=&template=🦟-bug-report.md&title=%5BBUG%5D). <br>
 If you would like to contribute, please refer to the [Contribution Guidelines](https://link.mijick.com/contribution-guidelines).
+
 
 <!--Sponsorship-->
 # 💜 Sponsor our work
