@@ -147,12 +147,9 @@
 
 
 <!--Description-->
-# ☀️ What Is MijickTimer?
+# ☀️ What is MijickTimer?
 MijickTimer library is Swift-based library that offers powerful and flexible timer features for iOS and macOS and visionOS apps. It allows to create both countdown and count-up timers with enhanced state management and observation options. 
 
-
-<!--Features description-->
-# 💡 Feature Insights 
 <p>
     <h3>Count-Up Timer</h3>
     <p> Track elapsed time seamlessly with a count-up timer. Ideal for productivity, logging or workout apps.</p>
