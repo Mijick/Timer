@@ -24,7 +24,6 @@
 <br>
 
 <!--Labels-->
-<!--Labels-->
 <p align="center">
     <img alt="Labels" src="https://github.com/Mijick/Assets/blob/main/Timer/Labels/labels.svg"/>
 </p>
@@ -32,10 +31,27 @@
 <br>
 
 <!--GIFs-->
-<p align="center">
-    <img alt="Timer Examples" src="https://github.com/Mijick/Assets/blob/main/Timer/GIFs/Timer.gif"/>
-</p>
+<table>
+    <thead>
+        <tr>
+            <th>Nultiple Timers</th>
+            <th>State control</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                <img alt="Timer Examples" src="https://github.com/Mijick/Assets/blob/main/Timer/GIFs/Timer-1.gif"/>
+            </td>
+            <td>
+                <img alt="Timer Examples" src="https://github.com/Mijick/Assets/blob/main/Timer/GIFs/Timer-2.gif"/>
+            </td>
+        </tr>
+    </tbody>
+</table>
 
+
+<br>
 <br>
 
 <!--Buttons-->
@@ -62,8 +78,8 @@
     </a>
 </p>
 
-# ✨ Features
 <!--Features table-->
+# ✨ Features
 <table>
         <tbody>
             <tr>
@@ -126,13 +142,11 @@
     </table>
 
 <!--Description-->
-
 # ☀️ What Is MijickTimer?
 MijickTimer library is Swift-based library that offers powerful and flexible timer features for iOS and macOS and visionOS apps. It allows to create both countdown and count-up timers with enhanced state management and observation options. 
 
-# 💡 Feature Insights 
-
 <!--Features description-->
+# 💡 Feature Insights 
 <p>
     <h3>Count-Up Timer</h3>
     <p> Track elapsed time seamlessly with a count-up timer. Ideal for productivity, logging or workout apps.</p>
@@ -163,8 +177,7 @@ MijickTimer library is Swift-based library that offers powerful and flexible tim
 <img alt="The code illustrates various methods for monitoring the current timer state, including binding, callbacks, combining, and state observation" src="https://github.com/Mijick/Assets/blob/main/Timer/Code/state-observe.png" width="100%">
 
 
-<!--Why description-->
-
+<!--Why to choose description-->
 # ✅ Why MijickTimer?
 <h4>Multiple Apple Platform Support:</h4>
 
