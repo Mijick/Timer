@@ -12,6 +12,7 @@
     <p align="center">Easy to use yet powerful Timer library. Keep your code clean.</p>
 </p>
 
+
 <!--Links: Demo, Wiki-->
 <p align="center">
     <a href="https://link.mijick.com/timer-demo" rel="nofollow"><b>Try demo we prepared</b></a>
@@ -23,12 +24,14 @@
 
 <br>
 
+
 <!--Labels-->
 <p align="center">
     <img alt="Labels" src="https://github.com/Mijick/Assets/blob/main/Timer/Labels/labels.svg"/>
 </p>
 
 <br>
+
 
 <!--GIFs-->
 <table>
@@ -50,9 +53,9 @@
     </tbody>
 </table>
 
+<br>
+<br>
 
-<br>
-<br>
 
 <!--Buttons-->
 <p>
@@ -77,6 +80,7 @@
         <img alt="Buy us a coffee" src="https://github.com/Mijick/Assets/blob/main/Popups/Buttons/buymeacoffee.png" height="40px">
     </a>
 </p>
+
 
 <!--Features table-->
 # ✨ Features
@@ -141,9 +145,11 @@
         </tbody>
     </table>
 
+
 <!--Description-->
 # ☀️ What Is MijickTimer?
 MijickTimer library is Swift-based library that offers powerful and flexible timer features for iOS and macOS and visionOS apps. It allows to create both countdown and count-up timers with enhanced state management and observation options. 
+
 
 <!--Features description-->
 # 💡 Feature Insights 
@@ -200,20 +206,24 @@ MijickTimer library is Swift-based library that offers powerful and flexible tim
 
 <h4>It's just a cool library 😎</h4>
 
+
 <!--Documentation-->
 # 🚀 How to use it?
 Visit the framework's [documentation](https://link.mijick.com/timer-wiki) to learn how to integrate your project with **MijickTimer**. <br>
 See for yourself how does it work by cloning [project](https://link.mijick.com/timer-demo) we created
 
+
 <!--Community-->
 # 🍀 Community
 Join the welcoming community of developers on [Discord](https://link.mijick.com/discord).
+
 
 <!--Contribution-->
 # 🌼 Contribute
 To contribute a feature or idea to **MijickTimer**, create an [issue](https://github.com/Mijick/Timer/issues/new?assignees=FulcrumOne&labels=state%3A+inactive%2C+type%3A+feature&projects=&template=🚀-feature-request.md&title=%5BFREQ%5D) explaining your idea or bring it up on [Discord](https://discord.com/invite/dT5V7nm5SC). <br>
 If you find a bug, please create an [issue](https://github.com/Mijick/Timer/issues/new?assignees=FulcrumOne%2C+jay-jay-lama&labels=state%3A+inactive%2C+type%3A+bug&projects=&template=🦟-bug-report.md&title=%5BBUG%5D). <br>
 If you would like to contribute, please refer to the [Contribution Guidelines](https://link.mijick.com/contribution-guidelines).
+
 
 <!--Sponsorship-->
 # 💜 Sponsor our work
